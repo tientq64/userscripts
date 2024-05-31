@@ -6,3 +6,7 @@
 
 - Fix `@match` to match all URLs.
 - The element request fullscreen will be `documentElement` instead of `body`.
+
+## [0.3.1] - 2024-05-25
+
+- Change `event.key` to `event.code`.
