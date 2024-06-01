@@ -10,7 +10,7 @@
 // @require      https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js
 // @require      https://cdn.jsdelivr.net/npm/immer@9.0.21/dist/immer.umd.production.min.js
 // @require      https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
-// @resource     TAILWINDCSS https://raw.githubusercontent.com/tientq64/userscripts/main/tailwind.min.css
+// @resource     TAILWINDCSS https://raw.githubusercontent.com/tientq64/userscripts/main/.resources/tailwind.min.css
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // @license      MIT

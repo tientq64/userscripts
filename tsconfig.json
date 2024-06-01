@@ -9,5 +9,8 @@
 		"jsx": "react",
 		"rootDir": "."
 	},
-	"include": ["**/*.ts", "**/*.tsx"]
+	"include": ["**/*.ts", "**/*.tsx"],
+	"files": [
+		".resources/global.d.ts"
+	]
 }

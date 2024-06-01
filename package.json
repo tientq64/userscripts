@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"description": "📃 List of UserScripts I wrote.",
 	"scripts": {
-		"dev": "concurrently \"tailwindcss -mo tailwind.min.css --watch\" \"tsc -w\""
+		"dev": "concurrently \"tailwindcss -mo .resources/tailwind.min.css --watch\" \"tsc -w\""
 	},
 	"keywords": [
 		"userscript"
