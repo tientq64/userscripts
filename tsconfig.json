@@ -10,6 +10,7 @@
 		"rootDir": "."
 	},
 	"include": ["**/*.ts", "**/*.tsx"],
+	"exclude": ["node_modules/**", "watch.ts"],
 	"files": [
 		".resources/global.d.ts"
 	]

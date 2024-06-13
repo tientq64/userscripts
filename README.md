@@ -4,7 +4,7 @@ List of UserScripts I wrote. I use the browser extension [TamperMonkey](https://
 
 ## Usage
 
-Each folder in the root directory contains a `script.js` file, which contains the script code.
+Each folder in the `scripts` folder contains a `script.user.js` file, which contains the script code.
 
 ## Bug report
 

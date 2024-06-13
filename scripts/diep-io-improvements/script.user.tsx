@@ -10,9 +10,12 @@
 // @require      https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js
 // @require      https://cdn.jsdelivr.net/npm/immer@9.0.21/dist/immer.umd.production.min.js
 // @require      https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
-// @resource     TAILWINDCSS https://raw.githubusercontent.com/tientq64/userscripts/main/.resources/tailwind.min.css
+// @resource     TAILWINDCSS
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_deleteValue
 // @license      MIT
 // @noframes
 // ==/UserScript==
@@ -32,7 +35,7 @@ GM_addStyle(css)
 
 const { useState, useEffect } = React
 const { produce } = immer
-const { countBy } = _
+const { countBy, some } = _
 
 function App() {
 	const [stats] = useState([
@@ -73,11 +76,20 @@ function App() {
 	const [isUpgradeShown, setIsUpgradeShown] = useState(false)
 
 	const handleUpgradeChange = (event) => {
-		setUpgrade(event.target.value)
+		const { value } = event.target
+		if (/[^1-8]/.test(value) || some(countBy(value), (v) => v > 7)) {
+			const selectionStart = event.target.selectionStart - 1
+			setTimeout(() => {
+				event.target.selectionStart = selectionStart
+				event.target.selectionEnd = selectionStart
+			})
+			return
+		}
+		setUpgrade(value)
 	}
 
 	const handleUpgradeKeyDown = (event) => {
-		if (/^(Digit|Numpad)[1-8]$/.test(event.code)) {
+		if (/^((Digit|Numpad)[1-8]|Arrow(Up|Down|Left|Right))$/.test(event.code)) {
 			event.stopPropagation()
 		}
 		if (event.code === 'Enter') {
@@ -90,9 +102,14 @@ function App() {
 	const handleGlobalKeyDown = (event) => {
 		if (event.repeat || event.ctrlKey || event.shiftKey || event.metaKey) return
 		if (document.activeElement.localName === 'd-base') return
+
 		switch (event.code) {
 			case 'KeyT':
 				setIsUpgradeShown((prev) => !prev)
+				break
+
+			case 'KeyG':
+				input.grantReward()
 				break
 		}
 	}
@@ -105,11 +122,11 @@ function App() {
 		<div className="h-full">
 			{isUpgradeShown && (
 				<div className="flex absolute bottom-7 left-72 p-4 gap-4 rounded-lg bg-gray-800/90 pointer-events-auto">
-					<div className="flex flex-col w-80 gap-3">
+					<div className="flex flex-col gap-3">
 						<div className="flex-1 w-60">
 							{stats.map((stat) => (
 								<div className="flex items-center gap-2">
-									<div>{stat.key}</div>
+									<div className="font-mono">{stat.key}</div>
 									<div className="flex-1 flex gap-1 rounded-lg overflow-hidden">
 										{Array(7)
 											.fill(0)
@@ -126,14 +143,20 @@ function App() {
 								</div>
 							))}
 						</div>
-						<input
-							className="px-2 py-1 rounded-lg bg-gray-900 cursor-text"
-							autoFocus
-							maxLength={33}
-							value={upgrade}
-							onChange={handleUpgradeChange}
-							onKeyDown={handleUpgradeKeyDown}
-						/>
+						<div className="relative flex font-mono">
+							<input
+								className="min-w-0 px-2 py-1 rounded-lg bg-gray-900 cursor-text"
+								autoFocus
+								maxLength={33}
+								size={31}
+								value={upgrade}
+								onChange={handleUpgradeChange}
+								onKeyDown={handleUpgradeKeyDown}
+							/>
+							<div className="absolute inset-0 px-2 py-1 text-gray-500 pointer-events-none">
+								{Array(33).fill('\xa0').fill('\xb7', upgrade.length).join('')}
+							</div>
+						</div>
 					</div>
 				</div>
 			)}
