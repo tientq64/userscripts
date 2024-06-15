@@ -10,7 +10,7 @@
 // @grant        none
 // ==/UserScript==
 
-window.addEventListener('keydown', (event) => {
+window.addEventListener('keydown', (event): void => {
 	if (event.repeat || event.ctrlKey || event.altKey || event.metaKey) return
 
 	if (event.code === 'F11' && event.shiftKey) {

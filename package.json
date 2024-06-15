@@ -1,7 +1,7 @@
 {
 	"name": "userscripts",
 	"version": "1.0.0",
-	"description": "📃 List of UserScripts I wrote.",
+	"description": "📜 List of UserScripts I wrote.",
 	"scripts": {
 		"dev": "concurrently \"tailwindcss -mo .resources/tailwind.min.css --watch\" \"bun watch.ts\""
 	},

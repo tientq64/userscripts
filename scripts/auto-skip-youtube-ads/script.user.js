@@ -11,21 +11,19 @@
 // @noframes
 // ==/UserScript==
 
-;(function () {
-	function skipAd() {
-		const adVideo = document.querySelector('.ad-showing video')
-		if (adVideo === null) return
-		const skipAdButton = document.querySelector('.ytp-skip-ad-button')
-		if (skipAdButton) {
-			skipAdButton.click()
-		} else {
-			adVideo.currentTime = adVideo.duration
-		}
+function skipAd() {
+	const adVideo = document.querySelector('.ad-showing video')
+	if (adVideo === null) return
+	const skipAdButton = document.querySelector('.ytp-skip-ad-button')
+	if (skipAdButton) {
+		skipAdButton.click()
+	} else {
+		adVideo.currentTime = adVideo.duration
 	}
-	GM_addStyle(`
+}
+GM_addStyle(`
 		#player-ads {
 			display: none !important;
 		}
 	`)
-	setInterval(skipAd, 1000)
-})()
+setInterval(skipAd, 1000)

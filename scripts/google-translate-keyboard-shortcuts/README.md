@@ -1,9 +1,13 @@
-## Các tính năng
+# ⌨️ Google Translate Keyboard Shortcuts
+
+Thêm phím tắt cho Google Dịch.
+
+## ✨ Các tính năng
 
 - Thêm các phím tắt.
 - Không cần bấm vào ô nhập để gõ, khi gõ ô nhập sẽ tự động được lấy tiêu điểm.
 
-## Phím tắt
+## ⌨️ Phím tắt
 
 - `Alt+S` Hoán đổi ngôn ngữ hiện tại.
 - `Alt+A` Dịch từ tiếng Anh sang tiếng Việt.
