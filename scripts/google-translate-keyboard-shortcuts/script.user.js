@@ -10,6 +10,9 @@
 // @grant        none
 // @license      MIT
 // @noframes
+// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/google-translate-keyboard-shortcuts
+// @updateURL    https://github.com/tientq64/userscripts/raw/main/scripts/google-translate-keyboard-shortcuts/script.user.js
+// @downloadURL  https://github.com/tientq64/userscripts/raw/main/scripts/google-translate-keyboard-shortcuts/script.user.js
 // ==/UserScript==
 
 document.addEventListener('keydown', (event) => {

@@ -8,6 +8,9 @@ function joinPath(...paths: string[]): string {
 	return join(...paths).replace(/\\/g, '/')
 }
 
+const endMetaTagRegex: RegExp = /^\/\/ ==\/UserScript==$/m
+const tailwindcssMetaRegex: RegExp = /^\/\/ @resource     TAILWINDCSS$/m
+
 const watcher = GlobWatcher('scripts/*/script.user.{ts,tsx}', {
 	events: ['add', 'change']
 })
@@ -26,14 +29,28 @@ async function watch(path: string, stat: Stats): Promise<void> {
 
 	let tsconfig: any = JSON.parse(fs.readFileSync('tsconfig.json', 'utf-8'))
 
-	let dirPath: string = dirname(path)
-	let prodPath: string = join(dirPath, 'script.user.js')
-	let devPath: string = join(dirPath, 'dev.user.js')
+	let dirPath: string = dirname(path).replace(/\\/g, '/')
+	let prodPath: string = joinPath(dirPath, 'script.user.js')
+	let devPath: string = joinPath(dirPath, 'dev.user.js')
 
-	let prodMeta: string = meta.replace(
-		/^\/\/ @resource     TAILWINDCSS$/m,
-		`// @resource     TAILWINDCSS https://raw.githubusercontent.com/tientq64/userscripts/main/.resources/tailwind.min.css')}`
+	let bothMeta: string = meta.replace(
+		endMetaTagRegex,
+		`// @homepage     https://github.com/tientq64/userscripts/tree/main/${dirPath}\n$&`
 	)
+
+	let prodMeta: string = bothMeta
+		.replace(
+			tailwindcssMetaRegex,
+			`$& https://raw.githubusercontent.com/tientq64/userscripts/main/.resources/tailwind.min.css`
+		)
+		.replace(
+			endMetaTagRegex,
+			`// @updateURL    https://github.com/tientq64/userscripts/raw/main/${dirPath}/script.user.js\n$&`
+		)
+		.replace(
+			endMetaTagRegex,
+			`// @downloadURL  https://github.com/tientq64/userscripts/raw/main/${dirPath}/script.user.js\n$&`
+		)
 	let prodJs: string = transpile(ts, tsconfig.compilerOptions)
 	let prettierConfig = await resolveConfig('.prettierrc')
 	let prodFormatedJs: string = await format(prodJs, {
@@ -44,15 +61,12 @@ async function watch(path: string, stat: Stats): Promise<void> {
 	let prodCode: string = `${prodMeta}\n\n${prodFormatedJs}`
 	fs.writeFileSync(prodPath, prodCode)
 
-	let devMeta: string = meta
+	let devMeta: string = bothMeta
+		.replace(/^\/\/ @name .+(?<! \(DEV\))$/m, '$& (DEV)')
 		.replace(
-			/^\/\/ ==\/UserScript==$/m,
-			`// @require      file:///${joinPath(__dirname, prodPath)}\n$&`
-		)
-		.replace(
-			/^\/\/ @resource     TAILWINDCSS$/m,
+			tailwindcssMetaRegex,
 			`$& file:///${joinPath(__dirname, '.resources/tailwind.min.css')}`
 		)
-		.replace(/^\/\/ @name .+(?<! \(DEV\))$/m, '$& (DEV)')
+		.replace(endMetaTagRegex, `// @require      file:///${joinPath(__dirname, prodPath)}\n$&`)
 	fs.writeFileSync(devPath, devMeta)
 }

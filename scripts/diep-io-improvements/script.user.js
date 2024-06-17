@@ -9,7 +9,7 @@
 // @require      https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js
 // @require      https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js
 // @require      https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
-// @resource     TAILWINDCSS https://raw.githubusercontent.com/tientq64/userscripts/main/.resources/tailwind.min.css')}
+// @resource     TAILWINDCSS https://raw.githubusercontent.com/tientq64/userscripts/main/.resources/tailwind.min.css
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // @grant        GM_getValue
@@ -17,6 +17,9 @@
 // @grant        GM_deleteValue
 // @license      MIT
 // @noframes
+// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/diep-io-improvements
+// @updateURL    https://github.com/tientq64/userscripts/raw/main/scripts/diep-io-improvements/script.user.js
+// @downloadURL  https://github.com/tientq64/userscripts/raw/main/scripts/diep-io-improvements/script.user.js
 // ==/UserScript==
 
 var diepIO

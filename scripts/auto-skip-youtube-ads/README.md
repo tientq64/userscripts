@@ -1,5 +1,13 @@
-# ⏩ Auto Skip Youtube Ads
+# ⏩ Auto Skip YouTube Ads
 
-Automatically skip ads on YouTube.
+Auto skip ads on YouTube.
 
 Tự động bỏ qua quảng cáo trên YouTube.
+
+## 📑 Changelog
+
+### 1.0.0 (2024-06-17)
+
+#### 🔖 Release
+
+- Phiên bản ổn định.

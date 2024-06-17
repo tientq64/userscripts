@@ -8,6 +8,9 @@
 // @match        *://*/*
 // @license      MIT
 // @grant        none
+// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/no-fullscreen-dropdown
+// @updateURL    https://github.com/tientq64/userscripts/raw/main/scripts/no-fullscreen-dropdown/script.user.js
+// @downloadURL  https://github.com/tientq64/userscripts/raw/main/scripts/no-fullscreen-dropdown/script.user.js
 // ==/UserScript==
 
 window.addEventListener('keydown', (event) => {

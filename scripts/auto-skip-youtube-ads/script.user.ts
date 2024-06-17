@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Auto Skip Youtube Ads
+// @name:vi      Tự Động Bỏ Qua Quảng Cáo YouTube
 // @namespace    https://github.com/tientq64/userscripts
-// @version      0.1.0
-// @description  Auto skip Youtube ads.
+// @version      1.0.0
+// @description  Auto skip ads on YouTube.
 // @author       https://github.com/tientq64
 // @icon         https://cdn-icons-png.flaticon.com/64/9639/9639954.png
 // @match        https://www.youtube.com/*
@@ -25,9 +26,9 @@ function skipAd(): void {
 }
 
 GM_addStyle(`
-		#player-ads {
-			display: none !important;
-		}
-	`)
+	#player-ads {
+		display: none !important;
+	}
+`)
 
 setInterval(skipAd, 1000)
