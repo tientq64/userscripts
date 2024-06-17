@@ -12,4 +12,4 @@ Report bugs [here](https://github.com/tientq64/userscripts/issues).
 
 ## ⚖️ License
 
-The code is licensed under the [MIT](./LICENSE) license.
+All scripts are licensed under the [MIT](./LICENSE) license.
