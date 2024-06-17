@@ -12,28 +12,28 @@
 // @noframes
 // ==/UserScript==
 
+function click(selector: string): void {
+	const el: HTMLElement = document.querySelector(selector)
+	el?.click()
+}
+
+function clickSourceLanguage(languageCode: string): void {
+	click(
+		`[role=listbox]:has([data-language-code=auto]) [role=option][data-language-code=${languageCode}][aria-selected=false]`
+	)
+}
+
+function clickDestinationLanguage(languageCode: string): void {
+	click(
+		`[role=listbox]:not(:has([data-language-code=auto])) [role=option][data-language-code=${languageCode}][aria-selected=false]`
+	)
+}
+
 document.addEventListener('keydown', (event) => {
 	const { repeat, code, altKey, ctrlKey, shiftKey, metaKey } = event
 	if (repeat) return
 
-	const inputEl: HTMLTextAreaElement = document.querySelector('textarea')
-
-	function click(selector: string): void {
-		const el: HTMLElement = document.querySelector(selector)
-		el?.click()
-	}
-
-	function clickSourceLanguage(languageCode: string): void {
-		click(
-			`[role=listbox]:has([data-language-code=auto]) [role=option][data-language-code=${languageCode}][aria-selected=false]`
-		)
-	}
-
-	function clickDestinationLanguage(languageCode: string): void {
-		click(
-			`[role=listbox]:not(:has([data-language-code=auto])) [role=option][data-language-code=${languageCode}][aria-selected=false]`
-		)
-	}
+	const inputEl = document.querySelector<HTMLTextAreaElement>('textarea')
 
 	if (altKey) {
 		switch (code) {

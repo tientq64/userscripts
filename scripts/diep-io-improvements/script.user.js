@@ -27,14 +27,14 @@ var diepIO
 	const preventDefault = Event.prototype.preventDefault
 	Event.prototype.preventDefault = () => {}
 	const css = `
-	${GM_getResourceText('TAILWINDCSS')}
-	:focus {
-		outline: none;
-	}
-	#canvas {
-		cursor: crosshair !important;
-	}
-`
+		${GM_getResourceText('TAILWINDCSS')}
+		:focus {
+			outline: none;
+		}
+		#canvas {
+			cursor: crosshair !important;
+		}
+	`
 	GM_addStyle(css)
 	const { useState, useEffect, useRef } = React
 	const { countBy, some } = _

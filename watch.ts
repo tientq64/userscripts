@@ -62,7 +62,7 @@ async function watch(path: string, stat: Stats): Promise<void> {
 	fs.writeFileSync(prodPath, prodCode)
 
 	let devMeta: string = bothMeta
-		.replace(/^\/\/ @name .+(?<! \(DEV\))$/m, '$& (DEV)')
+		.replace(/^\/\/ @name(:[a-zA-Z\-]+)? .+(?<! \(DEV\))$/gm, '$& (DEV)')
 		.replace(
 			tailwindcssMetaRegex,
 			`$& file:///${joinPath(__dirname, '.resources/tailwind.min.css')}`

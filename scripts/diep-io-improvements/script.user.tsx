@@ -34,14 +34,14 @@ namespace diepIO {
 	Event.prototype.preventDefault = () => {}
 
 	const css: string = `
-	${GM_getResourceText('TAILWINDCSS')}
-	:focus {
-		outline: none;
-	}
-	#canvas {
-		cursor: crosshair !important;
-	}
-`
+		${GM_getResourceText('TAILWINDCSS')}
+		:focus {
+			outline: none;
+		}
+		#canvas {
+			cursor: crosshair !important;
+		}
+	`
 	GM_addStyle(css)
 
 	const { useState, useEffect, useRef } = React

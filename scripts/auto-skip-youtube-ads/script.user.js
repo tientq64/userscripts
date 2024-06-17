@@ -2,12 +2,13 @@
 // @name         Auto Skip Youtube Ads
 // @name:vi      Tự Động Bỏ Qua Quảng Cáo YouTube
 // @namespace    https://github.com/tientq64/userscripts
-// @version      1.0.0
-// @description  Auto skip ads on YouTube.
+// @version      2.0.0
+// @description  Auto skip ads on YouTube. Very lightweight and efficient.
+// @description:vi  Tự động bỏ qua quảng cáo trên YouTube. Rất nhẹ và hiệu quả.
 // @author       https://github.com/tientq64
 // @icon         https://cdn-icons-png.flaticon.com/64/9639/9639954.png
 // @match        https://www.youtube.com/*
-// @grant        GM_addStyle
+// @grant        none
 // @license      MIT
 // @noframes
 // @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/auto-skip-youtube-ads
@@ -16,18 +17,24 @@
 // ==/UserScript==
 
 function skipAd() {
-	const adVideo = document.querySelector('.ad-showing video')
-	if (adVideo === null) return
-	const skipAdButton = document.querySelector('.ytp-skip-ad-button')
-	if (skipAdButton) {
-		skipAdButton.click()
-	} else {
-		adVideo.currentTime = adVideo.duration
+	const hasAd = player.classList.contains('ad-showing')
+	if (!hasAd) return
+	const skipButton = document.querySelector('.ytp-skip-ad-button')
+	if (skipButton) {
+		skipButton.click()
+		return
 	}
+	const video = player.querySelector('video')
+	video.currentTime = video.duration
 }
-GM_addStyle(`
+const player = document.querySelector('.html5-video-player')
+const observer = new MutationObserver(skipAd)
+observer.observe(player, { attributeFilter: ['class'] })
+skipAd()
+const style = document.createElement('style')
+style.textContent = `
 	#player-ads {
 		display: none !important;
 	}
-`)
-setInterval(skipAd, 1000)
+`
+document.head.appendChild(style)

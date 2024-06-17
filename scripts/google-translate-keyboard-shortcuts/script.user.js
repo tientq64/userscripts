@@ -15,24 +15,24 @@
 // @downloadURL  https://github.com/tientq64/userscripts/raw/main/scripts/google-translate-keyboard-shortcuts/script.user.js
 // ==/UserScript==
 
+function click(selector) {
+	const el = document.querySelector(selector)
+	el?.click()
+}
+function clickSourceLanguage(languageCode) {
+	click(
+		`[role=listbox]:has([data-language-code=auto]) [role=option][data-language-code=${languageCode}][aria-selected=false]`
+	)
+}
+function clickDestinationLanguage(languageCode) {
+	click(
+		`[role=listbox]:not(:has([data-language-code=auto])) [role=option][data-language-code=${languageCode}][aria-selected=false]`
+	)
+}
 document.addEventListener('keydown', (event) => {
 	const { repeat, code, altKey, ctrlKey, shiftKey, metaKey } = event
 	if (repeat) return
 	const inputEl = document.querySelector('textarea')
-	function click(selector) {
-		const el = document.querySelector(selector)
-		el?.click()
-	}
-	function clickSourceLanguage(languageCode) {
-		click(
-			`[role=listbox]:has([data-language-code=auto]) [role=option][data-language-code=${languageCode}][aria-selected=false]`
-		)
-	}
-	function clickDestinationLanguage(languageCode) {
-		click(
-			`[role=listbox]:not(:has([data-language-code=auto])) [role=option][data-language-code=${languageCode}][aria-selected=false]`
-		)
-	}
 	if (altKey) {
 		switch (code) {
 			case 'KeyS':
