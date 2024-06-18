@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Auto Skip Youtube Ads
+// @name         Auto Skip YouTube Ads
 // @name:vi      Tự Động Bỏ Qua Quảng Cáo YouTube
 // @namespace    https://github.com/tientq64/userscripts
 // @version      2.0.0
