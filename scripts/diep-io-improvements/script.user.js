@@ -167,7 +167,7 @@ var diepIO
 							stats.map((stat) =>
 								React.createElement(
 									'div',
-									{ className: 'flex items-center gap-2' },
+									{ key: stat.key, className: 'flex items-center gap-2' },
 									React.createElement('div', { className: 'font-mono text-sm' }, stat.key),
 									React.createElement(
 										'div',
@@ -176,6 +176,7 @@ var diepIO
 											.fill(0)
 											.map((_, index) =>
 												React.createElement('div', {
+													key: index,
 													className: 'flex-1 h-4',
 													style: {
 														backgroundColor:
@@ -210,6 +211,7 @@ var diepIO
 										React.createElement(
 											'div',
 											{
+												key: i,
 												className: `inline-block ${i <= 13 ? 'text-gray-400' : i <= 26 ? 'text-sky-400' : i <= 27 ? 'text-yellow-400' : 'text-rose-400'}`
 											},
 											upgrade[i] ?? '\xb7'
@@ -229,6 +231,7 @@ var diepIO
 								React.createElement(
 									'button',
 									{
+										key: preset.upgrade,
 										className: 'px-2 rounded font-sans hover:bg-gray-600',
 										onClick: () => handlePresetClick(preset)
 									},
@@ -242,19 +245,27 @@ var diepIO
 				React.createElement(
 					'div',
 					{ className: 'absolute bottom-7 left-0 flex flex-col' },
-					ui.__playerAttributes.attributes.toReversed().map((attr, i) => {
-						const stat = stats[i]
-						return React.createElement(
-							'div',
-							{ className: 'px-1 text-black', style: { background: `${stat.color}cc` } },
-							attr.slotsFilled || '\xa0'
-						)
-					})
+					ui.__playerAttributes.attributes
+						.slice()
+						.reverse()
+						.map((attr, i) => {
+							const stat = stats[i]
+							return React.createElement(
+								'div',
+								{
+									key: stat.key,
+									className: 'px-1 text-black',
+									style: { background: `${stat.color}cc` }
+								},
+								attr.slotsFilled || '\xa0'
+							)
+						})
 				)
 		)
 	}
 	const rootEl = document.createElement('div')
 	rootEl.className = 'absolute inset-0 pointer-events-none z-[999]'
 	document.body.appendChild(rootEl)
+	// eslint-disable-next-line react/no-deprecated
 	ReactDOM.render(React.createElement(App, null), rootEl)
 })(diepIO || (diepIO = {}))

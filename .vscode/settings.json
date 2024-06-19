@@ -8,5 +8,9 @@
 	},
 	"[typescriptreact]": {
 		"editor.formatOnSave": true
+	},
+	"files.readonlyInclude": {
+		"scripts/*/{dev,script}.user.js": true,
+		".resources/tailwind.min.css": true
 	}
 }

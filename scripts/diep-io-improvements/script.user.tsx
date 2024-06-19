@@ -180,17 +180,20 @@ namespace diepIO {
 							{/* Các thanh chỉ số */}
 							<div className="flex-1 w-60">
 								{stats.map((stat) => (
-									<div className="flex items-center gap-2">
+									<div key={stat.key} className="flex items-center gap-2">
 										<div className="font-mono text-sm">{stat.key}</div>
 										<div className="flex-1 flex gap-1 rounded-lg overflow-hidden">
 											{Array(7)
 												.fill(0)
 												.map((_, index) => (
 													<div
+														key={index}
 														className="flex-1 h-4"
 														style={{
 															backgroundColor:
-																index < countBy(upgrade)[stat.key] ? stat.color : '#111827'
+																index < countBy(upgrade)[stat.key]
+																	? stat.color
+																	: '#111827'
 														}}
 													></div>
 												))}
@@ -215,6 +218,7 @@ namespace diepIO {
 										.fill(undefined)
 										.map((_, i) => (
 											<div
+												key={i}
 												className={`inline-block ${i <= 13 ? 'text-gray-400' : i <= 26 ? 'text-sky-400' : i <= 27 ? 'text-yellow-400' : 'text-rose-400'}`}
 											>
 												{upgrade[i] ?? '\xb7'}
@@ -229,6 +233,7 @@ namespace diepIO {
 							<div className="flex-1 flex flex-col overflow-x-hidden">
 								{presets.map((preset) => (
 									<button
+										key={preset.upgrade}
 										className="px-2 rounded font-sans hover:bg-gray-600"
 										onClick={() => handlePresetClick(preset)}
 									>
@@ -241,14 +246,21 @@ namespace diepIO {
 				)}
 				{ui && (
 					<div className="absolute bottom-7 left-0 flex flex-col">
-						{ui.__playerAttributes.attributes.toReversed().map((attr, i) => {
-							const stat: Stat = stats[i]
-							return (
-								<div className="px-1 text-black" style={{ background: `${stat.color}cc` }}>
-									{attr.slotsFilled || '\xa0'}
-								</div>
-							)
-						})}
+						{ui.__playerAttributes.attributes
+							.slice()
+							.reverse()
+							.map((attr, i) => {
+								const stat: Stat = stats[i]
+								return (
+									<div
+										key={stat.key}
+										className="px-1 text-black"
+										style={{ background: `${stat.color}cc` }}
+									>
+										{attr.slotsFilled || '\xa0'}
+									</div>
+								)
+							})}
 					</div>
 				)}
 			</div>
@@ -259,5 +271,6 @@ namespace diepIO {
 	rootEl.className = 'absolute inset-0 pointer-events-none z-[999]'
 	document.body.appendChild(rootEl)
 
+	// eslint-disable-next-line react/no-deprecated
 	ReactDOM.render(<App />, rootEl)
 }

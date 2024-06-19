@@ -1,8 +1,9 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
-		"module": "esnext",
-		"moduleResolution": "node",
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true,
@@ -11,7 +12,5 @@
 	},
 	"include": ["**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules/**", "watch.ts"],
-	"files": [
-		".resources/global.d.ts"
-	]
+	"files": [".resources/global.d.ts"]
 }

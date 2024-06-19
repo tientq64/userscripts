@@ -1,10 +1,17 @@
 # ⏩ Auto Skip YouTube Ads
 
-Auto skip ads on YouTube. Very lightweight and efficient.
+Auto skip YouTube ads instantly. Very lightweight and efficient.
 
-Tự động bỏ qua quảng cáo trên YouTube. Rất nhẹ và hiệu quả.
+Tự động bỏ qua quảng cáo YouTube ngay lập tức. Rất nhẹ và hiệu quả.
 
 ## 📑 Changelog
+
+### 2.0.1 (2024-06-19)
+
+#### 🛠 Improvements
+
+- Improved skip ad button detection.
+- Fall back to `setInterval` when `MutationObserver` is not supported.
 
 ### 2.0.0 (2024-06-18)
 

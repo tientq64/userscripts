@@ -9,7 +9,7 @@ function joinPath(...paths: string[]): string {
 }
 
 const endMetaTagRegex: RegExp = /^\/\/ ==\/UserScript==$/m
-const tailwindcssMetaRegex: RegExp = /^\/\/ @resource     TAILWINDCSS$/m
+const tailwindcssMetaRegex: RegExp = /^\/\/ @resource {5}TAILWINDCSS$/m
 
 const watcher = GlobWatcher('scripts/*/script.user.{ts,tsx}', {
 	events: ['add', 'change']
@@ -20,48 +20,40 @@ watcher.on('change', watch)
 async function watch(path: string, stat: Stats): Promise<void> {
 	if (!stat.isFile()) return
 
-	let code: string = fs.readFileSync(path, 'utf-8')
-	let matches = code.match(/\/\/ ==UserScript==\n.+?\n\/\/ ==\/UserScript==/s)
+	const code: string = fs.readFileSync(path, 'utf-8')
+	const matches = code.match(/\/\/ ==UserScript==\n.+?\n\/\/ ==\/UserScript==/s)
 	if (matches === null) return
 
-	let meta: string = matches[0]
-	let ts: string = code.replace(meta, '')
+	const meta: string = matches[0]
+	const ts: string = code.replace(meta, '')
 
-	let tsconfig: any = JSON.parse(fs.readFileSync('tsconfig.json', 'utf-8'))
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const tsconfig: any = JSON.parse(fs.readFileSync('tsconfig.json', 'utf-8'))
 
-	let dirPath: string = dirname(path).replace(/\\/g, '/')
-	let prodPath: string = joinPath(dirPath, 'script.user.js')
-	let devPath: string = joinPath(dirPath, 'dev.user.js')
+	const dirPath: string = dirname(path).replace(/\\/g, '/')
+	const prodPath: string = joinPath(dirPath, 'script.user.js')
+	const devPath: string = joinPath(dirPath, 'dev.user.js')
 
-	let bothMeta: string = meta.replace(
+	const bothMeta: string = meta.replace(
 		endMetaTagRegex,
 		`// @homepage     https://github.com/tientq64/userscripts/tree/main/${dirPath}\n$&`
 	)
 
-	let prodMeta: string = bothMeta
-		.replace(
-			tailwindcssMetaRegex,
-			`$& https://raw.githubusercontent.com/tientq64/userscripts/main/.resources/tailwind.min.css`
-		)
-		.replace(
-			endMetaTagRegex,
-			`// @updateURL    https://github.com/tientq64/userscripts/raw/main/${dirPath}/script.user.js\n$&`
-		)
-		.replace(
-			endMetaTagRegex,
-			`// @downloadURL  https://github.com/tientq64/userscripts/raw/main/${dirPath}/script.user.js\n$&`
-		)
-	let prodJs: string = transpile(ts, tsconfig.compilerOptions)
-	let prettierConfig = await resolveConfig('.prettierrc')
-	let prodFormatedJs: string = await format(prodJs, {
+	const prodMeta: string = bothMeta.replace(
+		tailwindcssMetaRegex,
+		`$& https://raw.githubusercontent.com/tientq64/userscripts/main/.resources/tailwind.min.css`
+	)
+	const prodJs: string = transpile(ts, tsconfig.compilerOptions)
+	const prettierConfig = await resolveConfig('.prettierrc')
+	const prodFormatedJs: string = await format(prodJs, {
 		...prettierConfig,
 		parser: 'typescript'
 	})
 
-	let prodCode: string = `${prodMeta}\n\n${prodFormatedJs}`
+	const prodCode: string = `${prodMeta}\n\n${prodFormatedJs}`
 	fs.writeFileSync(prodPath, prodCode)
 
-	let devMeta: string = bothMeta
+	const devMeta: string = bothMeta
 		.replace(/^\/\/ @name(:[a-zA-Z\-]+)? .+(?<! \(DEV\))$/gm, '$& (DEV)')
 		.replace(
 			tailwindcssMetaRegex,

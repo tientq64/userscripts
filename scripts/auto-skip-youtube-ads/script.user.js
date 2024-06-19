@@ -3,8 +3,8 @@
 // @name:vi      Tự Động Bỏ Qua Quảng Cáo YouTube
 // @namespace    https://github.com/tientq64/userscripts
 // @version      2.0.1
-// @description  Auto skip ads on YouTube. Very lightweight and efficient.
-// @description:vi  Tự động bỏ qua quảng cáo trên YouTube. Rất nhẹ và hiệu quả.
+// @description  Auto skip YouTube ads instantly. Very lightweight and efficient.
+// @description:vi  Tự động bỏ qua quảng cáo YouTube ngay lập tức. Rất nhẹ và hiệu quả.
 // @author       https://github.com/tientq64
 // @icon         https://cdn-icons-png.flaticon.com/64/9639/9639954.png
 // @match        https://www.youtube.com/*
@@ -19,7 +19,7 @@
 function skipAd() {
 	const hasAd = player.classList.contains('ad-showing')
 	if (!hasAd) return
-	const skipButton = document.querySelector('.ytp-skip-ad-button')
+	const skipButton = document.querySelector('.ytp-skip-ad-button, .ytp-ad-skip-button')
 	if (skipButton) {
 		skipButton.click()
 		return
@@ -28,9 +28,14 @@ function skipAd() {
 	video.currentTime = video.duration
 }
 const player = document.querySelector('.html5-video-player')
-const observer = new MutationObserver(skipAd)
-observer.observe(player, { attributeFilter: ['class'] })
+if (window.MutationObserver) {
+	const observer = new MutationObserver(skipAd)
+	observer.observe(player, { attributeFilter: ['class'] })
+} else {
+	setInterval(skipAd, 1000)
+}
 skipAd()
+// TODO: Hide YouTube's AdBlock warning dialog.
 const style = document.createElement('style')
 style.textContent = `
 	#player-ads {

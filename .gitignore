@@ -1,4 +1,9 @@
 node_modules
+
+scripts
 scripts/*/dev.user.js
 
-mien-ai-music
+!scripts/auto-skip-youtube-ads
+!scripts/diep-io-improvements
+!scripts/google-translate-keyboard-shortcuts
+!scripts/no-fullscreen-dropdown
