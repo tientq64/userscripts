@@ -2,7 +2,7 @@
 // @name         Auto Skip YouTube Ads
 // @name:vi      Tự Động Bỏ Qua Quảng Cáo YouTube
 // @namespace    https://github.com/tientq64/userscripts
-// @version      2.1.0
+// @version      2.1.1
 // @description  Auto skip YouTube ads instantly. Very lightweight and efficient.
 // @description:vi  Tự động bỏ qua quảng cáo YouTube ngay lập tức. Rất nhẹ và hiệu quả.
 // @author       https://github.com/tientq64
@@ -27,15 +27,17 @@ function skipAd(): void {
 		}
 	}
 
-	const dismissButton = popupContainer.querySelector<HTMLElement>(
-		'tp-yt-paper-dialog #dismiss-button'
-	)
-	if (dismissButton) {
-		dismissButton.click()
-		const dialog: HTMLElement = dismissButton.closest('tp-yt-paper-dialog')
-		dialog.remove()
-		const video: HTMLVideoElement = getVideo()
-		video.play()
+	if (popupContainer) {
+		const dismissButton = popupContainer.querySelector<HTMLElement>(
+			'tp-yt-paper-dialog #dismiss-button'
+		)
+		if (dismissButton) {
+			dismissButton.click()
+			const dialog: HTMLElement = dismissButton.closest('tp-yt-paper-dialog')
+			dialog.remove()
+			const video: HTMLVideoElement = getVideo()
+			video.play()
+		}
 	}
 }
 
@@ -44,19 +46,30 @@ function getVideo(): HTMLVideoElement {
 }
 
 const player = document.querySelector<HTMLVideoElement>('.html5-video-player')
-const popupContainer = document.querySelector<HTMLElement>('ytd-popup-container')
+let popupContainer: HTMLElement
 
 if (window.MutationObserver) {
 	const adObserver: MutationObserver = new MutationObserver(skipAd)
 	adObserver.observe(player, { attributeFilter: ['class'] })
-
-	const warningObserver: MutationObserver = new MutationObserver(skipAd)
-	warningObserver.observe(popupContainer, { childList: true })
 } else {
 	setInterval(skipAd, 1000)
 }
 
 skipAd()
+
+const intervalId: number | NodeJS.Timeout = setInterval(tryFindPopupContainer, 100)
+
+function tryFindPopupContainer(): void {
+	popupContainer = document.querySelector('ytd-popup-container')
+	if (!popupContainer) return
+
+	clearInterval(intervalId)
+
+	const warningObserver: MutationObserver = new MutationObserver(skipAd)
+	warningObserver.observe(popupContainer, { childList: true })
+
+	skipAd()
+}
 
 const style: HTMLStyleElement = document.createElement('style')
 style.textContent = `

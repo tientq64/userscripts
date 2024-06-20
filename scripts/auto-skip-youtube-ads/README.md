@@ -6,6 +6,12 @@ Tự động bỏ qua quảng cáo YouTube ngay lập tức. Rất nhẹ và hi�
 
 ## 📑 Changelog
 
+### 2.1.1 (2024-06-20)
+
+#### 🐛 Bug Fixes
+
+- Fix `popupContainer` not found error.
+
 ### 2.1.0 (2024-06-20)
 
 #### ✨ Features
