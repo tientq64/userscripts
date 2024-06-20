@@ -2,7 +2,7 @@
 // @name         Auto Skip YouTube Ads
 // @name:vi      Tự Động Bỏ Qua Quảng Cáo YouTube
 // @namespace    https://github.com/tientq64/userscripts
-// @version      2.1.1
+// @version      2.1.2
 // @description  Auto skip YouTube ads instantly. Very lightweight and efficient.
 // @description:vi  Tự động bỏ qua quảng cáo YouTube ngay lập tức. Rất nhẹ và hiệu quả.
 // @author       https://github.com/tientq64
@@ -21,7 +21,7 @@ function skipAd() {
 		if (skipButton) {
 			skipButton.click()
 		} else {
-			const video = getVideo()
+			const video = player.querySelector('video')
 			video.currentTime = video.duration
 		}
 	}
@@ -31,13 +31,8 @@ function skipAd() {
 			dismissButton.click()
 			const dialog = dismissButton.closest('tp-yt-paper-dialog')
 			dialog.remove()
-			const video = getVideo()
-			video.play()
 		}
 	}
-}
-function getVideo() {
-	return player.querySelector('video')
 }
 const player = document.querySelector('.html5-video-player')
 let popupContainer
