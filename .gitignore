@@ -1,9 +1,4 @@
 node_modules
 
-scripts
+scripts/_*
 scripts/*/dev.user.js
-
-!scripts/auto-skip-youtube-ads
-!scripts/diep-io-improvements
-!scripts/keyboard-shortcuts-for-google-translate
-!scripts/no-fullscreen-dropdown
