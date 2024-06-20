@@ -5,5 +5,5 @@ scripts/*/dev.user.js
 
 !scripts/auto-skip-youtube-ads
 !scripts/diep-io-improvements
-!scripts/google-translate-keyboard-shortcuts
+!scripts/keyboard-shortcuts-for-google-translate
 !scripts/no-fullscreen-dropdown

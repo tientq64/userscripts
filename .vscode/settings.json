@@ -12,5 +12,8 @@
 	"files.readonlyInclude": {
 		"scripts/*/{dev,script}.user.js": true,
 		".resources/tailwind.min.css": true
+	},
+	"eslint.options": {
+		"ignorePatterns": ["scripts/*/{script,dev}.user.js"]
 	}
 }
