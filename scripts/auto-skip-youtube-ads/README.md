@@ -6,7 +6,7 @@ Tự động bỏ qua quảng cáo YouTube ngay lập tức. Rất nhẹ và hi�
 
 ## 📑 Changelog
 
-### 2.1.2 (2024-06-20)
+### 2.1.3 (2024-06-21)
 
 #### 🐛 Bug Fixes
 

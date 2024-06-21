@@ -8,6 +8,7 @@
 // @match        *://*/*
 // @license      MIT
 // @grant        none
+// @noframes
 // ==/UserScript==
 
 window.addEventListener('keydown', (event): void => {
