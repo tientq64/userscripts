@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [Diep.io] Improvements
 // @namespace    https://github.com/tientq64/userscripts
-// @version      0.1.0
+// @version      0.1.1
 // @description  Provides improvements for Diep.io game.
 // @author       https://github.com/tientq64
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=diep.io
@@ -109,7 +109,7 @@ var diepIO
 			if (/^((Digit|Numpad)[1-8]|Arrow(Up|Down|Left|Right))$/.test(event.code)) {
 				event.stopPropagation()
 			}
-			if (event.code === 'Enter') {
+			if (event.code === 'Enter' || event.code === 'NumpadEnter') {
 				event.stopPropagation()
 				input.execute(`game_stats_build ${upgrade}`)
 				setIsUpgradeShown(false)
