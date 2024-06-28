@@ -34,9 +34,11 @@ async function watch(path: string, stat: Stats): Promise<void> {
 	const prodPath: string = joinPath(dirPath, 'script.user.js')
 	const devPath: string = joinPath(dirPath, 'dev.user.js')
 
+	const metaPadLength: number = meta.match(/^\/\/ @([a-z:]+ {2,})/m)?.[1].length || 13
+
 	const bothMeta: string = meta.replace(
 		endMetaTagRegex,
-		`// @homepage     https://github.com/tientq64/userscripts/tree/main/${dirPath}\n$&`
+		`// @${'homepage'.padEnd(metaPadLength)}https://github.com/tientq64/userscripts/tree/main/${dirPath}\n$&`
 	)
 
 	const prodMeta: string = bothMeta.replace(

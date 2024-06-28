@@ -1,5 +1,5 @@
 namespace diepIO {
-	declare var input: {
+	declare const input: {
 		execute(command: string): void
 		grantReward(): void
 		mouse(x: number, y: number): void
@@ -7,7 +7,7 @@ namespace diepIO {
 		key_up(keyCode: number): void
 	}
 
-	declare var ui: {
+	declare const ui: {
 		screen: 'home' | 'game' | 'stats'
 		game: UIGame | null
 		__playerAttributes: UIPlayerAttributes
