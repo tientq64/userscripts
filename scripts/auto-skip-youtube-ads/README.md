@@ -6,7 +6,7 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 
 ## 📑 Changelog
 
-### 3.0.0 (2024-06-28)
+### 3.0.1 (2024-06-28)
 
 #### ♻️ Refactoring
 
