@@ -61,6 +61,9 @@ async function watch(path: string, stat: Stats): Promise<void> {
 			tailwindcssMetaRegex,
 			`$& file:///${joinPath(__dirname, '.resources/tailwind.min.css')}`
 		)
-		.replace(endMetaTagRegex, `// @require      file:///${joinPath(__dirname, prodPath)}\n$&`)
+		.replace(
+			endMetaTagRegex,
+			`// @${'require'.padEnd(metaPadLength)}file:///${joinPath(__dirname, prodPath)}\n$&`
+		)
 	fs.writeFileSync(devPath, devMeta)
 }
