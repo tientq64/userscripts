@@ -8,6 +8,8 @@ declare const GM_deleteValue: (name: string) => Promise<void>
 declare const GM_listValues: () => Promise<string[]>
 declare const GM_setClipboard: (text: string) => void
 
+declare type ChangeEvent<T> = import('react').ChangeEvent<T>
+
 declare type Immer = import('immer').Immer
 declare const immer: Immer
 

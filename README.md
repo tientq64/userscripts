@@ -1,12 +1,12 @@
 # 📜 UserScripts
 
-List of userscripts I wrote. I use the browser extension [TamperMonkey](https://www.tampermonkey.net/) to run and manage userscripts. You can install it to use my userscripts.
+The userscript collection I wrote makes life easier and better. I use the browser extension [TamperMonkey](https://www.tampermonkey.net/) to run and manage userscripts. You can install it to use my userscripts.
 
 ## 📖 Usage
 
 ### Install on GreasyFork
 
-Visit my userscript list on the GreasyFork website [here](https://greasyfork.org/en/users/1306283-tientq64).
+Visit my userscript list on the GreasyFork website [here](https://greasyfork.org/users/1306283-tientq64).
 
 ### Install on GitHub
 

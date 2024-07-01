@@ -3,7 +3,7 @@
 // @namespace    https://github.com/tientq64/userscripts
 // @version      0.3.1
 // @description  Remove all ads.
-// @author       https://github.com/tientq64
+// @author       tientq64
 // @icon         https://cdn-icons-png.flaticon.com/64/9639/9639954.png
 // @match        *://*/*
 // @license      MIT

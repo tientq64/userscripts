@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            3.0.4
+// @version            3.1.0
 // @description        Auto skip YouTube ads almost instantly. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。非常轻量且高效。
@@ -21,22 +21,23 @@
 // @description:ru     Автоматический пропуск рекламы на YouTube почти мгновенно. Очень легкий и эффективный.
 // @description:id     Lewati otomatis iklan YouTube hampir seketika. Sangat ringan dan efisien.
 // @description:hi     YouTube विज्ञापनों को लगभग तुरंत ही ऑटो स्किप कर दें। बहुत हल्का और कुशल।
-// @author             https://github.com/tientq64
-// @icon               https://cdn-icons-png.flaticon.com/64/9639/9639954.png
+// @author             tientq64
+// @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
 // @match              https://www.youtube.com
 // @match              https://www.youtube.com/*
 // @grant              none
 // @license            MIT
-// @compatible         chrome
-// @compatible         edge
-// @compatible         safari
 // @compatible         firefox
+// @compatible         chrome
 // @compatible         opera
+// @compatible         safari
+// @compatible         edge
 // @noframes
 // @homepage           https://github.com/tientq64/userscripts/tree/main/scripts/auto-skip-youtube-ads
 // ==/UserScript==
 
 function skipAd() {
+	setTimeout(skipAd, document.hidden ? 1000 : 500)
 	const adPlayer = document.querySelector('.html5-video-player.ad-showing')
 	if (adPlayer) {
 		const skipButton = document.querySelector(`
@@ -48,7 +49,7 @@ function skipAd() {
 			skipButton.click()
 		} else {
 			const video = adPlayer.querySelector('video')
-			video.currentTime = video.duration
+			video.currentTime = 1e4
 		}
 	}
 	const dismissButton = document.querySelector('tp-yt-paper-dialog #dismiss-button')
@@ -58,7 +59,6 @@ function skipAd() {
 		dialog.remove()
 	}
 }
-setInterval(skipAd, 1000)
 skipAd()
 const style = document.createElement('style')
 style.textContent = `

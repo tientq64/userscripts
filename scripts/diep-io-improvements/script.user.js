@@ -3,7 +3,7 @@
 // @namespace    https://github.com/tientq64/userscripts
 // @version      0.1.1
 // @description  Provides improvements for Diep.io game.
-// @author       https://github.com/tientq64
+// @author       tientq64
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=diep.io
 // @match        https://diep.io/*
 // @require      https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js
@@ -93,9 +93,16 @@ var diepIO
 		const [isUpgradeShown, setIsUpgradeShown] = useState(false)
 		const [statsStr, setStatsStr] = useState('')
 		const upgradeInputRef = useRef(null)
+		const getStatBarSlotBackgroundColor = (stat, slotIndex) => {
+			return slotIndex < countBy(upgrade)[stat.key]
+				? stat.color
+				: slotIndex < 7
+					? '#111827'
+					: '#030712'
+		}
 		const handleUpgradeChange = (event) => {
 			const { value } = event.target
-			if (/[^1-8]/.test(value) || some(countBy(value), (v) => v > 7)) {
+			if (/[^1-8]/.test(value) || some(countBy(value), (v) => v > 10)) {
 				const selectionStart = event.target.selectionStart - 1
 				setTimeout(() => {
 					event.target.selectionStart = selectionStart
@@ -179,17 +186,18 @@ var diepIO
 											className:
 												'flex-1 flex gap-1 rounded-lg overflow-hidden'
 										},
-										Array(7)
+										Array(10)
 											.fill(0)
-											.map((_, index) =>
+											.map((_, slotIndex) =>
 												React.createElement('div', {
-													key: index,
+													key: slotIndex,
 													className: 'flex-1 h-4',
 													style: {
 														backgroundColor:
-															index < countBy(upgrade)[stat.key]
-																? stat.color
-																: '#111827'
+															getStatBarSlotBackgroundColor(
+																stat,
+																slotIndex
+															)
 													}
 												})
 											)

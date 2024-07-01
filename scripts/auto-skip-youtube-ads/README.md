@@ -6,6 +6,20 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 
 ## 📑 Changelog
 
+### 3.1.0 (2024-07-02)
+
+#### ✨ Features
+
+- Skip ads faster when the tab is active.
+
+#### 🐛 Bug Fixes
+
+- Fixed bug when set time to end of ad video without the video duration being available.
+
+#### 🎨 Style
+
+- Change icon.
+
 ### 3.0.2 (2024-06-28)
 
 #### ♻️ Refactoring

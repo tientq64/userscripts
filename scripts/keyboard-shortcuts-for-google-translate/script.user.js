@@ -5,7 +5,7 @@
 // @version      0.1.0
 // @description  keyboard shortcuts for Google Translate.
 // @description:vi  Các phím tắt bàn phím cho Google Dịch.
-// @author       https://github.com/tientq64
+// @author       tientq64
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=translate.google.com
 // @match        https://translate.google.com/*
 // @match        https://translate.google.com.vn/*
