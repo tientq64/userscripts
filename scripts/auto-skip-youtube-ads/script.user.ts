@@ -9,18 +9,20 @@
 // @name:ru            Автоматический Пропуск Рекламы На YouTube
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
+// @name:th            ข้ามโฆษณา YouTube อัตโนมัติ
 // @namespace          https://github.com/tientq64/userscripts
-// @version            3.1.0
-// @description        Auto skip YouTube ads almost instantly. Very lightweight and efficient.
+// @version            3.1.1
+// @description        Automatically skip YouTube ads almost instantly. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。非常轻量且高效。
 // @description:zh-TW  幾乎立即自動跳過 YouTube 廣告。非常輕巧且高效。
-// @description:ja     YouTube 広告をほぼ瞬時に自動スキップします。非常に軽量で効率的です。
+// @description:ja     YouTube 広告をほぼ瞬時に自動的にスキップします。非常に軽量で効率的です。
 // @description:ko     YouTube 광고를 거의 즉시 자동으로 건너뜁니다. 매우 가볍고 효율적입니다.
-// @description:es     Salta automáticamente los anuncios de YouTube casi al instante. Muy ligero y eficiente.
-// @description:ru     Автоматический пропуск рекламы на YouTube почти мгновенно. Очень легкий и эффективный.
-// @description:id     Lewati otomatis iklan YouTube hampir seketika. Sangat ringan dan efisien.
-// @description:hi     YouTube विज्ञापनों को लगभग तुरंत ही ऑटो स्किप कर दें। बहुत हल्का और कुशल।
+// @description:es     Omita automáticamente los anuncios de YouTube casi al instante. Muy ligero y eficiente.
+// @description:ru     Автоматически пропускайте рекламу на YouTube практически мгновенно. Очень легкий и эффективный.
+// @description:id     Lewati iklan YouTube secara otomatis hampir seketika. Sangat ringan dan efisien.
+// @description:hi     YouTube विज्ञापनों को लगभग तुरंत ही स्वचालित रूप से छोड़ दें। बहुत हल्का और कुशल।
+// @description:th     ข้ามโฆษณา YouTube โดยอัตโนมัติเกือบจะในทันที น้ำหนักเบามากและมีประสิทธิภาพ
 // @author             tientq64
 // @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
 // @match              https://www.youtube.com
@@ -38,7 +40,7 @@
 function skipAd(): void {
 	setTimeout(skipAd, document.hidden ? 1000 : 500)
 
-	const adPlayer = document.querySelector<HTMLElement>('.html5-video-player.ad-showing')
+	const adPlayer = document.querySelector<HTMLDivElement>('.html5-video-player.ad-showing')
 	if (adPlayer) {
 		const skipButton = document.querySelector<HTMLElement>(`
 			.ytp-skip-ad-button,
@@ -48,8 +50,8 @@ function skipAd(): void {
 		if (skipButton) {
 			skipButton.click()
 		} else {
-			const video = adPlayer.querySelector<HTMLVideoElement>('video')
-			video.currentTime = 1e4
+			const adVideo = adPlayer.querySelector<HTMLVideoElement>('video')
+			adVideo.currentTime = 1e4
 		}
 	}
 
@@ -68,6 +70,7 @@ style.textContent = `
 	#player-ads,
 	#masthead-ad,
 	#panels:has(ytd-ads-engagement-panel-content-renderer),
+	ytd-ad-slot-renderer,
 	ytd-rich-item-renderer:has(.ytd-ad-slot-renderer),
 	ytd-reel-video-renderer:has(.ytd-ad-slot-renderer),
 	tp-yt-paper-dialog:has(#dismiss-button) {

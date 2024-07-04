@@ -1,5 +1,8 @@
 {
 	"editor.tabSize": 4,
+	"workbench.editor.customLabels.patterns": {
+		"*/scripts/*/script.user.*": "${dirname}"
+	},
 	"[javascript]": {
 		"editor.formatOnSave": true
 	},
