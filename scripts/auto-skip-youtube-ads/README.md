@@ -10,7 +10,7 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 
 #### 🛠 Improvements
 
-- Play the video after clicking dismiss the ad blocking warning.
+- Playing video after clicking dismiss the ad blocker warning popup.
 
 ### 3.1.1 (2024-07-04)
 
