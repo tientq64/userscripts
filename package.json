@@ -9,12 +9,21 @@
 		"userscript",
 		"userscripts",
 		"userscript-collection",
+		"greasyfork",
 		"tampermonkey",
 		"browser-extension",
 		"chrome-extension"
 	],
-	"author": "tientq64 <tientq64@gmail.com>",
+	"author": {
+		"name": "tientq64",
+		"email": "tientq64@gmail.com",
+		"url": "https://github.com/tientq64"
+	},
 	"homepage": "https://greasyfork.org/users/1306283-tientq64",
+	"bugs": {
+		"email": "tientq@gmail.com",
+		"url": "https://github.com/tientq64/userscripts/issues"
+	},
 	"license": "MIT",
 	"dependencies": {
 		"immer": "10.1.1",
@@ -24,21 +33,21 @@
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.1.0",
-		"@eslint/js": "^9.5.0",
+		"@eslint/js": "^9.6.0",
 		"@types/eslint": "^8.56.10",
 		"@types/glob-watcher": "^5.0.5",
-		"@types/lodash": "^4.17.5",
-		"@types/node": "^20.14.2",
+		"@types/lodash": "^4.17.6",
+		"@types/node": "^20.14.10",
 		"@types/react": "18.3.3",
 		"@types/react-dom": "18.3.0",
 		"concurrently": "8.2.2",
 		"eslint": "8.x",
 		"eslint-plugin-react": "^7.34.3",
 		"glob-watcher": "6.0.0",
-		"globals": "^15.6.0",
+		"globals": "^15.8.0",
 		"prettier": "3.3.2",
 		"tailwindcss": "3.4.3",
-		"typescript": "^5.4.5",
-		"typescript-eslint": "^7.13.1"
+		"typescript": "^5.5.3",
+		"typescript-eslint": "^7.15.0"
 	}
 }

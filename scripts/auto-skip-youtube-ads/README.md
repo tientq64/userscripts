@@ -4,13 +4,13 @@ Auto skip YouTube ads almost instantly. Very lightweight and efficient.
 
 Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 
-## 🎁 Support me
-
-[![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/tientq64)
-[![BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/tientq64)
-[![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/tientq64)
-
 ## 📑 Changelog
+
+### 3.1.2 (2024-07-06)
+
+#### 🛠 Improvements
+
+- Play the video after clicking dismiss the ad blocking warning.
 
 ### 3.1.1 (2024-07-04)
 
@@ -68,3 +68,9 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 #### 🔖 Release
 
 - Stable release.
+
+## 🎁 Support me
+
+[![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/tientq64)
+[![BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/tientq64)
+[![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/tientq64)
