@@ -2,9 +2,21 @@
 
 Auto skip YouTube ads almost instantly. Very lightweight and efficient.
 
+几乎立即自动跳过 YouTube 广告。非常轻量且高效。
+
 Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 
 ## 📑 Changelog
+
+### 4.0.0 (2024-07-09)
+
+#### 🚨 Breaking Changes
+
+- The page will now reload if an ad blocker warning dialog appears. Because YouTube now pauses the video at first if an ad blocker is detected.
+
+#### ✨ Features
+
+- Write to the Console every time skip an ad video, etc. Purpose to help debug. To open the Console, press `Ctrl+Shift+J`.
 
 ### 3.1.2 (2024-07-06)
 

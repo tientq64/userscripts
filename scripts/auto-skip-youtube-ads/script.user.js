@@ -11,7 +11,7 @@
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @name:th            ข้ามโฆษณา YouTube อัตโนมัติ
 // @namespace          https://github.com/tientq64/userscripts
-// @version            3.1.2
+// @version            4.0.0
 // @description        Automatically skip YouTube ads almost instantly. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。非常轻量且高效。
@@ -40,7 +40,7 @@
 
 function skipAd() {
 	setTimeout(skipAd, document.hidden ? 1000 : 500)
-	const adPlayer = document.querySelector('.html5-video-player.ad-showing')
+	const adPlayer = document.querySelector('#movie_player.ad-showing')
 	if (adPlayer) {
 		const skipButton = document.querySelector(`
 			.ytp-skip-ad-button,
@@ -49,22 +49,27 @@ function skipAd() {
 		`)
 		if (skipButton) {
 			skipButton.click()
+			log('Skip button clicked')
 		} else {
 			const adVideo = getVideo()
 			adVideo.currentTime = 9999
+			log('Unskippable ad video have been skipped')
 		}
 	}
 	const dismissButton = document.querySelector('tp-yt-paper-dialog #dismiss-button')
 	if (dismissButton) {
-		dismissButton.click()
-		const dialog = dismissButton.closest('tp-yt-paper-dialog')
-		dialog.remove()
-		const video = getVideo()
-		video.play()
+		log('Reload the page to bypass the ad blocker warning and the initially paused video.')
+		location.reload()
 	}
 }
 function getVideo() {
-	return document.querySelector('.html5-main-video')
+	return document.querySelector('#movie_player video.html5-main-video')
+}
+function log(text) {
+	const date = new Date()
+	console.log(
+		`\x1B[41;97m Auto Skip YouTube Ads \x1B[m\x1B[47;30m ${date.toLocaleTimeString()} \x1B[m\n${text}`
+	)
 }
 skipAd()
 const style = document.createElement('style')
@@ -79,3 +84,4 @@ style.textContent = `
 		display: none !important;
 	}`
 document.head.appendChild(style)
+log(`Initialized`)
