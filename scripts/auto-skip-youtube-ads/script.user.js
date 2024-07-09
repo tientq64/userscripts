@@ -11,7 +11,7 @@
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @name:th            ข้ามโฆษณา YouTube อัตโนมัติ
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.0.1
+// @version            4.1.0
 // @description        Automatically skip YouTube ads almost instantly. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。非常轻量且高效。
@@ -40,6 +40,7 @@
 
 function skipAd() {
 	setTimeout(skipAd, document.hidden ? 1000 : 500)
+	const video = getVideo()
 	const adPlayer = document.querySelector('#movie_player.ad-showing')
 	if (adPlayer) {
 		const skipButton = document.querySelector(`
@@ -51,19 +52,34 @@ function skipAd() {
 			skipButton.click()
 			log('Skip button clicked')
 		} else {
-			const adVideo = getVideo()
-			adVideo.currentTime = 9999
+			video.currentTime = 9999
 			log('Unskippable ad video have been skipped')
 		}
 	}
-	const dismissButton = document.querySelector('tp-yt-paper-dialog #dismiss-button')
-	if (dismissButton) {
-		log('Reload the page to bypass the ad blocker warning and the initially paused video')
-		location.reload()
+	const adBlockerWarningDialog = document.querySelector('tp-yt-paper-dialog:has(#dismiss-button)')
+	if (adBlockerWarningDialog) {
+		adBlockerWarningDialog.remove()
+		log('Removed the ad blocker warning dialog')
+		fixVideoPausedAtFirst(video)
+	}
+	if (oldVideoSrc !== video.src) {
+		oldVideoSrc = video.src
+		fixVideoPausedAtFirst(video)
 	}
 }
 function getVideo() {
 	return document.querySelector('#movie_player video.html5-main-video')
+}
+function fixVideoPausedAtFirst(video) {
+	const videoSrc = video.src
+	setTimeout(() => {
+		if (video.src === videoSrc) {
+			if (video.paused) {
+				video.play()
+				log('Fixed video being paused due to using an ad blocker')
+			}
+		}
+	}, 2000)
 }
 function log(text) {
 	const date = new Date()
@@ -71,6 +87,7 @@ function log(text) {
 		`\x1B[41;97m Auto Skip YouTube Ads \x1B[m\x1B[47;30m ${date.toLocaleTimeString()} \x1B[m\n${text}`
 	)
 }
+let oldVideoSrc = ''
 skipAd()
 const style = document.createElement('style')
 style.textContent = `

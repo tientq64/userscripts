@@ -8,6 +8,12 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 
 ## 📑 Changelog
 
+### 4.1.0 (2024-07-10)
+
+#### 🛠 Improvements
+
+- No need to reload the page when the ad blocker warning dialog appears.
+
 ### 4.0.0 (2024-07-09)
 
 #### 🚨 Breaking Changes
