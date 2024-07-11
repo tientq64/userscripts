@@ -87,6 +87,10 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 
 - Stable release.
 
+## 💳 Credits
+
+<a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
+
 ## 🎁 Support me
 
 [![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/tientq64)
