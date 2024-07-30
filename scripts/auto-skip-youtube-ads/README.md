@@ -8,9 +8,16 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 
 ## 📑 Changelog
 
+### 4.2.0 (2024-07-30)
+
+#### 🛠️ Improvements
+
+- Videos will now no longer occasionally pause due to ad blocker use.
+- Faster ad video skipping speed.
+
 ### 4.1.0 (2024-07-10)
 
-#### 🛠 Improvements
+#### 🛠️ Improvements
 
 - No need to reload the page when the ad blocker warning dialog appears.
 
@@ -26,13 +33,13 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 
 ### 3.1.2 (2024-07-06)
 
-#### 🛠 Improvements
+#### 🛠️ Improvements
 
 - Playing video after clicking dismiss the ad blocker warning popup.
 
 ### 3.1.1 (2024-07-04)
 
-#### 🛠 Improvements
+#### 🛠️ Improvements
 
 - Add a few CSS that hides the ads.
 
@@ -70,7 +77,7 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 
 ### 2.0.1 (2024-06-19)
 
-#### 🛠 Improvements
+#### 🛠️ Improvements
 
 - Improved skip ad button detection.
 - Fall back to `setInterval` when `MutationObserver` is not supported.

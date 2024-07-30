@@ -14,7 +14,8 @@ export default [
 		rules: {
 			'@typescript-eslint/no-namespace': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
-			'react/react-in-jsx-scope': 'off'
+			'react/react-in-jsx-scope': 'off',
+			'prefer-const': 'warn'
 		}
 	}
 ]

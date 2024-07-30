@@ -41,18 +41,20 @@ async function watch(path: string, stat: Stats): Promise<void> {
 		`// @${'homepage'.padEnd(metaPadLength)}https://github.com/tientq64/userscripts/tree/main/${dirPath}\n$&`
 	)
 
+	const prettierConfig = await resolveConfig('.prettierrc')
+
 	const prodMeta: string = bothMeta.replace(
 		tailwindcssMetaRegex,
 		`$& https://raw.githubusercontent.com/tientq64/userscripts/main/.resources/tailwind.min.css`
 	)
-	const prodJs: string = transpile(ts, tsconfig.compilerOptions)
-	const prettierConfig = await resolveConfig('.prettierrc')
-	const prodFormatedJs: string = await format(prodJs, {
+	let prodJs: string = transpile(ts, tsconfig.compilerOptions)
+	prodJs = await format(prodJs, {
 		...prettierConfig,
 		parser: 'typescript'
 	})
+	prodJs = prodJs.replace(/^\t+/gm, (tabs) => '    '.repeat(tabs.length))
+	const prodCode: string = `${prodMeta}\n\n${prodJs}`
 
-	const prodCode: string = `${prodMeta}\n\n${prodFormatedJs}`
 	fs.writeFileSync(prodPath, prodCode)
 
 	const devMeta: string = bothMeta

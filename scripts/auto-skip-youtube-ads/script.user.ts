@@ -11,7 +11,7 @@
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @name:th            ข้ามโฆษณา YouTube อัตโนมัติ
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.1.2
+// @version            4.2.0
 // @description        Automatically skip YouTube ads almost instantly. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。非常轻量且高效。
@@ -38,10 +38,8 @@
 // ==/UserScript==
 
 function skipAd(): void {
-	setTimeout(skipAd, document.hidden ? 1000 : 500)
-
-	const video: HTMLVideoElement = getVideo()
-	if (!video) return
+	video = document.querySelector<HTMLVideoElement>('#movie_player video.html5-main-video')
+	if (video === null) return
 
 	const adPlayer = document.querySelector<HTMLDivElement>('#movie_player.ad-showing')
 	if (adPlayer) {
@@ -52,10 +50,8 @@ function skipAd(): void {
 		`)
 		if (skipButton) {
 			skipButton.click()
-			log('Skip button clicked')
 		} else {
 			video.currentTime = 9999
-			log('Unskippable ad video have been skipped')
 		}
 	}
 
@@ -64,41 +60,63 @@ function skipAd(): void {
 	)
 	if (adBlockerWarningDialog) {
 		adBlockerWarningDialog.remove()
-		log('Removed the ad blocker warning dialog')
-		fixVideoPausedAtFirst(video)
 	}
 
-	if (oldVideoSrc !== video.src) {
-		oldVideoSrc = video.src
-		fixVideoPausedAtFirst(video)
+	const playButton = document.querySelector<HTMLButtonElement>('button.ytp-play-button')
+	if (playButton) {
+		playButton.addEventListener('click', allowPauseVideo)
 	}
+
+	video.addEventListener('pause', handlePauseVideo)
+	video.addEventListener('mouseup', allowPauseVideo)
 }
 
-function getVideo(): HTMLVideoElement {
-	return document.querySelector('#movie_player video.html5-main-video')
+function allowPauseVideo(): void {
+	isAllowPauseVideo = true
+	window.clearTimeout(allowPauseVideoTimeoutId)
+	allowPauseVideoTimeoutId = window.setTimeout(disallowPauseVideo, 500)
 }
 
-function fixVideoPausedAtFirst(video: HTMLVideoElement): void {
-	const videoSrc: string = video.src
-	setTimeout(() => {
-		if (video.src === videoSrc) {
-			if (video.paused) {
-				video.play()
-				log('Fixed video being paused due to using an ad blocker')
-			}
+function disallowPauseVideo(): void {
+	window.clearTimeout(allowPauseVideoTimeoutId)
+	isAllowPauseVideo = false
+}
+
+function handleGlobalKeyDownKeyUp(event: KeyboardEvent): void {
+	if (document.activeElement.matches('input, textarea, select')) return
+	if (event.type === 'keydown') {
+		if (event.code === 'KeyK') {
+			allowPauseVideo()
 		}
-	}, 2000)
+	} else {
+		if (event.code === 'Space') {
+			allowPauseVideo()
+		}
+	}
 }
 
-function log(text: string): void {
-	const date: Date = new Date()
-	console.log(
-		`\x1B[41;97m Auto Skip YouTube Ads \x1B[m\x1B[47;30m ${date.toLocaleTimeString()} \x1B[m\n${text}`
-	)
+function handlePauseVideo(): void {
+	if (isAllowPauseVideo) {
+		disallowPauseVideo()
+		return
+	}
+	video.play()
 }
 
-let oldVideoSrc: string = ''
+let video: HTMLVideoElement | null = null
+let isAllowPauseVideo: boolean = false
+let allowPauseVideoTimeoutId: number = 0
+
+const observer: MutationObserver = new MutationObserver(skipAd)
+observer.observe(document.body, {
+	attributeFilter: ['class', 'src'],
+	childList: true,
+	subtree: true
+})
 skipAd()
+
+window.addEventListener('keydown', handleGlobalKeyDownKeyUp)
+window.addEventListener('keyup', handleGlobalKeyDownKeyUp)
 
 const style: HTMLStyleElement = document.createElement('style')
 style.textContent = `
@@ -112,5 +130,3 @@ style.textContent = `
 		display: none !important;
 	}`
 document.head.appendChild(style)
-
-log(`Initialized`)

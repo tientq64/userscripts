@@ -11,7 +11,7 @@
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @name:th            ข้ามโฆษณา YouTube อัตโนมัติ
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.1.2
+// @version            4.2.0
 // @description        Automatically skip YouTube ads almost instantly. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。非常轻量且高效。
@@ -39,67 +39,81 @@
 // ==/UserScript==
 
 function skipAd() {
-	setTimeout(skipAd, document.hidden ? 1000 : 500)
-	const video = getVideo()
-	if (!video) return
-	const adPlayer = document.querySelector('#movie_player.ad-showing')
-	if (adPlayer) {
-		const skipButton = document.querySelector(`
-			.ytp-skip-ad-button,
-			.ytp-ad-skip-button,
-			.ytp-ad-skip-button-modern
-		`)
-		if (skipButton) {
-			skipButton.click()
-			log('Skip button clicked')
-		} else {
-			video.currentTime = 9999
-			log('Unskippable ad video have been skipped')
-		}
-	}
-	const adBlockerWarningDialog = document.querySelector('tp-yt-paper-dialog:has(#dismiss-button)')
-	if (adBlockerWarningDialog) {
-		adBlockerWarningDialog.remove()
-		log('Removed the ad blocker warning dialog')
-		fixVideoPausedAtFirst(video)
-	}
-	if (oldVideoSrc !== video.src) {
-		oldVideoSrc = video.src
-		fixVideoPausedAtFirst(video)
-	}
+    video = document.querySelector('#movie_player video.html5-main-video')
+    if (video === null) return
+    const adPlayer = document.querySelector('#movie_player.ad-showing')
+    if (adPlayer) {
+        const skipButton = document.querySelector(`
+            .ytp-skip-ad-button,
+            .ytp-ad-skip-button,
+            .ytp-ad-skip-button-modern
+        `)
+        if (skipButton) {
+            skipButton.click()
+        } else {
+            video.currentTime = 9999
+        }
+    }
+    const adBlockerWarningDialog = document.querySelector('tp-yt-paper-dialog:has(#dismiss-button)')
+    if (adBlockerWarningDialog) {
+        adBlockerWarningDialog.remove()
+    }
+    const playButton = document.querySelector('button.ytp-play-button')
+    if (playButton) {
+        playButton.addEventListener('click', allowPauseVideo)
+    }
+    video.addEventListener('pause', handlePauseVideo)
+    video.addEventListener('mouseup', allowPauseVideo)
 }
-function getVideo() {
-	return document.querySelector('#movie_player video.html5-main-video')
+function allowPauseVideo() {
+    isAllowPauseVideo = true
+    window.clearTimeout(allowPauseVideoTimeoutId)
+    allowPauseVideoTimeoutId = window.setTimeout(disallowPauseVideo, 500)
 }
-function fixVideoPausedAtFirst(video) {
-	const videoSrc = video.src
-	setTimeout(() => {
-		if (video.src === videoSrc) {
-			if (video.paused) {
-				video.play()
-				log('Fixed video being paused due to using an ad blocker')
-			}
-		}
-	}, 2000)
+function disallowPauseVideo() {
+    window.clearTimeout(allowPauseVideoTimeoutId)
+    isAllowPauseVideo = false
 }
-function log(text) {
-	const date = new Date()
-	console.log(
-		`\x1B[41;97m Auto Skip YouTube Ads \x1B[m\x1B[47;30m ${date.toLocaleTimeString()} \x1B[m\n${text}`
-	)
+function handleGlobalKeyDownKeyUp(event) {
+    if (document.activeElement.matches('input, textarea, select')) return
+    if (event.type === 'keydown') {
+        if (event.code === 'KeyK') {
+            allowPauseVideo()
+        }
+    } else {
+        if (event.code === 'Space') {
+            allowPauseVideo()
+        }
+    }
 }
-let oldVideoSrc = ''
+function handlePauseVideo() {
+    if (isAllowPauseVideo) {
+        disallowPauseVideo()
+        return
+    }
+    video.play()
+}
+let video = null
+let isAllowPauseVideo = false
+let allowPauseVideoTimeoutId = 0
+const observer = new MutationObserver(skipAd)
+observer.observe(document.body, {
+    attributeFilter: ['class', 'src'],
+    childList: true,
+    subtree: true
+})
 skipAd()
+window.addEventListener('keydown', handleGlobalKeyDownKeyUp)
+window.addEventListener('keyup', handleGlobalKeyDownKeyUp)
 const style = document.createElement('style')
 style.textContent = `
-	#player-ads,
-	#masthead-ad,
-	#panels:has(ytd-ads-engagement-panel-content-renderer),
-	ytd-ad-slot-renderer,
-	ytd-rich-item-renderer:has(.ytd-ad-slot-renderer),
-	ytd-reel-video-renderer:has(.ytd-ad-slot-renderer),
-	tp-yt-paper-dialog:has(#dismiss-button) {
-		display: none !important;
-	}`
+    #player-ads,
+    #masthead-ad,
+    #panels:has(ytd-ads-engagement-panel-content-renderer),
+    ytd-ad-slot-renderer,
+    ytd-rich-item-renderer:has(.ytd-ad-slot-renderer),
+    ytd-reel-video-renderer:has(.ytd-ad-slot-renderer),
+    tp-yt-paper-dialog:has(#dismiss-button) {
+        display: none !important;
+    }`
 document.head.appendChild(style)
-log(`Initialized`)
