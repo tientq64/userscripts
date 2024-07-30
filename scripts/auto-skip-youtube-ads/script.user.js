@@ -11,7 +11,7 @@
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @name:th            ข้ามโฆษณา YouTube อัตโนมัติ
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.2.0
+// @version            4.2.1
 // @description        Automatically skip YouTube ads almost instantly. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。非常轻量且高效。
@@ -74,6 +74,14 @@ function disallowPauseVideo() {
     window.clearTimeout(allowPauseVideoTimeoutId)
     isAllowPauseVideo = false
 }
+function handlePauseVideo() {
+    if (isAllowPauseVideo) {
+        disallowPauseVideo()
+        return
+    }
+    if (video.ended) return
+    video.play()
+}
 function handleGlobalKeyDownKeyUp(event) {
     if (document.activeElement.matches('input, textarea, select')) return
     if (event.type === 'keydown') {
@@ -85,13 +93,6 @@ function handleGlobalKeyDownKeyUp(event) {
             allowPauseVideo()
         }
     }
-}
-function handlePauseVideo() {
-    if (isAllowPauseVideo) {
-        disallowPauseVideo()
-        return
-    }
-    video.play()
 }
 let video = null
 let isAllowPauseVideo = false

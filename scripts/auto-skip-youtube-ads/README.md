@@ -8,6 +8,12 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 
 ## 📑 Changelog
 
+### 4.2.1 (2024-07-30)
+
+#### 🐛 Bug Fixes
+
+- Fixed video automatically replay when finished.
+
 ### 4.2.0 (2024-07-30)
 
 #### 🛠️ Improvements
@@ -97,9 +103,3 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nh
 ## 💳 Credits
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
-
-## 🎁 Support me
-
-[![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/tientq64)
-[![BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/tientq64)
-[![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/tientq64)
