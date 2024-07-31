@@ -12,7 +12,7 @@
 // @grant        none
 // @license      MIT
 // @noframes
-// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/Keyboard%20Shortcuts%20For%20Google%20Translate
+// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/Keyboard-Shortcuts-For-Google-Translate
 // ==/UserScript==
 
 function click(selector) {

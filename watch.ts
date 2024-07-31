@@ -3,21 +3,13 @@ import GlobWatcher from 'glob-watcher'
 import { transpile } from 'typescript'
 import { join, dirname } from 'path'
 import { format, resolveConfig } from 'prettier'
+import { sync } from 'glob-concat'
 
 function joinPath(...paths: string[]): string {
 	return join(...paths).replace(/\\/g, '/')
 }
 
-const endMetaTagRegex: RegExp = /^\/\/ ==\/UserScript==$/m
-const tailwindcssMetaRegex: RegExp = /^\/\/ @resource {5}TAILWINDCSS$/m
-
-const watcher = GlobWatcher('scripts/*/script.user.{ts,tsx}', {
-	events: ['add', 'change']
-})
-watcher.on('add', watch)
-watcher.on('change', watch)
-
-async function watch(path: string, stat: Stats): Promise<void> {
+async function handleWatch(path: string, stat: Stats): Promise<void> {
 	if (!stat.isFile()) return
 
 	const code: string = fs.readFileSync(path, 'utf-8')
@@ -69,3 +61,18 @@ async function watch(path: string, stat: Stats): Promise<void> {
 		)
 	fs.writeFileSync(devPath, devMeta)
 }
+
+const endMetaTagRegex: RegExp = /^\/\/ ==\/UserScript==$/m
+const tailwindcssMetaRegex: RegExp = /^\/\/ @resource {5}TAILWINDCSS$/m
+
+const paths: string[] = sync('scripts/*/script.user.{ts,tsx}')
+for (const path of paths) {
+	const stat: Stats = fs.statSync(path)
+	await handleWatch(path, stat)
+}
+
+const watcher = GlobWatcher('scripts/*/script.user.{ts,tsx}', {
+	events: ['add', 'change']
+})
+watcher.on('add', handleWatch)
+watcher.on('change', handleWatch)

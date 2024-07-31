@@ -9,7 +9,7 @@
 // @license      MIT
 // @grant        unsafeWindow
 // @noframes
-// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/Ads%20Remover
+// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/Ads-Remover
 // ==/UserScript==
 
 const css = (strs) => strs.join('')

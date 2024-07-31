@@ -17,7 +17,7 @@
 // @grant        GM_deleteValue
 // @license      MIT
 // @noframes
-// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/Diep.io%20Improvements
+// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/Diep-io-Improvements
 // ==/UserScript==
 
 var diepIO

@@ -43,6 +43,7 @@
 		"concurrently": "8.2.2",
 		"eslint": "8.x",
 		"eslint-plugin-react": "^7.34.3",
+		"glob-concat": "^1.0.3",
 		"glob-watcher": "6.0.0",
 		"globals": "^15.8.0",
 		"prettier": "3.3.2",

@@ -9,7 +9,7 @@
 // @license      MIT
 // @grant        none
 // @noframes
-// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/No%20Fullscreen%20Dropdown
+// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/No-Fullscreen-Dropdown
 // ==/UserScript==
 
 window.addEventListener('keydown', (event) => {
