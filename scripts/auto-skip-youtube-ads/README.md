@@ -6,13 +6,23 @@ Auto skip YouTube ads almost instantly. Very lightweight and efficient.
 
 Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
 
+## 🛡️ Is this script safe?
+
+Sure! If you don't believe, copy the [code](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/code) and ask [ChatGPT](https://chatgpt.com/), it will explain each line of code to you.
+
 ## 📑 Changelog
+
+### 4.3.0 (2024-07-31)
+
+#### ✨ Features
+
+- Now also supports [YouTube Music](https://music.youtube.com/).
 
 ### 4.2.1 (2024-07-30)
 
 #### 🐛 Bug Fixes
 
-- Fixed video automatically replay when finished.
+- Fixed video automatically replay when ended.
 
 ### 4.2.0 (2024-07-30)
 
