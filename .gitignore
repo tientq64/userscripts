@@ -1,4 +1,4 @@
 node_modules
 
-scripts/_*
+scripts/* (private)
 scripts/*/dev.user.js

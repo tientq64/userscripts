@@ -38,7 +38,7 @@ async function watch(path: string, stat: Stats): Promise<void> {
 
 	const bothMeta: string = meta.replace(
 		endMetaTagRegex,
-		`// @${'homepage'.padEnd(metaPadLength)}https://github.com/tientq64/userscripts/tree/main/${dirPath}\n$&`
+		`// @${'homepage'.padEnd(metaPadLength)}https://github.com/tientq64/userscripts/tree/main/${encodeURI(dirPath)}\n$&`
 	)
 
 	const prettierConfig = await resolveConfig('.prettierrc')
@@ -65,7 +65,7 @@ async function watch(path: string, stat: Stats): Promise<void> {
 		)
 		.replace(
 			endMetaTagRegex,
-			`// @${'require'.padEnd(metaPadLength)}file:///${joinPath(__dirname, prodPath)}\n$&`
+			`// @${'require'.padEnd(metaPadLength)}file:///${joinPath(__dirname, encodeURI(prodPath))}\n$&`
 		)
 	fs.writeFileSync(devPath, devMeta)
 }

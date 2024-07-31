@@ -35,7 +35,7 @@
 // @compatible         safari
 // @compatible         edge
 // @noframes
-// @homepage           https://github.com/tientq64/userscripts/tree/main/scripts/auto-skip-youtube-ads
+// @homepage           https://github.com/tientq64/userscripts/tree/main/scripts/Auto%20Skip%20YouTube%20Ads
 // ==/UserScript==
 
 function skipAd() {

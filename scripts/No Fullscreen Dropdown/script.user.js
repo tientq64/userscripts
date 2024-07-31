@@ -9,16 +9,16 @@
 // @license      MIT
 // @grant        none
 // @noframes
-// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/no-fullscreen-dropdown
+// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/No%20Fullscreen%20Dropdown
 // ==/UserScript==
 
 window.addEventListener('keydown', (event) => {
-	if (event.repeat || event.ctrlKey || event.altKey || event.metaKey) return
-	if (event.code === 'F11' && event.shiftKey) {
-		if (document.fullscreenElement) {
-			document.exitFullscreen()
-		} else {
-			document.documentElement.requestFullscreen()
-		}
-	}
+    if (event.repeat || event.ctrlKey || event.altKey || event.metaKey) return
+    if (event.code === 'F11' && event.shiftKey) {
+        if (document.fullscreenElement) {
+            document.exitFullscreen()
+        } else {
+            document.documentElement.requestFullscreen()
+        }
+    }
 })
