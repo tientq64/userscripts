@@ -12,12 +12,6 @@ Sure! If you don't believe, copy the [code](https://greasyfork.org/en/scripts/49
 
 ## 📑 Changelog
 
-### 4.3.0 (2024-07-31)
-
-#### ✨ Features
-
-- Now also supports [YouTube Music](https://music.youtube.com/).
-
 ### 4.2.1 (2024-07-30)
 
 #### 🐛 Bug Fixes
