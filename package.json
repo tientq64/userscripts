@@ -1,6 +1,6 @@
 {
 	"name": "userscripts",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "📜 My userscript collection makes life easier and better.",
 	"scripts": {
 		"dev": "concurrently \"tailwindcss -mo .resources/tailwind.min.css --watch\" \"bun watch.ts\""

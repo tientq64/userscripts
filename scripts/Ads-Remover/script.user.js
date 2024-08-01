@@ -13,6 +13,7 @@
 // ==/UserScript==
 
 const css = (strs) => strs.join('')
+
 const matchers = {
     'diep.io/**': {
         css: css`
@@ -21,6 +22,7 @@ const matchers = {
             }
         `
     },
+
     'tetr.io/**': {
         css: css`
             .ceriad,
@@ -29,6 +31,7 @@ const matchers = {
             }
         `
     },
+
     'quora.com/**': {
         css: css`
             .spacing_log_question_page_ad,
@@ -37,6 +40,7 @@ const matchers = {
             }
         `
     },
+
     'facebook.com/**': {
         js() {
             const els = document.querySelectorAll(
@@ -50,6 +54,7 @@ const matchers = {
             }
         }
     },
+
     'bravedown.com/**': {
         css: css`
             #dontfoid {
@@ -67,6 +72,7 @@ const matchers = {
             }, 1000)
         }
     },
+
     'fdownloader.net/**': {
         js() {
             setInterval(() => {
@@ -78,6 +84,7 @@ const matchers = {
         }
     }
 }
+
 for (const pattern in matchers) {
     const matcher = matchers[pattern]
     if (matchURL(pattern)) {
@@ -89,6 +96,7 @@ for (const pattern in matchers) {
         matcher.js?.()
     }
 }
+
 function getParentElement(el, level) {
     let parentEl = el
     for (let i = 0; i < level; i++) {
@@ -96,6 +104,7 @@ function getParentElement(el, level) {
     }
     return parentEl
 }
+
 function matchURL(pattern) {
     const regexStr = pattern
         .replace(/^(?!([a-z]+|\*):\/\/)/, 'https://')

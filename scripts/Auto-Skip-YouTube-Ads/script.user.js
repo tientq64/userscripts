@@ -9,20 +9,18 @@
 // @name:ru            Автоматический Пропуск Рекламы На YouTube
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
-// @name:th            ข้ามโฆษณา YouTube อัตโนมัติ
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.3.2
-// @description        Automatically skip YouTube ads almost instantly. Very lightweight and efficient.
-// @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Rất nhẹ và hiệu quả.
-// @description:zh-CN  几乎立即自动跳过 YouTube 广告。非常轻量且高效。
-// @description:zh-TW  幾乎立即自動跳過 YouTube 廣告。非常輕巧且高效。
-// @description:ja     YouTube 広告をほぼ瞬時に自動的にスキップします。非常に軽量で効率的です。
-// @description:ko     YouTube 광고를 거의 즉시 자동으로 건너뜁니다. 매우 가볍고 효율적입니다.
-// @description:es     Omita automáticamente los anuncios de YouTube casi al instante. Muy ligero y eficiente.
-// @description:ru     Автоматически пропускайте рекламу на YouTube практически мгновенно. Очень легкий и эффективный.
-// @description:id     Lewati iklan YouTube secara otomatis hampir seketika. Sangat ringan dan efisien.
-// @description:hi     YouTube विज्ञापनों को लगभग तुरंत ही स्वचालित रूप से छोड़ दें। बहुत हल्का और कुशल।
-// @description:th     ข้ามโฆษณา YouTube โดยอัตโนมัติเกือบจะในทันที น้ำหนักเบามากและมีประสิทธิภาพ
+// @version            4.3.3
+// @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
+// @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
+// @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
+// @description:zh-TW  立即自動跳過 YouTube 廣告。刪除廣告攔截器警告彈出視窗。非常輕巧且高效。
+// @description:ja     YouTube 広告を即座に自動的にスキップします。広告ブロッカーの警告ポップアップを削除します。非常に軽量で効率的です。
+// @description:ko     YouTube 광고를 즉시 자동으로 건너뜁니다. 광고 차단 경고 팝업을 제거하세요. 매우 가볍고 효율적입니다.
+// @description:es     Omita automáticamente los anuncios de YouTube al instante. Elimine la ventana emergente de advertencia del bloqueador de anuncios. Muy ligero y eficiente.
+// @description:ru     Автоматически пропускайте рекламу YouTube мгновенно. Удалите всплывающее окно с предупреждением о блокировке рекламы. Очень легкий и эффективный.
+// @description:id     Lewati iklan YouTube secara otomatis secara instan. Hapus pop-up peringatan pemblokir iklan. Sangat ringan dan efisien.
+// @description:hi     YouTube विज्ञापनों को तुरंत स्वचालित रूप से छोड़ें। विज्ञापन अवरोधक चेतावनी पॉप-अप को हटाएँ। बहुत हल्का और कुशल।
 // @author             tientq64
 // @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
 // @match              https://www.youtube.com
@@ -41,6 +39,7 @@
 function skipAd() {
     video = document.querySelector('#movie_player video.html5-main-video')
     if (video === null) return
+
     const adPlayer = document.querySelector('#movie_player.ad-showing')
     if (adPlayer) {
         const skipButton = document.querySelector(`
@@ -54,26 +53,32 @@ function skipAd() {
             video.currentTime = 9999
         }
     }
+
     const adBlockerWarningDialog = document.querySelector('tp-yt-paper-dialog:has(#dismiss-button)')
     if (adBlockerWarningDialog) {
         adBlockerWarningDialog.remove()
     }
+
     const playButton = document.querySelector('button.ytp-play-button')
     if (playButton) {
         playButton.addEventListener('click', allowPauseVideo)
     }
+
     video.addEventListener('pause', handlePauseVideo)
     video.addEventListener('mouseup', allowPauseVideo)
 }
+
 function allowPauseVideo() {
     isAllowPauseVideo = true
     window.clearTimeout(allowPauseVideoTimeoutId)
     allowPauseVideoTimeoutId = window.setTimeout(disallowPauseVideo, 500)
 }
+
 function disallowPauseVideo() {
     isAllowPauseVideo = false
     window.clearTimeout(allowPauseVideoTimeoutId)
 }
+
 function handlePauseVideo() {
     if (isAllowPauseVideo) {
         disallowPauseVideo()
@@ -82,6 +87,7 @@ function handlePauseVideo() {
     if (video.ended) return
     video.play()
 }
+
 function handleGlobalKeyDownKeyUp(event) {
     if (document.activeElement.matches('input, textarea, select')) return
     if (event.type === 'keydown') {
@@ -94,9 +100,11 @@ function handleGlobalKeyDownKeyUp(event) {
         }
     }
 }
+
 let video = null
 let isAllowPauseVideo = false
 let allowPauseVideoTimeoutId = 0
+
 if (window.MutationObserver) {
     const observer = new MutationObserver(skipAd)
     observer.observe(document.body, {
@@ -109,8 +117,10 @@ if (window.MutationObserver) {
     window.setInterval(skipAd, 500)
 }
 skipAd()
+
 window.addEventListener('keydown', handleGlobalKeyDownKeyUp)
 window.addEventListener('keyup', handleGlobalKeyDownKeyUp)
+
 const style = document.createElement('style')
 style.textContent = `
     #player-ads,

@@ -24,6 +24,7 @@ var diepIO
 ;(function (diepIO) {
     const preventDefault = Event.prototype.preventDefault
     Event.prototype.preventDefault = () => {}
+
     const css = `
         ${GM_getResourceText('TAILWINDCSS')}
         :focus {
@@ -34,8 +35,10 @@ var diepIO
         }
     `
     GM_addStyle(css)
+
     const { useState, useEffect, useRef } = React
     const { countBy, some } = _
+
     function App() {
         const [stats] = useState([
             {
@@ -71,6 +74,7 @@ var diepIO
                 color: '#6cf0ec'
             }
         ])
+
         const [presets] = useState([
             {
                 text: '010-7757-6',
@@ -89,17 +93,20 @@ var diepIO
                 upgrade: '456788825678856784758264756457475'
             }
         ])
+
         const [upgrade, setUpgrade] = useState('')
         const [isUpgradeShown, setIsUpgradeShown] = useState(false)
         const [statsStr, setStatsStr] = useState('')
         const upgradeInputRef = useRef(null)
+
         const getStatBarSlotBackgroundColor = (stat, slotIndex) => {
             return slotIndex < countBy(upgrade)[stat.key]
                 ? stat.color
                 : slotIndex < 7
-                    ? '#111827'
-                    : '#030712'
+                  ? '#111827'
+                  : '#030712'
         }
+
         const handleUpgradeChange = (event) => {
             const { value } = event.target
             if (/[^1-8]/.test(value) || some(countBy(value), (v) => v > 10)) {
@@ -112,6 +119,7 @@ var diepIO
             }
             setUpgrade(value)
         }
+
         const handleUpgradeKeyDown = (event) => {
             if (/^((Digit|Numpad)[1-8]|Arrow(Up|Down|Left|Right))$/.test(event.code)) {
                 event.stopPropagation()
@@ -122,26 +130,32 @@ var diepIO
                 setIsUpgradeShown(false)
             }
         }
+
         const handlePresetClick = (preset) => {
             setUpgrade(preset.upgrade)
             upgradeInputRef.current.focus()
         }
+
         const handleGlobalKeyDown = (event) => {
             if (event.repeat || event.ctrlKey || event.shiftKey || event.metaKey) return
             if (document.activeElement.localName === 'd-base') return
+
             switch (event.code) {
                 case 'KeyT':
                     setIsUpgradeShown((prev) => !prev)
                     break
+
                 case 'KeyG':
                     input.grantReward()
                     break
             }
         }
+
         const handleGlobalContextMenu = (event) => {
             if (['input', 'textarea'].includes(event.target.localName)) return
             preventDefault.call(event)
         }
+
         const updateUI = () => {
             const newStatStr = ui.__playerAttributes.attributes
                 .map((attr) => attr.slotsFilled)
@@ -150,11 +164,13 @@ var diepIO
                 setStatsStr(newStatStr)
             }
         }
+
         useEffect(() => {
             window.addEventListener('keydown', handleGlobalKeyDown)
             window.addEventListener('contextmenu', handleGlobalContextMenu)
             setInterval(updateUI, 1000)
         }, [])
+
         return React.createElement(
             'div',
             { className: 'h-full' },
@@ -280,9 +296,11 @@ var diepIO
                 )
         )
     }
+
     const rootEl = document.createElement('div')
     rootEl.className = 'absolute inset-0 pointer-events-none z-[999]'
     document.body.appendChild(rootEl)
+
     // eslint-disable-next-line react/no-deprecated
     ReactDOM.render(React.createElement(App, null), rootEl)
 })(diepIO || (diepIO = {}))

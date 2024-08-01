@@ -14,6 +14,7 @@
 
 window.addEventListener('keydown', (event) => {
     if (event.repeat || event.ctrlKey || event.altKey || event.metaKey) return
+
     if (event.code === 'F11' && event.shiftKey) {
         if (document.fullscreenElement) {
             document.exitFullscreen()
