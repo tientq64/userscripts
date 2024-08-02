@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.3.4
+// @version            4.3.5
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -38,7 +38,6 @@
 
 function skipAd() {
     video = document.querySelector('#movie_player video.html5-main-video')
-    if (video === null) return
 
     const adPlayer = document.querySelector('#movie_player.ad-showing')
     if (adPlayer) {
@@ -49,7 +48,7 @@ function skipAd() {
         `)
         if (skipButton) {
             skipButton.click()
-        } else {
+        } else if (video) {
             video.currentTime = 9999
         }
     }
@@ -66,8 +65,10 @@ function skipAd() {
 
     fineScrubbing = document.querySelector('.ytp-fine-scrubbing')
 
-    video.addEventListener('pause', handlePauseVideo)
-    video.addEventListener('mouseup', allowPauseVideo)
+    if (video) {
+        video.addEventListener('pause', handlePauseVideo)
+        video.addEventListener('mouseup', allowPauseVideo)
+    }
 }
 
 function allowPauseVideo() {
@@ -86,13 +87,15 @@ function handlePauseVideo() {
         disallowPauseVideo()
         return
     }
-    if (video.duration - video.currentTime < 0.1) return
-    if (fineScrubbing.checkVisibility()) return
-    video.play()
+    if (fineScrubbing?.checkVisibility()) return
+    if (video) {
+        if (video.duration - video.currentTime < 0.1) return
+        video.play()
+    }
 }
 
 function handleGlobalKeyDownKeyUp(event) {
-    if (document.activeElement.matches('input, textarea, select')) return
+    if (document.activeElement?.matches('input, textarea, select')) return
     if (event.type === 'keydown') {
         if (event.code === 'KeyK') {
             allowPauseVideo()
