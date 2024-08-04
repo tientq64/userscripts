@@ -1,12 +1,13 @@
-type GMValue = string | number | boolean
+type GMValue<T = string | number | boolean> = T
 
-declare const GM_addStyle: (css: string) => void
-declare const GM_getResourceText: (name: string) => string
-declare const GM_getValue: (name?: string, defaultValue?: GMValue) => Promise<GMValue>
-declare const GM_setValue: (name: string, value: GMValue) => Promise<void>
-declare const GM_deleteValue: (name: string) => Promise<void>
-declare const GM_listValues: () => Promise<string[]>
-declare const GM_setClipboard: (text: string) => void
+declare function GM_addStyle(css: string): void
+declare function GM_getResourceText(name: string): string
+declare function GM_getValue<T = GMValue>(name: string): Promise<T | undefined>
+declare function GM_getValue<T = GMValue>(name: string, defaultValue: T): Promise<T>
+declare function GM_setValue(name: string, value: GMValue): Promise<void>
+declare function GM_deleteValue(name: string): Promise<void>
+declare function GM_listValues(): Promise<string[]>
+declare function GM_setClipboard(text: string): void
 
 declare type ChangeEvent<T> = import('react').ChangeEvent<T>
 

@@ -1,4 +1,5 @@
 node_modules
+local
 
 scripts/*-private
 scripts/*/dev.user.js
