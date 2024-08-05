@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Miến AI Music
 // @namespace    https://github.com/tientq64/userscripts
-// @version      1.0.0
+// @version      1.1.0
 // @description  Các tiện ích cho kênh Youtube Miến AI Music.
 // @author       tientq64
 // @icon         https://i.ytimg.com/an/-Eg4rifYD_EBCC_tp_eJwQ/featured_channel.jpg?v=6657867e
@@ -9,6 +9,7 @@
 // @match        https://accounts.suno.com/sign-in?*
 // @match        https://accounts.google.com/o/oauth2/**
 // @match        https://translate.google.com.vn/*
+// @match        https://www.google.com/search?*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_deleteValue
@@ -195,10 +196,24 @@
 			click(`[data-identifier="${emailText}"]`)
 		}
 	}
+	//
+	else if (location.href.startsWith('https://www.google.com/search?')) {
+		const els = document.querySelectorAll<HTMLDivElement>(
+			'[data-lyricid] > div > :nth-child(2) > div'
+		)
+		for (const el of els) {
+			el.style.marginBottom = '-8px'
+			const br: HTMLBRElement = document.createElement('br')
+			el.after(br)
+		}
+	}
 
 	GM_addStyle(css`
 		body {
 			font-family: sans-serif;
+		}
+		.css-19gwdih {
+			white-space: normal !important;
 		}
 	`)
 })()
