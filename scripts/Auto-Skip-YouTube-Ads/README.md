@@ -6,6 +6,10 @@ Automatically skip YouTube ads almost instantly. Remove the ad blocker warning p
 
 Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 
+## ⚠️ Problem with AdBlock
+
+- If you use AdBlock, please **disable it** for the YouTube site to avoid being detected as using an ad blocker.
+
 ## 📑 Changelog
 
 ### 4.3.6 - 2024-08-07

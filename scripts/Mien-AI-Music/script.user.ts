@@ -212,7 +212,7 @@
 		body {
 			font-family: sans-serif;
 		}
-		.css-19gwdih {
+		.css-1w1f2eu {
 			white-space: normal !important;
 		}
 	`)
