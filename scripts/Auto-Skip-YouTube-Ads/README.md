@@ -8,9 +8,13 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## ⚠️ Problem with AdBlock
 
-- If you use AdBlock, please **disable it** for the YouTube site to avoid being detected as using an ad blocker.
+If you use AdBlock, please **disable it** for the YouTube site to avoid being detected as using an ad blocker. In addition, it also makes ads appear more.
 
 ## 📑 Changelog
+
+### 4.3.8 - 2024-08-20
+
+- Fix the issue of removing ad videos in Shorts.
 
 ### 4.3.6 - 2024-08-07
 
