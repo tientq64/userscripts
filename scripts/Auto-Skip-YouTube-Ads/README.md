@@ -12,6 +12,10 @@ If you use AdBlock, please **disable it** for the YouTube site to avoid being de
 
 ## 📑 Changelog
 
+### 4.3.9 - 2024-08-21
+
+- Fix `@match` invalid syntax ([#256841][256841]).
+
 ### 4.3.8 - 2024-08-20
 
 - Fix the issue of removing ad videos in Shorts.
@@ -85,4 +89,5 @@ If you use AdBlock, please **disable it** for the YouTube site to avoid being de
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
-[254113]: https://greasyfork.org/vi/scripts/498197-auto-skip-youtube-ads/discussions/254113
+[256841]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/256841
+[254113]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/254113
