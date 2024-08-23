@@ -9,7 +9,7 @@
 // @license      MIT
 // @grant        none
 // @noframes
-// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/YouTubeShortsToNormalVideo
+// @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/YouTube-Shorts-To-Normal-Video
 // ==/UserScript==
 
 function redirect() {
