@@ -17,7 +17,7 @@
 // @name:tr      YouTube Shorts'tan Normal Videoya
 // @name:th      YouTube Shorts สู่วิดีโอปกติ
 // @namespace    https://github.com/tientq64/userscripts
-// @version      1.0.1
+// @version      1.0.2
 // @description        Instantly redirect YouTube Shorts videos to normal video view, allowing you to save, download, choose quality, etc.
 // @description:vi     Chuyển hướng ngay lập tức video YouTube Shorts sang chế độ xem video thông thường, cho phép bạn lưu, tải xuống, chọn chất lượng, v.v.
 // @description:zh-CN  立即将 YouTube Shorts 视频重定向至普通视频视图，让您可以保存、下载、选择质量等。
