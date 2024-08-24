@@ -170,5 +170,105 @@
 	"2024-07-29": {
 		"installs": 113,
 		"update_checks": 1708
+	},
+	"2024-07-30": {
+		"installs": 136,
+		"update_checks": 1769
+	},
+	"2024-07-31": {
+		"installs": 177,
+		"update_checks": 1922
+	},
+	"2024-08-01": {
+		"installs": 180,
+		"update_checks": 1876
+	},
+	"2024-08-02": {
+		"installs": 193,
+		"update_checks": 1984
+	},
+	"2024-08-03": {
+		"installs": 192,
+		"update_checks": 1801
+	},
+	"2024-08-04": {
+		"installs": 154,
+		"update_checks": 1798
+	},
+	"2024-08-05": {
+		"installs": 142,
+		"update_checks": 2041
+	},
+	"2024-08-06": {
+		"installs": 130,
+		"update_checks": 2004
+	},
+	"2024-08-07": {
+		"installs": 127,
+		"update_checks": 2214
+	},
+	"2024-08-08": {
+		"installs": 143,
+		"update_checks": 2282
+	},
+	"2024-08-09": {
+		"installs": 143,
+		"update_checks": 2067
+	},
+	"2024-08-10": {
+		"installs": 110,
+		"update_checks": 1963
+	},
+	"2024-08-11": {
+		"installs": 151,
+		"update_checks": 2018
+	},
+	"2024-08-12": {
+		"installs": 137,
+		"update_checks": 2463
+	},
+	"2024-08-13": {
+		"installs": 121,
+		"update_checks": 2200
+	},
+	"2024-08-14": {
+		"installs": 98,
+		"update_checks": 2277
+	},
+	"2024-08-15": {
+		"installs": 112,
+		"update_checks": 2194
+	},
+	"2024-08-16": {
+		"installs": 126,
+		"update_checks": 2200
+	},
+	"2024-08-17": {
+		"installs": 107,
+		"update_checks": 2026
+	},
+	"2024-08-18": {
+		"installs": 79,
+		"update_checks": 2036
+	},
+	"2024-08-19": {
+		"installs": 110,
+		"update_checks": 2369
+	},
+	"2024-08-20": {
+		"installs": 126,
+		"update_checks": 2341
+	},
+	"2024-08-21": {
+		"installs": 166,
+		"update_checks": 2722
+	},
+	"2024-08-22": {
+		"installs": 143,
+		"update_checks": 2625
+	},
+	"2024-08-23": {
+		"installs": 121,
+		"update_checks": 2541
 	}
 }
