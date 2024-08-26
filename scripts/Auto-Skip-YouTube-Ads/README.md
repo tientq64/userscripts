@@ -14,6 +14,11 @@ If you use AdBlock, please **disable it** for the YouTube site to avoid being de
 
 ## 📑 Changelog (变更日志)
 
+### 4.3.13 - 2024-08-26
+
+- Fixed bug where video could not be paused using pause/play key on keyboard or media controls ([#257424][257424]).
+- Improve the performance.
+
 ### 4.3.9 - 2024-08-21
 
 - Fix `@match` invalid syntax ([#256841][256841]).
@@ -91,5 +96,6 @@ If you use AdBlock, please **disable it** for the YouTube site to avoid being de
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
+[257424]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/257424
 [256841]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/256841
 [254113]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/254113

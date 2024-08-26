@@ -1,5 +1,7 @@
 {
 	"editor.tabSize": 4,
+	"editor.wordWrap": "bounded",
+	"editor.wordWrapColumn": 100,
 	"workbench.editor.customLabels.patterns": {
 		"*/scripts/*/script.user.*": "${dirname}"
 	},
