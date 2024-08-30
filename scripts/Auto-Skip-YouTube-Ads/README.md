@@ -14,6 +14,10 @@ If you use AdBlock, please **disable it** for the YouTube site to avoid being de
 
 ## 📑 Changelog (变更日志)
 
+### 4.4.0 - 2024-08-30
+
+- Automatically reload web page when ad blocker warnings appear.
+
 ### 4.3.13 - 2024-08-26
 
 - Fixed bug where video could not be paused using pause/play key on keyboard or media controls ([#257424][257424]).

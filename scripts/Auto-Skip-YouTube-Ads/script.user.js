@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.3.13
+// @version            4.4.0
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -36,10 +36,16 @@
 // ==/UserScript==
 
 function skipAd() {
-    video = document.querySelector('#movie_player video.html5-main-video')
+    const player = document.querySelector('#movie_player')
+    let hasAd = false
+    video = null
 
-    const adPlayer = document.querySelector('#movie_player.ad-showing')
-    if (adPlayer) {
+    if (player) {
+        hasAd = player.classList.contains('ad-showing')
+        video = player.querySelector('video.html5-main-video')
+    }
+
+    if (hasAd) {
         const skipButton = document.querySelector(`
             .ytp-skip-ad-button,
             .ytp-ad-skip-button,
@@ -53,11 +59,26 @@ function skipAd() {
         }
     }
 
+    if (video) {
+        video.addEventListener('pause', handlePauseVideo)
+        video.addEventListener('mouseup', allowPauseVideo)
+    }
+
     const adBlockerWarningDialog = document.querySelector(
         'tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model)'
     )
     if (adBlockerWarningDialog) {
         adBlockerWarningDialog.remove()
+    }
+
+    const adBlockerWarningInner = document.querySelector(
+        '.yt-playability-error-supported-renderers'
+    )
+    if (adBlockerWarningInner) {
+        if (adBlockerWarningInner) {
+            adBlockerWarningInner.remove()
+            location.reload()
+        }
     }
 
     const playButton = document.querySelector('button.ytp-play-button')
@@ -72,11 +93,6 @@ function skipAd() {
     )
     for (const adShortVideo of adShortVideos) {
         adShortVideo.remove()
-    }
-
-    if (video) {
-        video.addEventListener('pause', handlePauseVideo)
-        video.addEventListener('mouseup', allowPauseVideo)
     }
 }
 
