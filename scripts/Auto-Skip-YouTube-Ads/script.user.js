@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.4.0
+// @version            4.4.1
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -60,7 +60,7 @@ function skipAd() {
     }
 
     if (video) {
-        video.addEventListener('pause', handlePauseVideo)
+        video.addEventListener('pause', handleVideoPause)
         video.addEventListener('mouseup', allowPauseVideo)
     }
 
@@ -97,18 +97,18 @@ function skipAd() {
 }
 
 function allowPauseVideo() {
-    isAllowPauseVideo = true
+    pausedByUser = true
     window.clearTimeout(allowPauseVideoTimeoutId)
     allowPauseVideoTimeoutId = window.setTimeout(disallowPauseVideo, 500)
 }
 
 function disallowPauseVideo() {
-    isAllowPauseVideo = false
+    pausedByUser = false
     window.clearTimeout(allowPauseVideoTimeoutId)
 }
 
-function handlePauseVideo() {
-    if (isAllowPauseVideo) {
+function handleVideoPause() {
+    if (pausedByUser) {
         disallowPauseVideo()
         return
     }
@@ -120,14 +120,15 @@ function handlePauseVideo() {
     }
 }
 
-function handleGlobalKeyDownKeyUp(event) {
+function handleGlobalKeyDownAndKeyUp(event) {
     if (document.activeElement?.matches('input, textarea, select')) return
+    const code = event.code
     if (event.type === 'keydown') {
-        if (['KeyK', 'MediaPlayPause'].includes(event.code)) {
+        if (code === 'KeyK' || code === 'MediaPlayPause') {
             allowPauseVideo()
         }
     } else {
-        if (event.code === 'Space') {
+        if (code === 'Space') {
             allowPauseVideo()
         }
     }
@@ -135,7 +136,7 @@ function handleGlobalKeyDownKeyUp(event) {
 
 let video = null
 let fineScrubbing = null
-let isAllowPauseVideo = false
+let pausedByUser = false
 let allowPauseVideoTimeoutId = 0
 
 if (window.MutationObserver) {
@@ -151,8 +152,8 @@ if (window.MutationObserver) {
 }
 skipAd()
 
-window.addEventListener('keydown', handleGlobalKeyDownKeyUp)
-window.addEventListener('keyup', handleGlobalKeyDownKeyUp)
+window.addEventListener('keydown', handleGlobalKeyDownAndKeyUp)
+window.addEventListener('keyup', handleGlobalKeyDownAndKeyUp)
 
 const style = document.createElement('style')
 style.textContent = `
