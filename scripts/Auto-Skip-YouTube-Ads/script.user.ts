@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.4.1
+// @version            4.5.0
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -24,7 +24,9 @@
 // @author             tientq64
 // @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
 // @match              https://www.youtube.com/*
-// @grant              none
+// @grant              GM_getValue
+// @grant              GM_setValue
+// @grant              GM_registerMenuCommand
 // @license            MIT
 // @compatible         firefox
 // @compatible         chrome
@@ -33,6 +35,10 @@
 // @compatible         edge
 // @noframes
 // ==/UserScript==
+
+interface Config {
+	allowedReloadPage: boolean
+}
 
 function skipAd(): void {
 	const player = document.querySelector<HTMLDivElement>('#movie_player')
@@ -74,7 +80,7 @@ function skipAd(): void {
 		'.yt-playability-error-supported-renderers'
 	)
 	if (adBlockerWarningInner) {
-		if (adBlockerWarningInner) {
+		if (config.allowedReloadPage) {
 			adBlockerWarningInner.remove()
 			location.reload()
 		}
@@ -112,7 +118,7 @@ function handleVideoPause(): void {
 		return
 	}
 	if (document.hidden) return
-	if (fineScrubbing?.checkVisibility()) return
+	if (fineScrubbing && fineScrubbing.style.display !== 'none') return
 	if (video) {
 		if (video.duration - video.currentTime < 0.1) return
 		video.play()
@@ -130,6 +136,21 @@ function handleGlobalKeyDownAndKeyUp(event: KeyboardEvent): void {
 		if (code === 'Space') {
 			allowPauseVideo()
 		}
+	}
+}
+
+function saveConfig(): void {
+	GM_setValue('config', config)
+}
+
+const defaultConfig: Config = {
+	allowedReloadPage: true
+}
+
+const config: Config = GM_getValue('config', defaultConfig)
+for (const key in defaultConfig) {
+	if (config[key] == null) {
+		config[key] = defaultConfig[key]
 	}
 }
 
@@ -167,3 +188,11 @@ style.textContent = `
 		display: none !important;
 	}`
 document.head.appendChild(style)
+
+{
+	const title: string = 'Reload the page when there is no other way to skip ads'
+	GM_registerMenuCommand(title, () => {
+		config.allowedReloadPage = !config.allowedReloadPage
+		alert(`${title}: ${config.allowedReloadPage ? 'ENABLED' : 'DISABLED'}`)
+	})
+}

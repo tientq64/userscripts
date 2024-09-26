@@ -14,6 +14,11 @@ If you use AdBlock, please **disable it** for the YouTube site to avoid being de
 
 ## 📑 Changelog (变更日志)
 
+### 4.5.0 - 2024-09-26
+
+- Added option to enable/disable "Reload the page when there is no other way to skip ads" feature in Tampermonkey's menu.\
+![Screenshot](./assets/screenshot-001.png)
+
 ### 4.4.0 - 2024-08-30
 
 - Automatically reload web page when ad blocker warnings appear.
