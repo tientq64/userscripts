@@ -50,7 +50,6 @@ async function handleWatch(path: string, stat: Stats): Promise<void> {
 		parser: 'typescript'
 	})
 	const prodCode: string = `${prodMeta}\n\n${prodJs}`
-
 	writeFileSync(prodPath, prodCode)
 
 	const devMeta: string = bothMeta

@@ -6,18 +6,12 @@ Automatically skip YouTube ads almost instantly. Remove the ad blocker warning p
 
 Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 
-## ⚠️ Problem with AdBlock (AdBlock 问题)
-
-If you use AdBlock, please **disable it** for the YouTube site to avoid being detected as using an ad blocker.
-
-如果您使用 AdBlock，请在 YouTube 网站上**禁用它**，以免被检测为使用广告拦截器。
-
 ## 📑 Changelog (变更日志)
 
 ### 4.5.0 - 2024-09-26
 
 - Added option to enable/disable "Reload the page when there is no other way to skip ads" feature in Tampermonkey's menu.\
-![Screenshot](./assets/screenshot-001.png)
+![Screenshot](https://cdn.jsdelivr.net/gh/tientq64/userscripts/scripts/Auto-Skip-YouTube-Ads/assets/screenshot-001.png)
 
 ### 4.4.0 - 2024-08-30
 
