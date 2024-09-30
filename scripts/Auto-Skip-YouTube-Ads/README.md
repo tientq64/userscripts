@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog (变更日志)
 
+### 4.5.2 - 2024-09-30
+
+- Fix Shorts reload infinitely ([#258626][258626], [#259545][259545], [#261679][261679]).
+
 ### 4.5.0 - 2024-09-26
 
 - Added option to enable/disable "Reload the page when there is no other way to skip ads" feature in Tampermonkey's menu.\
@@ -99,6 +103,9 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
+[258626]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/258626
+[259545]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/259545
+[261679]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/261679
 [257424]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/257424
 [256841]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/256841
 [254113]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/254113
