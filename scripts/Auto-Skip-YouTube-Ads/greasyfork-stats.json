@@ -270,5 +270,153 @@
 	"2024-08-23": {
 		"installs": 121,
 		"update_checks": 2541
+	},
+	"2024-08-24": {
+		"installs": 146,
+		"update_checks": 2558
+	},
+	"2024-08-25": {
+		"installs": 138,
+		"update_checks": 2534
+	},
+	"2024-08-26": {
+		"installs": 141,
+		"update_checks": 2891
+	},
+	"2024-08-27": {
+		"installs": 169,
+		"update_checks": 2990
+	},
+	"2024-08-28": {
+		"installs": 145,
+		"update_checks": 2787
+	},
+	"2024-08-29": {
+		"installs": 152,
+		"update_checks": 2791
+	},
+	"2024-08-30": {
+		"installs": 160,
+		"update_checks": 2962
+	},
+	"2024-08-31": {
+		"installs": 214,
+		"update_checks": 2734
+	},
+	"2024-09-01": {
+		"installs": 199,
+		"update_checks": 2641
+	},
+	"2024-09-02": {
+		"installs": 158,
+		"update_checks": 2971
+	},
+	"2024-09-03": {
+		"installs": 118,
+		"update_checks": 2883
+	},
+	"2024-09-04": {
+		"installs": 127,
+		"update_checks": 3009
+	},
+	"2024-09-05": {
+		"installs": 117,
+		"update_checks": 2909
+	},
+	"2024-09-06": {
+		"installs": 94,
+		"update_checks": 2899
+	},
+	"2024-09-07": {
+		"installs": 107,
+		"update_checks": 2639
+	},
+	"2024-09-08": {
+		"installs": 126,
+		"update_checks": 2647
+	},
+	"2024-09-09": {
+		"installs": 100,
+		"update_checks": 3204
+	},
+	"2024-09-10": {
+		"installs": 94,
+		"update_checks": 3080
+	},
+	"2024-09-11": {
+		"installs": 84,
+		"update_checks": 3118
+	},
+	"2024-09-12": {
+		"installs": 85,
+		"update_checks": 3109
+	},
+	"2024-09-13": {
+		"installs": 80,
+		"update_checks": 3024
+	},
+	"2024-09-14": {
+		"installs": 112,
+		"update_checks": 2835
+	},
+	"2024-09-15": {
+		"installs": 116,
+		"update_checks": 2792
+	},
+	"2024-09-16": {
+		"installs": 84,
+		"update_checks": 3177
+	},
+	"2024-09-17": {
+		"installs": 45,
+		"update_checks": 3154
+	},
+	"2024-09-18": {
+		"installs": 49,
+		"update_checks": 2479
+	},
+	"2024-09-19": {
+		"installs": 38,
+		"update_checks": 0
+	},
+	"2024-09-20": {
+		"installs": 49,
+		"update_checks": 2297
+	},
+	"2024-09-21": {
+		"installs": 52,
+		"update_checks": 3113
+	},
+	"2024-09-22": {
+		"installs": 46,
+		"update_checks": 2940
+	},
+	"2024-09-23": {
+		"installs": 31,
+		"update_checks": 3442
+	},
+	"2024-09-24": {
+		"installs": 55,
+		"update_checks": 3303
+	},
+	"2024-09-25": {
+		"installs": 144,
+		"update_checks": 3373
+	},
+	"2024-09-26": {
+		"installs": 153,
+		"update_checks": 3378
+	},
+	"2024-09-27": {
+		"installs": 115,
+		"update_checks": 3382
+	},
+	"2024-09-28": {
+		"installs": 113,
+		"update_checks": 3065
+	},
+	"2024-09-29": {
+		"installs": 87,
+		"update_checks": 3242
 	}
 }
