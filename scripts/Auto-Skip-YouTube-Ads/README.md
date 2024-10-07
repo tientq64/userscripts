@@ -8,14 +8,18 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog (变更日志)
 
+### 4.6.0 - 2024-10-07
+
+- Support skipping ads on **YouTube Music** (PR [#1]).
+
 ### 4.5.2 - 2024-09-30
 
-- Fix Shorts reload infinitely ([#258626][258626], [#259545][259545], [#261679][261679]).
+- Fix Shorts reload infinitely ([#258626], [#259545], [#261679]).
 
 ### 4.5.0 - 2024-09-26
 
 - Added option to enable/disable "Reload the page when there is no other way to skip ads" feature in Tampermonkey's menu.\
-![Screenshot](https://cdn.jsdelivr.net/gh/tientq64/userscripts/scripts/Auto-Skip-YouTube-Ads/assets/screenshot-001.png)
+![Screenshot-001]
 
 ### 4.4.0 - 2024-08-30
 
@@ -23,12 +27,12 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ### 4.3.13 - 2024-08-26
 
-- Fixed bug where video could not be paused using pause/play key on keyboard or media controls ([#257424][257424]).
+- Fixed bug where video could not be paused using pause/play key on keyboard or media controls ([#257424]).
 - Improve the performance.
 
 ### 4.3.9 - 2024-08-21
 
-- Fix `@match` invalid syntax ([#256841][256841]).
+- Fix `@match` invalid syntax ([#256841]).
 
 ### 4.3.8 - 2024-08-20
 
@@ -36,7 +40,7 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ### 4.3.6 - 2024-08-07
 
-- Fix bug where video rewinds a segment after skipping an ad ([#254113][254113]).
+- Fix bug where video rewinds a segment after skipping an ad ([#254113]).
 
 ### 4.3.4 - 2024-08-02
 
@@ -103,9 +107,13 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
-[258626]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/258626
-[259545]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/259545
-[261679]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/261679
-[257424]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/257424
-[256841]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/256841
-[254113]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/254113
+[#258626]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/258626
+[#259545]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/259545
+[#261679]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/261679
+[#257424]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/257424
+[#256841]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/256841
+[#254113]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/254113
+
+[#1]: https://github.com/tientq64/userscripts/pull/1
+
+[Screenshot-001]: https://cdn.jsdelivr.net/gh/tientq64/userscripts/scripts/Auto-Skip-YouTube-Ads/assets/screenshot-001.png

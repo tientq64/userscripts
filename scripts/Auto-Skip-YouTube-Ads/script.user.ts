@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.5.3
+// @version            4.6.0
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -24,6 +24,7 @@
 // @author             tientq64
 // @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
 // @match              https://www.youtube.com/*
+// @match              https://music.youtube.com/*
 // @grant              GM_getValue
 // @grant              GM_setValue
 // @grant              GM_registerMenuCommand
@@ -82,7 +83,7 @@ function skipAd(): void {
 	}
 
 	const adBlockerWarningInner = document.querySelector<HTMLElement>(
-		'.yt-playability-error-supported-renderers'
+		'.yt-playability-error-supported-renderers:has(.ytd-enforcement-message-view-model)'
 	)
 	if (adBlockerWarningInner) {
 		if (config.allowedReloadPage) {
@@ -116,6 +117,7 @@ function disallowPauseVideo(): void {
 }
 
 function handleVideoPause(): void {
+	if (isYouTubeMusic) return
 	if (pausedByUser) {
 		disallowPauseVideo()
 		return
@@ -129,6 +131,7 @@ function handleVideoPause(): void {
 }
 
 function handleGlobalKeyDownAndKeyUp(event: KeyboardEvent): void {
+	if (isYouTubeMusic) return
 	if (document.activeElement?.matches('input, textarea, select')) return
 	const code: string = event.code
 	if (event.type === 'keydown') {
@@ -156,6 +159,8 @@ for (const key in defaultConfig) {
 		config[key] = defaultConfig[key]
 	}
 }
+
+const isYouTubeMusic: boolean = location.hostname === 'music.youtube.com'
 
 let video: HTMLVideoElement | null = null
 let fineScrubbing: HTMLDivElement | null = null
@@ -198,5 +203,6 @@ document.head.appendChild(style)
 	GM_registerMenuCommand(title, () => {
 		config.allowedReloadPage = !config.allowedReloadPage
 		alert(`${title}: ${config.allowedReloadPage ? 'ENABLED' : 'DISABLED'}`)
+		saveConfig()
 	})
 }
