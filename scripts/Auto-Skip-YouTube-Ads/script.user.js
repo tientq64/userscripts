@@ -23,7 +23,7 @@
 // @description:hi     YouTube विज्ञापनों को तुरंत स्वचालित रूप से छोड़ें। विज्ञापन अवरोधक चेतावनी पॉप-अप को हटाएँ। बहुत हल्का और कुशल।
 // @author             tientq64
 // @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
-// @match              https://www.youtube.com/*
+// @match              https://*.youtube.com/*
 // @grant              GM_getValue
 // @grant              GM_setValue
 // @grant              GM_registerMenuCommand
