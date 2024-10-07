@@ -69,14 +69,16 @@ const endMetaTagRegex: RegExp = /^\/\/ ==\/UserScript==$/m
 const tailwindcssMetaRegex: RegExp = /^\/\/ @resource {5}TAILWINDCSS$/m
 const watcherBlobs: string[] = ['scripts/*/script.user.{ts,tsx}', 'scripts/*/tracking.ts']
 
-const paths: string[] = sync(watcherBlobs)
-for (const path of paths) {
-	const stat: Stats = statSync(path)
-	await handleWatch(path, stat)
-}
+;(async () => {
+	const paths: string[] = sync(watcherBlobs)
+	for (const path of paths) {
+		const stat: Stats = statSync(path)
+		await handleWatch(path, stat)
+	}
 
-const watcher = GlobWatcher(watcherBlobs, {
-	events: ['add', 'change']
-})
-watcher.on('add', handleWatch)
-watcher.on('change', handleWatch)
+	const watcher = GlobWatcher(watcherBlobs, {
+		events: ['add', 'change']
+	})
+	watcher.on('add', handleWatch)
+	watcher.on('change', handleWatch)
+})()

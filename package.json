@@ -1,9 +1,9 @@
 {
 	"name": "userscripts",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"description": "📜 My userscript collection makes life easier and better.",
 	"scripts": {
-		"dev": "concurrently \"tailwindcss -mo .resources/tailwind.min.css --watch\" \"bun watch.ts\""
+		"watch": "concurrently \"tailwindcss -mo .resources/tailwind.min.css --watch\" \"tsx watch.ts\""
 	},
 	"keywords": [
 		"userscript",
@@ -48,6 +48,7 @@
 		"globals": "^15.9.0",
 		"prettier": "3.3.2",
 		"tailwindcss": "3.4.3",
+		"tsx": "^4.19.1",
 		"typescript": "^5.5.4",
 		"typescript-eslint": "^7.18.0"
 	}
