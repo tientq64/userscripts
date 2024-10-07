@@ -7,7 +7,7 @@ declare function GM_getValue<T = GMValue>(name: string): T | undefined
 declare function GM_getValue<T = GMValue>(name: string, defaultValue: T): T
 declare function GM_setValue(name: string, value: GMValue): void
 declare function GM_deleteValue(name: string): void
-declare function GM_listValues(): Promise<string[]>
+declare function GM_listValues(): string[]
 
 declare function GM_setClipboard(text: string): void
 
@@ -16,6 +16,16 @@ declare function GM_registerMenuCommand(
 	commandFunc: (event: MouseEvent | KeyboardEvent) => void,
 	accessKey?: string
 ): void
+
+declare function GM_openInTab(url: string, loadInBackground?: boolean): void
+type GMOpenInTabOptions = {
+	active?: boolean
+	insert?: boolean
+	setParent?: boolean
+	incognito?: boolean
+	loadInBackground?: boolean
+}
+declare function GM_openInTab(url: string, options?: GMOpenInTabOptions): void
 
 declare type ChangeEvent<T> = import('react').ChangeEvent<T>
 
