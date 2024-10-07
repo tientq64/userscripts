@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.6.0
+// @version            4.6.1
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -124,10 +124,9 @@ function handleVideoPause(): void {
 	}
 	if (document.hidden) return
 	if (fineScrubbing && fineScrubbing.style.display !== 'none') return
-	if (video) {
-		if (video.duration - video.currentTime < 0.1) return
-		video.play()
-	}
+	if (video === null) return
+	if (video.duration - video.currentTime < 0.1) return
+	video.play()
 }
 
 function handleGlobalKeyDownAndKeyUp(event: KeyboardEvent): void {
@@ -147,6 +146,21 @@ function handleGlobalKeyDownAndKeyUp(event: KeyboardEvent): void {
 
 function saveConfig(): void {
 	GM_setValue('config', config)
+}
+
+function registerMenuCommands(): void {
+	GM_registerMenuCommand(
+		`Reload page if ad cannot be skipped: ${config.allowedReloadPage ? 'Yes' : 'No'}`,
+		() => {
+			config.allowedReloadPage = !config.allowedReloadPage
+			saveConfig()
+			registerMenuCommands()
+		},
+		{
+			id: 0,
+			autoClose: false
+		}
+	)
 }
 
 const defaultConfig: Config = {
@@ -193,16 +207,10 @@ style.textContent = `
 	ytd-reel-video-renderer:has(.ytd-ad-slot-renderer),
 	tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model),
 	.ytp-suggested-action,
-	.yt-mealbar-promo-renderer {
+	.yt-mealbar-promo-renderer,
+	ytmusic-mealbar-promo-renderer {
 		display: none !important;
 	}`
 document.head.appendChild(style)
 
-{
-	const title: string = 'Reload the page when there is no other way to skip ads'
-	GM_registerMenuCommand(title, () => {
-		config.allowedReloadPage = !config.allowedReloadPage
-		alert(`${title}: ${config.allowedReloadPage ? 'ENABLED' : 'DISABLED'}`)
-		saveConfig()
-	})
-}
+registerMenuCommands()

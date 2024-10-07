@@ -15,7 +15,18 @@ declare function GM_registerMenuCommand(
 	caption: string,
 	commandFunc: (event: MouseEvent | KeyboardEvent) => void,
 	accessKey?: string
-): void
+): number
+interface GMRegisterMenuCommandOptions {
+	id?: number | string
+	accessKey?: string
+	autoClose?: boolean
+	title?: string
+}
+declare function GM_registerMenuCommand(
+	caption: string,
+	commandFunc: (event: MouseEvent | KeyboardEvent) => void,
+	options?: GMRegisterMenuCommandOptions
+): number
 
 declare function GM_openInTab(url: string, loadInBackground?: boolean): void
 type GMOpenInTabOptions = {
