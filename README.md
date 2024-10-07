@@ -22,6 +22,35 @@ Each folder in the [scripts](./scripts) folder contains a `script.user.js` file,
 
 Report bugs [here](https://github.com/tientq64/userscripts/issues).
 
+## 🛠️ Development guide
+
+> This section is for developers. If you are a user, you can skip this section.
+
+Clone this repository:
+```cmd
+git clone https://github.com/tientq64/userscripts.git
+cd userscripts
+```
+
+Install `pnpm` if not installed:
+```cmd
+npm i -g pnpm
+```
+
+Install dependencies:
+```cmd
+pnpm install
+```
+
+Start:
+```cmd
+pnpm run watch
+```
+
+The `script.user.js` file is compiled from the `script.user.ts` file, so do not modify it.
+
+While developing, instead of having to reinstall the `script.user.js` file every time it changes, installing the `dev.user.js` file solves that problem.
+
 ## ⚖️ License
 
 All scripts are licensed under the [MIT](./LICENSE) license.
