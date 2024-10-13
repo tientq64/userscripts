@@ -81,4 +81,6 @@ const watcherBlobs: string[] = ['scripts/*/script.user.{ts,tsx}', 'scripts/*/tra
 	})
 	watcher.on('add', handleWatch)
 	watcher.on('change', handleWatch)
+
+	console.log('Watching...')
 })()
