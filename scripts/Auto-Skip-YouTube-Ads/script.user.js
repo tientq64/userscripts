@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.6.3
+// @version            4.6.4
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -45,7 +45,7 @@ function skipAd() {
     video = null
     fineScrub = document.querySelector('.ytp-fine-scrubbing')
 
-    // Check if the current URL is a YouTube Shorts URL and exit the function if true
+    // Check if the current URL is a YouTube Shorts URL and exit the function if true.
     if (window.location.pathname.startsWith('/shorts/')) return
 
     const player = document.querySelector('#movie_player')
@@ -67,7 +67,9 @@ function skipAd() {
             skipButton.click()
             skipButton.remove()
         }
-        // Otherwise, fast forward to the end of the ad video. Use `9999` instead of `video.duration` to avoid errors when `duration` is not a number.
+        // Otherwise, fast forward to the end of the ad video.
+        // Use `9999` instead of `video.duration` to avoid errors when `duration`
+        // is not a number.
         else if (video && video.src) {
             video.currentTime = 9999
         }
@@ -86,7 +88,9 @@ function skipAd() {
         adBlockerWarningDialog.remove()
     }
 
-    // Handle when ad blocker warning appears inside video player. Currently there is NO WAY TO REMOVE it. Temporary workaround is to reload the page.
+    // Handle when ad blocker warning appears inside video player.
+    // Currently there is NO WAY TO REMOVE it.
+    // Temporary workaround is to reload the page.
     const adBlockerWarningInner = document.querySelector(
         '.yt-playability-error-supported-renderers:has(.ytd-enforcement-message-view-model)'
     )
@@ -103,7 +107,9 @@ function skipAd() {
         playButton.addEventListener('click', allowPauseVideo)
     }
 
-    // Remove short video ads. Can't just use CSS to hide it, because it will cause problems when scrolling to the next video.
+    // Remove short video ads.
+    // Can't just use CSS to hide it, because it will cause problems when scrolling
+    // to the next video.
     const adShortVideos = document.querySelectorAll(
         'ytd-reel-video-renderer:has(.ytd-ad-slot-renderer)'
     )
@@ -122,7 +128,10 @@ function allowPauseVideo() {
 }
 
 /**
- * Pausing the video is not allowed. The purpose is to prevent video from being paused, against the behavior of pausing video when YouTube ad blocking warning dialog appears. Unless certain conditions, such as pausing by user, etc.
+ * Pausing the video is not allowed.
+ * The purpose is to prevent video from being paused, against the behavior of pausing
+ * video when YouTube ad blocking warning dialog appears. Unless certain conditions,
+ * such as pausing by user, etc.
  */
 function disallowPauseVideo() {
     pausedByUser = false
@@ -130,7 +139,8 @@ function disallowPauseVideo() {
 }
 
 /**
- * Handle when video is paused. If certain conditions are not met, it will continue playing.
+ * Handle when video is paused.
+ * If certain conditions are not met, it will continue playing.
  */
 function handleVideoPause() {
     if (isYouTubeMusic) return
