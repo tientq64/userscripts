@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.6.4
+// @version            4.7.0
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -95,7 +95,7 @@ function skipAd() {
         '.yt-playability-error-supported-renderers:has(.ytd-enforcement-message-view-model)'
     )
     if (adBlockerWarningInner) {
-        if (config.allowedReloadPage) {
+        if (checkCanReloadPage()) {
             adBlockerWarningInner.remove()
             location.reload()
         }
@@ -116,6 +116,36 @@ function skipAd() {
     for (const adShortVideo of adShortVideos) {
         adShortVideo.remove()
     }
+}
+
+/**
+ * Check if the user is focused on the input.
+ */
+function checkEnteringInput() {
+    if (document.activeElement === null) {
+        return false
+    }
+    return document.activeElement.matches('input, textarea, select')
+}
+
+/**
+ * Check if the page can be reloaded.
+ */
+function checkCanReloadPage() {
+    if (!config.allowedReloadPage) {
+        return false
+    }
+    if (!config.dontReloadWhileBusy) {
+        return true
+    }
+    if (checkEnteringInput()) {
+        return false
+    }
+    // Do not reload while the user is reading comments.
+    if (document.documentElement.scrollTop > 200) {
+        return false
+    }
+    return true
 }
 
 /**
@@ -160,7 +190,7 @@ function handleVideoPause() {
  */
 function handleGlobalKeyDownAndKeyUp(event) {
     if (isYouTubeMusic) return
-    if (document.activeElement?.matches('input, textarea, select')) return
+    if (checkEnteringInput()) return
     const code = event.code
     if (event.type === 'keydown') {
         if (code === 'KeyK' || code === 'MediaPlayPause') {
@@ -184,25 +214,74 @@ function saveConfig() {
  * Register menu commands, or update the menu.
  */
 function registerMenuCommands() {
-    GM_registerMenuCommand(
-        `Reload page if ad cannot be skipped: ${config.allowedReloadPage ? 'Yes' : 'No'}`,
-        () => {
-            config.allowedReloadPage = !config.allowedReloadPage
-            saveConfig()
-            registerMenuCommands()
-        },
-        {
-            id: 0,
-            autoClose: false
-        }
-    )
+    {
+        const status = config.allowedReloadPage ? 'Yes' : 'No'
+        GM_registerMenuCommand(
+            `Reload page if ad cannot be skipped: ${status}`,
+            () => {
+                config.allowedReloadPage = !config.allowedReloadPage
+                saveConfig()
+                updateMenuCommands()
+            },
+            {
+                id: 0,
+                autoClose: false
+            }
+        )
+    }
+    {
+        const status = config.dontReloadWhileBusy ? 'Yes' : 'No'
+        GM_registerMenuCommand(
+            `Don't reload while the user is busy: ${status}`,
+            () => {
+                config.dontReloadWhileBusy = !config.dontReloadWhileBusy
+                saveConfig()
+                updateMenuCommands()
+            },
+            {
+                id: 1,
+                autoClose: false
+            }
+        )
+    }
+}
+
+/**
+ * Update menu commands.
+ * @alias registerMenuCommands
+ */
+function updateMenuCommands() {
+    registerMenuCommands()
+}
+
+/**
+ * Add CSS hides some ad elements on the page.
+ */
+function addCSSHideAds() {
+    const style = document.createElement('style')
+    style.textContent = `
+    #player-ads,
+    #masthead-ad,
+    #panels:has(ytd-ads-engagement-panel-content-renderer),
+    ytd-ad-slot-renderer,
+    ytd-rich-item-renderer:has(.ytd-ad-slot-renderer),
+    ytd-rich-section-renderer:has(.ytd-statement-banner-renderer),
+    ytd-reel-video-renderer:has(.ytd-ad-slot-renderer),
+    tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model),
+    .ytp-suggested-action,
+    .yt-mealbar-promo-renderer,
+    ytmusic-mealbar-promo-renderer {
+        display: none !important;
+    }`
+    document.head.appendChild(style)
 }
 
 /**
  * Default configuration.
  */
 const defaultConfig = {
-    allowedReloadPage: true
+    allowedReloadPage: true,
+    dontReloadWhileBusy: true
 }
 
 // Load configuration.
@@ -242,27 +321,10 @@ if (window.MutationObserver) {
 else {
     window.setInterval(skipAd, 500)
 }
-skipAd()
 
 window.addEventListener('keydown', handleGlobalKeyDownAndKeyUp)
 window.addEventListener('keyup', handleGlobalKeyDownAndKeyUp)
 
-// CSS hides some ad elements on the page.
-const style = document.createElement('style')
-style.textContent = `
-    #player-ads,
-    #masthead-ad,
-    #panels:has(ytd-ads-engagement-panel-content-renderer),
-    ytd-ad-slot-renderer,
-    ytd-rich-item-renderer:has(.ytd-ad-slot-renderer),
-    ytd-rich-section-renderer:has(.ytd-statement-banner-renderer),
-    ytd-reel-video-renderer:has(.ytd-ad-slot-renderer),
-    tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model),
-    .ytp-suggested-action,
-    .yt-mealbar-promo-renderer,
-    ytmusic-mealbar-promo-renderer {
-        display: none !important;
-    }`
-document.head.appendChild(style)
-
+addCSSHideAds()
 registerMenuCommands()
+skipAd()

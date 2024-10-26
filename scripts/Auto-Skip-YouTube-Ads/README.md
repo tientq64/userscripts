@@ -8,9 +8,13 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog (变更日志)
 
+### 4.7.0 - 2024-10-26
+
+-   Add option "Don't reload while the user is busy" in Tampermonkey's menu to avoid reloading page when user is busy doing something, like reading comments, entering text. Enabled by default.
+
 ### 4.6.2 - 2024-10-13
 
--   Improved hiding of ad banners.
+-   Improve hiding of ad banners.
 
 ### 4.6.0 - 2024-10-07
 
@@ -22,7 +26,7 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ### 4.5.0 - 2024-09-26
 
--   Added option to enable/disable "Reload the page when there is no other way to skip ads" feature in Tampermonkey's menu.\
+-   Add option to enable/disable "Reload the page when there is no other way to skip ads" feature in Tampermonkey's menu. Enabled by default.\
     ![Screenshot-001]
 
 ### 4.4.0 - 2024-08-30
