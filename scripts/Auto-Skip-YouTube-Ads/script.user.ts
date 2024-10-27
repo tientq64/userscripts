@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.7.0
+// @version            4.7.1
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -268,21 +268,32 @@ function updateMenuCommands(): void {
  * Add CSS hides some ad elements on the page.
  */
 function addCSSHideAds(): void {
+	const selectors: string[] = [
+		// Ad banner in the upper right corner, above the video playlist.
+		'#player-ads',
+		// ...
+		'#masthead-ad',
+		// Temporarily comment this selector to fix issue [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
+		// '#panels:has(ytd-ads-engagement-panel-content-renderer)',
+		'ytd-ad-slot-renderer',
+		// Sponsored ad video item on home page.
+		'ytd-rich-item-renderer:has(.ytd-ad-slot-renderer)',
+		// ...
+		'ytd-rich-section-renderer:has(.ytd-statement-banner-renderer)',
+		// Ad video on YouTube Short.
+		'ytd-reel-video-renderer:has(.ytd-ad-slot-renderer)',
+		// Ad blocker warning dialog.
+		'tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model)',
+		// ...
+		'.ytp-suggested-action',
+		// ...
+		'.yt-mealbar-promo-renderer',
+		// ...
+		'ytmusic-mealbar-promo-renderer'
+	]
+	const css: string = `${selectors.join(',')}{display:none!important}`
 	const style: HTMLStyleElement = document.createElement('style')
-	style.textContent = `
-	#player-ads,
-	#masthead-ad,
-	#panels:has(ytd-ads-engagement-panel-content-renderer),
-	ytd-ad-slot-renderer,
-	ytd-rich-item-renderer:has(.ytd-ad-slot-renderer),
-	ytd-rich-section-renderer:has(.ytd-statement-banner-renderer),
-	ytd-reel-video-renderer:has(.ytd-ad-slot-renderer),
-	tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model),
-	.ytp-suggested-action,
-	.yt-mealbar-promo-renderer,
-	ytmusic-mealbar-promo-renderer {
-		display: none !important;
-	}`
+	style.textContent = css
 	document.head.appendChild(style)
 }
 
