@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.7.1
+// @version            4.7.2
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -178,6 +178,14 @@ function disallowPauseVideo(): void {
 	window.clearTimeout(allowPauseVideoTimeoutId)
 }
 
+function handleGlobalBlur(): void {
+	isTabBlurred = true
+}
+
+function handleGlobalFocus(): void {
+	isTabBlurred = false
+}
+
 /**
  * Handle when video is paused.
  * If certain conditions are not met, it will continue playing.
@@ -189,6 +197,7 @@ function handleVideoPause(): void {
 		return
 	}
 	if (document.hidden) return
+	if (isTabBlurred) return
 	if (fineScrub && fineScrub.style.display !== 'none') return
 	if (video === null) return
 	if (video.duration - video.currentTime < 0.1) return
@@ -271,25 +280,26 @@ function addCSSHideAds(): void {
 	const selectors: string[] = [
 		// Ad banner in the upper right corner, above the video playlist.
 		'#player-ads',
-		// ...
+		//
 		'#masthead-ad',
-		// Temporarily comment this selector to fix issue [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
+		// Temporarily comment out this selector to fix issue [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
 		// '#panels:has(ytd-ads-engagement-panel-content-renderer)',
 		'ytd-ad-slot-renderer',
-		// Sponsored ad video item on home page.
+		// Sponsored ad video items on home page.
 		'ytd-rich-item-renderer:has(.ytd-ad-slot-renderer)',
-		// ...
+		//
 		'ytd-rich-section-renderer:has(.ytd-statement-banner-renderer)',
-		// Ad video on YouTube Short.
+		// Ad videos on YouTube Short.
 		'ytd-reel-video-renderer:has(.ytd-ad-slot-renderer)',
 		// Ad blocker warning dialog.
 		'tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model)',
-		// ...
+		//
 		'.ytp-suggested-action',
-		// ...
 		'.yt-mealbar-promo-renderer',
-		// ...
-		'ytmusic-mealbar-promo-renderer'
+		// YouTube Music Premium trial promotion dialog, bottom left corner.
+		'ytmusic-mealbar-promo-renderer',
+		// YouTube Music Premium trial promotion banner on home page.
+		'ytmusic-statement-banner-renderer'
 	]
 	const css: string = `${selectors.join(',')}{display:none!important}`
 	const style: HTMLStyleElement = document.createElement('style')
@@ -314,7 +324,7 @@ for (const key in defaultConfig) {
 }
 
 /**
- * Is the current page YouTube Music?
+ * Is the current page YouTube Music.
  */
 const isYouTubeMusic: boolean = location.hostname === 'music.youtube.com'
 /**
@@ -323,9 +333,13 @@ const isYouTubeMusic: boolean = location.hostname === 'music.youtube.com'
 let video: HTMLVideoElement | null = null
 let fineScrub: HTMLDivElement | null = null
 /**
- * Is the video paused by the user, not paused by YouTube's ad blocker warning dialog?
+ * Is the video paused by the user, not paused by YouTube's ad blocker warning dialog.
  */
 let pausedByUser: boolean = false
+/**
+ * Is the current tab blurred.
+ */
+let isTabBlurred: boolean = false
 let allowPauseVideoTimeoutId: number = 0
 
 // Observe DOM changes to detect ads.
@@ -343,7 +357,9 @@ else {
 	window.setInterval(skipAd, 500)
 }
 
-window.addEventListener('keydown', handleGlobalKeyDownAndKeyUp)
+window.addEventListener('blur', handleGlobalBlur)
+window.addEventListener('focus', handleGlobalFocus)
+window.addEventListener('keyup', handleGlobalKeyDownAndKeyUp)
 window.addEventListener('keyup', handleGlobalKeyDownAndKeyUp)
 
 addCSSHideAds()

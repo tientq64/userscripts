@@ -1,4 +1,4 @@
-## 📰 Introduction (介绍)
+## 📰 Introduction
 
 Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 
@@ -6,7 +6,7 @@ Automatically skip YouTube ads almost instantly. Remove the ad blocker warning p
 
 Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 
-## 📑 Changelog (变更日志)
+## 📑 Changelog
 
 ### 4.7.0 - 2024-10-26
 
