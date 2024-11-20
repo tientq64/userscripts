@@ -10,7 +10,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.7.3
+// @version            4.7.4
 // @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
 // @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
@@ -60,7 +60,8 @@ function skipAd() {
         const skipButton = document.querySelector(`
             .ytp-skip-ad-button,
             .ytp-ad-skip-button,
-            .ytp-ad-skip-button-modern
+            .ytp-ad-skip-button-modern,
+            .ytp-ad-survey-answer-button
         `)
         // Click the skip ad button if available.
         if (skipButton) {
@@ -270,6 +271,7 @@ function addCSSHideAds() {
     const selectors = [
         // Ad banner in the upper right corner, above the video playlist.
         '#player-ads',
+        '#panels:has(ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"])',
         //
         '#masthead-ad',
         // Temporarily comment out this selector to fix issue [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
