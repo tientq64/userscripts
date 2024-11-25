@@ -6,21 +6,23 @@
 // @name:ja            YouTube 広告を自動スキップ
 // @name:ko            YouTube 광고 자동 건너뛰기
 // @name:es            Saltar Automáticamente Anuncios De YouTube
+// @name:pt-BR         Pular Automaticamente Anúncios Do YouTube
 // @name:ru            Автоматический Пропуск Рекламы На YouTube
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.7.4
-// @description        Automatically skip YouTube ads instantly. Remove the ad blocker warning pop-up. Very lightweight and efficient.
-// @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo. Rất nhẹ và hiệu quả.
-// @description:zh-CN  自动立即跳过 YouTube 广告。删除广告拦截器警告弹出窗口。非常轻量且高效。
-// @description:zh-TW  立即自動跳過 YouTube 廣告。刪除廣告攔截器警告彈出視窗。非常輕巧且高效。
-// @description:ja     YouTube 広告を即座に自動的にスキップします。広告ブロッカーの警告ポップアップを削除します。非常に軽量で効率的です。
-// @description:ko     YouTube 광고를 즉시 자동으로 건너뜁니다. 광고 차단 경고 팝업을 제거하세요. 매우 가볍고 효율적입니다.
-// @description:es     Omita automáticamente los anuncios de YouTube al instante. Elimine la ventana emergente de advertencia del bloqueador de anuncios. Muy ligero y eficiente.
-// @description:ru     Автоматически пропускайте рекламу YouTube мгновенно. Удалите всплывающее окно с предупреждением о блокировке рекламы. Очень легкий и эффективный.
-// @description:id     Lewati iklan YouTube secara otomatis secara instan. Hapus pop-up peringatan pemblokir iklan. Sangat ringan dan efisien.
-// @description:hi     YouTube विज्ञापनों को तुरंत स्वचालित रूप से छोड़ें। विज्ञापन अवरोधक चेतावनी पॉप-अप को हटाएँ। बहुत हल्का और कुशल।
+// @version            4.8.0
+// @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
+// @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
+// @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
+// @description:zh-TW  幾乎立即自動跳過 YouTube 廣告。刪除廣告攔截器警告彈出視窗。
+// @description:ja     YouTube 広告をほぼ瞬時に自動的にスキップします。広告ブロッカーの警告ポップアップを削除します。
+// @description:ko     YouTube 광고를 거의 즉시 자동으로 건너뜁니다. 광고 차단 경고 팝업을 제거합니다.
+// @description:es     Omite automáticamente los anuncios de YouTube casi al instante. Elimina la ventana emergente de advertencia del bloqueador de anuncios.
+// @description:pt-BR  Pule automaticamente os anúncios do YouTube quase instantaneamente. Remova o pop-up de aviso do bloqueador de anúncios.
+// @description:ru     Автоматически пропускайте рекламу YouTube почти мгновенно. Уберите всплывающее предупреждение о блокировщике рекламы.
+// @description:id     Lewati iklan YouTube secara otomatis hampir seketika. Hapus pop-up peringatan pemblokir iklan.
+// @description:hi     YouTube विज्ञापनों को लगभग तुरंत ही स्वचालित रूप से छोड़ दें। विज्ञापन अवरोधक चेतावनी पॉप-अप हटाएँ।
 // @author             tientq64
 // @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
 // @match              https://www.youtube.com/*
@@ -49,7 +51,6 @@ function skipAd() {
     if (window.location.pathname.startsWith('/shorts/')) return
 
     const player = document.querySelector('#movie_player')
-    let hasAd = false
 
     if (player) {
         hasAd = player.classList.contains('ad-showing')
@@ -79,6 +80,7 @@ function skipAd() {
     if (video) {
         video.addEventListener('pause', handleVideoPause)
         video.addEventListener('mouseup', allowPauseVideo)
+        video.addEventListener('timeupdate', handleVideoTimeUpdate)
     }
 
     // Remove ad blocker warning dialog if it appears.
@@ -98,7 +100,10 @@ function skipAd() {
     if (adBlockerWarningInner) {
         if (checkCanReloadPage()) {
             adBlockerWarningInner.remove()
-            location.reload()
+            const params = new URLSearchParams(location.search)
+            params.set('t', Math.floor(currentVideoTime) + 's')
+            const newUrl = location.origin + location.pathname + '?' + params.toString()
+            location.replace(newUrl)
         }
     }
 
@@ -193,6 +198,11 @@ function handleVideoPause() {
     if (video === null) return
     if (video.duration - video.currentTime < 0.1) return
     video.play()
+}
+
+function handleVideoTimeUpdate() {
+    if (hasAd || video === null) return
+    currentVideoTime = video.currentTime
 }
 
 /**
@@ -324,6 +334,8 @@ const isYouTubeMusic = location.hostname === 'music.youtube.com'
  */
 let video = null
 let fineScrub = null
+let hasAd = false
+let currentVideoTime = 0
 /**
  * Is the video paused by the user, not paused by YouTube's ad blocker warning dialog.
  */

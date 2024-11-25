@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog
 
+### 4.8.0 - 2024-11-26
+
+-   The current video's timestamp will be preserved when the page is reloaded ([#267857]).
+
 ### 4.7.4 - 2024-11-20
 
 -   Improved ad skipping.
@@ -119,6 +123,7 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
+[#267857]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/267857
 [#258626]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/258626
 [#259545]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/259545
 [#261679]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/261679
