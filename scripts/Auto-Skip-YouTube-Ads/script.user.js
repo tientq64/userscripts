@@ -11,7 +11,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.8.0
+// @version            4.8.2
 // @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
@@ -101,7 +101,9 @@ function skipAd() {
         if (checkCanReloadPage()) {
             adBlockerWarningInner.remove()
             const params = new URLSearchParams(location.search)
-            params.set('t', Math.floor(currentVideoTime) + 's')
+            if (currentVideoTime > 0) {
+                params.set('t', Math.floor(currentVideoTime) + 's')
+            }
             const newUrl = location.origin + location.pathname + '?' + params.toString()
             location.replace(newUrl)
         }
@@ -295,6 +297,8 @@ function addCSSHideAds() {
         'ytd-reel-video-renderer:has(.ytd-ad-slot-renderer)',
         // Ad blocker warning dialog.
         'tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model)',
+        // Survey dialog on home page, located at bottom right.
+        'tp-yt-paper-dialog:has(> ytd-checkbox-survey-renderer)',
         //
         '.ytp-suggested-action',
         '.yt-mealbar-promo-renderer',
