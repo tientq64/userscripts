@@ -4,5 +4,7 @@
 	"singleQuote": true,
 	"tabWidth": 4,
 	"trailingComma": "none",
-	"useTabs": true
+	"useTabs": true,
+	"plugins": ["prettier-plugin-jsdoc"],
+	"jsdocCommentLineStrategy": "multiline"
 }

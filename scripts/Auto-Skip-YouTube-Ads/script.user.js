@@ -11,7 +11,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.8.2
+// @version            4.8.3
 // @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
@@ -45,7 +45,7 @@
  */
 function skipAd() {
     video = null
-    fineScrub = document.querySelector('.ytp-fine-scrubbing')
+    fineScrubber = document.querySelector('.ytp-fine-scrubbing')
 
     // Check if the current URL is a YouTube Shorts URL and exit the function if true.
     if (window.location.pathname.startsWith('/shorts/')) return
@@ -70,8 +70,7 @@ function skipAd() {
             skipButton.remove()
         }
         // Otherwise, fast forward to the end of the ad video.
-        // Use `9999` instead of `video.duration` to avoid errors when `duration`
-        // is not a number.
+        // Use `9999` instead of `video.duration` to avoid errors when `duration` is not a number.
         else if (video && video.src) {
             video.currentTime = 9999
         }
@@ -92,8 +91,7 @@ function skipAd() {
     }
 
     // Handle when ad blocker warning appears inside video player.
-    // Currently there is NO WAY TO REMOVE it.
-    // Temporary workaround is to reload the page.
+    // Currently there is NO WAY TO REMOVE it. Temporary workaround is to reload the page.
     const adBlockerWarningInner = document.querySelector(
         '.yt-playability-error-supported-renderers:has(.ytd-enforcement-message-view-model)'
     )
@@ -116,8 +114,7 @@ function skipAd() {
     }
 
     // Remove short video ads.
-    // Can't just use CSS to hide it, because it will cause problems when scrolling
-    // to the next video.
+    // Note: Do this because can't just use CSS to hide it, as it will cause problems when scrolling to the next video.
     const adShortVideos = document.querySelectorAll(
         'ytd-reel-video-renderer:has(.ytd-ad-slot-renderer)'
     )
@@ -166,37 +163,42 @@ function allowPauseVideo() {
 }
 
 /**
- * Pausing the video is not allowed.
- * The purpose is to prevent video from being paused, against the behavior of pausing
- * video when YouTube ad blocking warning dialog appears. Unless certain conditions,
- * such as pausing by user, etc.
+ * Pausing the video is not allowed. The purpose is to prevent video from being paused, against the
+ * behavior of pausing video when YouTube ad blocking warning dialog appears. Unless certain
+ * conditions, such as pausing by user, etc.
  */
 function disallowPauseVideo() {
     pausedByUser = false
     window.clearTimeout(allowPauseVideoTimeoutId)
 }
 
-function handleGlobalBlur() {
+function handleWindowBlur() {
     isTabBlurred = true
 }
 
-function handleGlobalFocus() {
+function handleWindowFocus() {
     isTabBlurred = false
 }
 
 /**
- * Handle when video is paused.
- * If certain conditions are not met, it will continue playing.
+ * Handle when video is paused. If certain conditions are not met, it will continue playing.
+ * Returning early in this function means the video should be paused as it should be.
  */
 function handleVideoPause() {
     if (isYouTubeMusic) return
+
+    // If it was stopped by the user, it's ok, let the video pause as it should, and exit the function.
     if (pausedByUser) {
         disallowPauseVideo()
         return
     }
+
+    // The video will pause normally if the tab is not focused. This is to allow for pausing the video via the media controller (of the browser or operating system), etc.
+    // Note: Although this also puts YouTube at risk of pausing the video to annoy you, but it is an acceptable temporary solution.
     if (document.hidden) return
     if (isTabBlurred) return
-    if (fineScrub && fineScrub.style.display !== 'none') return
+
+    if (fineScrubber && fineScrubber.style.display !== 'none') return
     if (video === null) return
     if (video.duration - video.currentTime < 0.1) return
     video.play()
@@ -210,7 +212,7 @@ function handleVideoTimeUpdate() {
 /**
  * Handle both keyboard press or release events.
  */
-function handleGlobalKeyDownAndKeyUp(event) {
+function handleWindowKeyDownAndKeyUp(event) {
     if (isYouTubeMusic) return
     if (checkEnteringInput()) return
     const code = event.code
@@ -270,6 +272,7 @@ function registerMenuCommands() {
 
 /**
  * Update menu commands.
+ *
  * @alias registerMenuCommands
  */
 function updateMenuCommands() {
@@ -284,26 +287,35 @@ function addCSSHideAds() {
         // Ad banner in the upper right corner, above the video playlist.
         '#player-ads',
         '#panels:has(ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"])',
-        //
+
         '#masthead-ad',
-        // Temporarily comment out this selector to fix issue [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
+
+        // Temporarily comment out this selector to fix issue
+        // [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
         // '#panels:has(ytd-ads-engagement-panel-content-renderer)',
+
         'ytd-ad-slot-renderer',
+
         // Sponsored ad video items on home page.
         'ytd-rich-item-renderer:has(.ytd-ad-slot-renderer)',
-        //
+
         'ytd-rich-section-renderer:has(.ytd-statement-banner-renderer)',
+
         // Ad videos on YouTube Short.
         'ytd-reel-video-renderer:has(.ytd-ad-slot-renderer)',
+
         // Ad blocker warning dialog.
         'tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model)',
+
         // Survey dialog on home page, located at bottom right.
         'tp-yt-paper-dialog:has(> ytd-checkbox-survey-renderer)',
-        //
+
         '.ytp-suggested-action',
         '.yt-mealbar-promo-renderer',
+
         // YouTube Music Premium trial promotion dialog, bottom left corner.
         'ytmusic-mealbar-promo-renderer',
+
         // YouTube Music Premium trial promotion banner on home page.
         'ytmusic-statement-banner-renderer'
     ]
@@ -333,21 +345,26 @@ for (const key in defaultConfig) {
  * Is the current page YouTube Music.
  */
 const isYouTubeMusic = location.hostname === 'music.youtube.com'
+
 /**
  * Current video element.
  */
 let video = null
-let fineScrub = null
+
+let fineScrubber = null
 let hasAd = false
 let currentVideoTime = 0
+
 /**
  * Is the video paused by the user, not paused by YouTube's ad blocker warning dialog.
  */
 let pausedByUser = false
+
 /**
  * Is the current tab blurred.
  */
 let isTabBlurred = false
+
 let allowPauseVideoTimeoutId = 0
 
 // Observe DOM changes to detect ads.
@@ -365,10 +382,10 @@ else {
     window.setInterval(skipAd, 500)
 }
 
-window.addEventListener('blur', handleGlobalBlur)
-window.addEventListener('focus', handleGlobalFocus)
-window.addEventListener('keydown', handleGlobalKeyDownAndKeyUp)
-window.addEventListener('keyup', handleGlobalKeyDownAndKeyUp)
+window.addEventListener('blur', handleWindowBlur)
+window.addEventListener('focus', handleWindowFocus)
+window.addEventListener('keydown', handleWindowKeyDownAndKeyUp)
+window.addEventListener('keyup', handleWindowKeyDownAndKeyUp)
 
 addCSSHideAds()
 registerMenuCommands()
