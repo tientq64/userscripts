@@ -8,6 +8,13 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog
 
+### 5.0.0 - 2024-12-25
+
+_Merry Christmas!_
+
+-   **No need to reload the page** when there is no way to skip the ad anymore 🤯
+-   Configuration removed, no longer needed.
+
 ### 4.8.2 - 2024-12-21
 
 -   Fix timestamp loss when reloading.

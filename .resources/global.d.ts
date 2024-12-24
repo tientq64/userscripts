@@ -46,4 +46,9 @@ declare const immer: Immer
 declare type Lodash = import('lodash').LoDashStatic
 declare const _: Lodash
 
-declare const unsafeWindow: Window
+interface UnsafeWindow extends Window {}
+declare const unsafeWindow: UnsafeWindow
+
+interface HTMLYtdPlayerElement extends HTMLElement {
+	loadVideoWithPlayerVars(options: { videoId: string; start?: number }): void
+}

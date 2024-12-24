@@ -11,7 +11,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            4.8.3
+// @version            5.0.0
 // @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
@@ -27,9 +27,7 @@
 // @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
 // @match              https://www.youtube.com/*
 // @match              https://music.youtube.com/*
-// @grant              GM_getValue
-// @grant              GM_setValue
-// @grant              GM_registerMenuCommand
+// @grant              none
 // @license            MIT
 // @compatible         firefox
 // @compatible         chrome
@@ -50,11 +48,11 @@ function skipAd() {
     // Check if the current URL is a YouTube Shorts URL and exit the function if true.
     if (window.location.pathname.startsWith('/shorts/')) return
 
-    const player = document.querySelector('#movie_player')
+    const moviePlayer = document.querySelector('#movie_player')
 
-    if (player) {
-        hasAd = player.classList.contains('ad-showing')
-        video = player.querySelector('video.html5-main-video')
+    if (moviePlayer) {
+        hasAd = moviePlayer.classList.contains('ad-showing')
+        video = moviePlayer.querySelector('video.html5-main-video')
     }
 
     if (hasAd) {
@@ -91,19 +89,14 @@ function skipAd() {
     }
 
     // Handle when ad blocker warning appears inside video player.
-    // Currently there is NO WAY TO REMOVE it. Temporary workaround is to reload the page.
-    const adBlockerWarningInner = document.querySelector(
-        '.yt-playability-error-supported-renderers:has(.ytd-enforcement-message-view-model)'
-    )
-    if (adBlockerWarningInner) {
-        if (checkCanReloadPage()) {
-            adBlockerWarningInner.remove()
-            const params = new URLSearchParams(location.search)
-            if (currentVideoTime > 0) {
-                params.set('t', Math.floor(currentVideoTime) + 's')
-            }
-            const newUrl = location.origin + location.pathname + '?' + params.toString()
-            location.replace(newUrl)
+    if (!isAdBlockerWarningVisible) {
+        const adBlockerWarningInner = document.querySelector(
+            '.yt-playability-error-supported-renderers:has(.ytd-enforcement-message-view-model)'
+        )
+        if (adBlockerWarningInner) {
+            isAdBlockerWarningVisible = true
+            document.addEventListener('yt-navigate-finish', handleYouTubeNavigateFinish)
+            replaceCurrentVideo()
         }
     }
 
@@ -123,6 +116,12 @@ function skipAd() {
     }
 }
 
+function getCurrentVideoId() {
+    const params = new URLSearchParams(location.search)
+    const videoId = params.get('v')
+    return videoId
+}
+
 /**
  * Check if the user is focused on the input.
  */
@@ -131,26 +130,6 @@ function checkEnteringInput() {
         return false
     }
     return document.activeElement.matches('input, textarea, select')
-}
-
-/**
- * Check if the page can be reloaded.
- */
-function checkCanReloadPage() {
-    if (!config.allowedReloadPage) {
-        return false
-    }
-    if (!config.dontReloadWhileBusy) {
-        return true
-    }
-    if (checkEnteringInput()) {
-        return false
-    }
-    // Do not reload while the user is reading comments.
-    if (document.documentElement.scrollTop > 200) {
-        return false
-    }
-    return true
 }
 
 /**
@@ -194,13 +173,15 @@ function handleVideoPause() {
     }
 
     // The video will pause normally if the tab is not focused. This is to allow for pausing the video via the media controller (of the browser or operating system), etc.
-    // Note: Although this also puts YouTube at risk of pausing the video to annoy you, but it is an acceptable temporary solution.
+    // Note: While this also gives YouTube the opportunity to pause videos to annoy users, it's an acceptable trade-off.
     if (document.hidden) return
     if (isTabBlurred) return
 
     if (fineScrubber && fineScrubber.style.display !== 'none') return
     if (video === null) return
     if (video.duration - video.currentTime < 0.1) return
+
+    // This is YouTube's disruptive behavior towards users, so the video should continue to play as normal.
     video.play()
 }
 
@@ -227,63 +208,35 @@ function handleWindowKeyDownAndKeyUp(event) {
     }
 }
 
-/**
- * Save current configuration.
- */
-function saveConfig() {
-    GM_setValue('config', config)
+function handleYouTubeNavigateFinish() {
+    currentVideoTime = 0
+    replaceCurrentVideo()
 }
 
-/**
- * Register menu commands, or update the menu.
- */
-function registerMenuCommands() {
-    {
-        const status = config.allowedReloadPage ? 'Yes' : 'No'
-        GM_registerMenuCommand(
-            `Reload page if ad cannot be skipped: ${status}`,
-            () => {
-                config.allowedReloadPage = !config.allowedReloadPage
-                saveConfig()
-                updateMenuCommands()
-            },
-            {
-                id: 0,
-                autoClose: false
-            }
-        )
-    }
-    {
-        const status = config.dontReloadWhileBusy ? 'Yes' : 'No'
-        GM_registerMenuCommand(
-            `Don't reload while the user is busy: ${status}`,
-            () => {
-                config.dontReloadWhileBusy = !config.dontReloadWhileBusy
-                saveConfig()
-                updateMenuCommands()
-            },
-            {
-                id: 1,
-                autoClose: false
-            }
-        )
+async function replaceCurrentVideo() {
+    const start = Math.floor(currentVideoTime)
+    for (let i = 0; i < 8; i++) {
+        await waitFor(500)
+        const videoId = getCurrentVideoId()
+        const player = document.querySelector('#ytd-player')
+        if (video && !video.src && videoId && player) {
+            if (player === null) return
+            player.loadVideoWithPlayerVars({ videoId, start })
+        }
     }
 }
 
-/**
- * Update menu commands.
- *
- * @alias registerMenuCommands
- */
-function updateMenuCommands() {
-    registerMenuCommands()
+function waitFor(millis) {
+    return new Promise((resolve) => {
+        window.setTimeout(resolve, millis)
+    })
 }
 
 /**
  * Add CSS hides some ad elements on the page.
  */
-function addCSSHideAds() {
-    const selectors = [
+function addCss() {
+    const hideCssSelector = [
         // Ad banner in the upper right corner, above the video playlist.
         '#player-ads',
         '#panels:has(ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"])',
@@ -307,6 +260,9 @@ function addCSSHideAds() {
         // Ad blocker warning dialog.
         'tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model)',
 
+        // Ad blocker warning inside the player.
+        'yt-playability-error-supported-renderers#error-screen',
+
         // Survey dialog on home page, located at bottom right.
         'tp-yt-paper-dialog:has(> ytd-checkbox-survey-renderer)',
 
@@ -318,27 +274,14 @@ function addCSSHideAds() {
 
         // YouTube Music Premium trial promotion banner on home page.
         'ytmusic-statement-banner-renderer'
-    ]
-    const css = `${selectors.join(',')}{display:none!important}`
+    ].join(',')
+    const css = `
+        #ytd-player { visibility: visible !important }
+        ${hideCssSelector} { display: none !important }
+    `
     const style = document.createElement('style')
     style.textContent = css
     document.head.appendChild(style)
-}
-
-/**
- * Default configuration.
- */
-const defaultConfig = {
-    allowedReloadPage: true,
-    dontReloadWhileBusy: true
-}
-
-// Load configuration.
-const config = GM_getValue('config', defaultConfig)
-for (const key in defaultConfig) {
-    if (config[key] == null) {
-        config[key] = defaultConfig[key]
-    }
 }
 
 /**
@@ -366,6 +309,7 @@ let pausedByUser = false
 let isTabBlurred = false
 
 let allowPauseVideoTimeoutId = 0
+let isAdBlockerWarningVisible = false
 
 // Observe DOM changes to detect ads.
 if (window.MutationObserver) {
@@ -387,6 +331,5 @@ window.addEventListener('focus', handleWindowFocus)
 window.addEventListener('keydown', handleWindowKeyDownAndKeyUp)
 window.addEventListener('keyup', handleWindowKeyDownAndKeyUp)
 
-addCSSHideAds()
-registerMenuCommands()
+addCss()
 skipAd()
