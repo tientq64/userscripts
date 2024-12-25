@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog
 
+### 5.1.0 - 2024-12-26
+
+-   Skip pie countdown ads 🎉
+
 ### 5.0.0 - 2024-12-25
 
 _Merry Christmas!_

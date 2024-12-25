@@ -11,7 +11,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            5.0.0
+// @version            5.1.0
 // @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
@@ -78,6 +78,13 @@ function skipAd() {
         video.addEventListener('pause', handleVideoPause)
         video.addEventListener('mouseup', allowPauseVideo)
         video.addEventListener('timeupdate', handleVideoTimeUpdate)
+    }
+
+    // Pie countdown ad.
+    const pieCountdown = document.querySelector('.ytp-ad-timed-pie-countdown-container')
+    if (pieCountdown) {
+        pieCountdown.remove()
+        replaceCurrentVideo()
     }
 
     // Remove ad blocker warning dialog if it appears.
@@ -220,7 +227,6 @@ async function replaceCurrentVideo() {
         const videoId = getCurrentVideoId()
         const player = document.querySelector('#ytd-player')
         if (video && !video.src && videoId && player) {
-            if (player === null) return
             player.loadVideoWithPlayerVars({ videoId, start })
         }
     }
