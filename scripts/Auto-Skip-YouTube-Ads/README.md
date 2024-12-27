@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog
 
+### 5.1.1 - 2024-12-27
+
+-   Hide the survey to rate suggested content, located at bottom right.
+
 ### 5.1.0 - 2024-12-26
 
 -   Skip pie countdown ads 🎉

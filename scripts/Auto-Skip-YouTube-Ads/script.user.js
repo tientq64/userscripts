@@ -11,7 +11,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            5.1.0
+// @version            5.1.1
 // @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
@@ -247,10 +247,10 @@ function addCss() {
         '#player-ads',
         '#panels:has(ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"])',
 
+        // Masthead ad on home page.
         '#masthead-ad',
 
-        // Temporarily comment out this selector to fix issue
-        // [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
+        // Temporarily comment out this selector to fix issue [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
         // '#panels:has(ytd-ads-engagement-panel-content-renderer)',
 
         'ytd-ad-slot-renderer',
@@ -271,6 +271,9 @@ function addCss() {
 
         // Survey dialog on home page, located at bottom right.
         'tp-yt-paper-dialog:has(> ytd-checkbox-survey-renderer)',
+
+        // Survey to rate suggested content, located at bottom right.
+        'tp-yt-paper-dialog:has(> ytd-single-option-survey-renderer)',
 
         '.ytp-suggested-action',
         '.yt-mealbar-promo-renderer',
