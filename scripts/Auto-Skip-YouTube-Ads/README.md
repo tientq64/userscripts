@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog
 
+### 5.1.2 - 2025-01-17
+
+-   Fix issue [#2] where video can't be paused on mobile.
+
 ### 5.1.1 - 2024-12-27
 
 -   Hide the survey to rate suggested content, located at bottom right.
@@ -146,6 +150,7 @@ _Merry Christmas!_
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
+[#2]: https://github.com/tientq64/userscripts/issues/2
 [#267857]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/267857
 [#258626]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/258626
 [#259545]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/259545
