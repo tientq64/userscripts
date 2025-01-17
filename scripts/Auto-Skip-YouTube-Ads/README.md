@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog
 
+### 5.1.3 - 2025-01-18
+
+-   Fix ad skipping issue.
+
 ### 5.1.2 - 2025-01-17
 
 -   Fix issue [#2] where video can't be paused on mobile.
