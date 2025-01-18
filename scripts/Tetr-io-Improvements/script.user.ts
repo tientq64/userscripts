@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tetr.io Improvements
 // @namespace    https://github.com/tientq64/userscripts
-// @version      0.0.1
+// @version      0.1.0
 // @description  Provides improvements for Tetr.io game.
 // @author       tientq64
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tetr.io
@@ -26,7 +26,16 @@ function removeAds(): void {
 	}
 }
 
+function handleWindowKeyDown(event: KeyboardEvent): void {
+	if (event.code === 'Escape') {
+		if (document.activeElement instanceof HTMLElement) {
+			document.activeElement.blur()
+		}
+	}
+}
+
 window.setInterval(removeAds, 5000)
+window.addEventListener('keydown', handleWindowKeyDown)
 
 GM_addStyle(`
 	* {
