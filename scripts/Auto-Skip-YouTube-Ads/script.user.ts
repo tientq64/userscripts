@@ -11,7 +11,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            5.1.3
+// @version            5.2.0
 // @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
@@ -26,6 +26,7 @@
 // @author             tientq64
 // @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
 // @match              https://www.youtube.com/*
+// @match              https://m.youtube.com/*
 // @match              https://music.youtube.com/*
 // @grant              none
 // @license            MIT
@@ -79,7 +80,7 @@ function skipAd(): void {
 		video.addEventListener('timeupdate', handleVideoTimeUpdate)
 	}
 
-	// Pie countdown ad.
+	// Timed pie countdown ad.
 	const pieCountdown = document.querySelector<HTMLElement>(
 		'.ytp-ad-timed-pie-countdown-container'
 	)
@@ -106,8 +107,10 @@ function skipAd(): void {
 		replaceCurrentVideo()
 	}
 
-	// Video pause button.
-	const playButton = document.querySelector<HTMLButtonElement>('button.ytp-play-button')
+	// Video play/pause button.
+	const playButton = document.querySelector<HTMLButtonElement>(
+		'button.ytp-play-button, button.player-control-play-pause-icon'
+	)
 	if (playButton) {
 		playButton.addEventListener('click', allowPauseVideo)
 	}
@@ -291,6 +294,11 @@ function addCss(): void {
 	style.textContent = css
 	document.head.appendChild(style)
 }
+
+/**
+ * Is it YouTube mobile version.
+ */
+const isYouTubeMobile: boolean = location.hostname === 'm.youtube.com'
 
 /**
  * Is the current page YouTube Music.
