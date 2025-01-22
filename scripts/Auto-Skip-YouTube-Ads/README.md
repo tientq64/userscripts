@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại b
 
 ## 📑 Changelog
 
+### 5.3.0 - 2025-01-23
+
+-   Supports older browser versions.
+
 ### 5.2.0 - 2025-01-21
 
 -   Support for **YouTube mobile** version 🎉

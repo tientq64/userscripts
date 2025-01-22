@@ -11,7 +11,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            5.2.0
+// @version            5.3.0
 // @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
@@ -43,6 +43,8 @@
  * Skip ads. Remove ad blocker warning.
  */
 function skipAd() {
+    hideAdElements()
+
     video = null
     fineScrubber = document.querySelector('.ytp-fine-scrubbing')
 
@@ -88,17 +90,9 @@ function skipAd() {
         replaceCurrentVideo()
     }
 
-    // Remove ad blocker warning dialog if it appears.
-    const adBlockerWarningDialog = document.querySelector(
-        'tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model)'
-    )
-    if (adBlockerWarningDialog) {
-        adBlockerWarningDialog.remove()
-    }
-
     // Handle when ad blocker warning appears inside video player.
     const adBlockerWarningInner = document.querySelector(
-        '.yt-playability-error-supported-renderers:has(.ytd-enforcement-message-view-model)'
+        '.yt-playability-error-supported-renderers'
     )
     if (adBlockerWarningInner) {
         adBlockerWarningInner.remove()
@@ -113,15 +107,25 @@ function skipAd() {
     if (playButton) {
         playButton.addEventListener('click', allowPauseVideo)
     }
+}
 
-    // Remove short video ads.
-    // Note: Do this because can't just use CSS to hide it, as it will cause problems when scrolling to the next video.
-    const adShortVideos = document.querySelectorAll(
-        'ytd-reel-video-renderer:has(.ytd-ad-slot-renderer)'
-    )
-    for (const adShortVideo of adShortVideos) {
-        adShortVideo.remove()
+function queryHasSelector(selector, hasSelector, element = document) {
+    const el = element.querySelector(selector)
+    if (el === null) return null
+    const hasEl = el.querySelector(hasSelector)
+    if (hasEl === null) return null
+    return el
+}
+
+function queryHasSelectorAll(selector, hasSelector, element = document) {
+    const els = element.querySelectorAll(selector)
+    const result = []
+    for (const el of els) {
+        const hasEl = el.querySelector(hasSelector)
+        if (hasEl === null) continue
+        result.push(el)
     }
+    return result
 }
 
 function getCurrentVideoId() {
@@ -223,7 +227,7 @@ function handleYouTubeNavigateFinish() {
 
 async function replaceCurrentVideo() {
     const start = Math.floor(currentVideoTime)
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 16; i++) {
         await waitFor(500)
         const videoId = getCurrentVideoId()
         const player = document.querySelector('#ytd-player')
@@ -246,35 +250,14 @@ function addCss() {
     const hideCssSelector = [
         // Ad banner in the upper right corner, above the video playlist.
         '#player-ads',
-        '#panels:has(ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"])',
 
         // Masthead ad on home page.
         '#masthead-ad',
 
-        // Temporarily comment out this selector to fix issue [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
-        // '#panels:has(ytd-ads-engagement-panel-content-renderer)',
-
         'ytd-ad-slot-renderer',
-
-        // Sponsored ad video items on home page.
-        'ytd-rich-item-renderer:has(.ytd-ad-slot-renderer)',
-
-        'ytd-rich-section-renderer:has(.ytd-statement-banner-renderer)',
-
-        // Ad videos on YouTube Short.
-        'ytd-reel-video-renderer:has(.ytd-ad-slot-renderer)',
-
-        // Ad blocker warning dialog.
-        'tp-yt-paper-dialog:has(#feedback.ytd-enforcement-message-view-model)',
 
         // Ad blocker warning inside the player.
         'yt-playability-error-supported-renderers#error-screen',
-
-        // Survey dialog on home page, located at bottom right.
-        'tp-yt-paper-dialog:has(> ytd-checkbox-survey-renderer)',
-
-        // Survey to rate suggested content, located at bottom right.
-        'tp-yt-paper-dialog:has(> ytd-single-option-survey-renderer)',
 
         '.ytp-suggested-action',
         '.yt-mealbar-promo-renderer',
@@ -292,6 +275,43 @@ function addCss() {
     const style = document.createElement('style')
     style.textContent = css
     document.head.appendChild(style)
+}
+
+/**
+ * Remove ad elements using javascript because these selectors require the use of the CSS `:has`
+ * selector which is not supported in older browser versions.
+ */
+function hideAdElements() {
+    const adSelectors = [
+        // Ad banner in the upper right corner, above the video playlist.
+        ['#panels', 'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]'],
+
+        // Temporarily comment out this selector to fix issue [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
+        // ['#panels', 'ytd-ads-engagement-panel-content-renderer'],
+
+        // Sponsored ad video items on home page.
+        ['ytd-rich-item-renderer', '.ytd-ad-slot-renderer'],
+
+        ['ytd-rich-section-renderer', '.ytd-statement-banner-renderer'],
+
+        // Ad videos on YouTube Short.
+        ['ytd-reel-video-renderer', '.ytd-ad-slot-renderer'],
+
+        // Ad blocker warning dialog.
+        ['tp-yt-paper-dialog', '#feedback.ytd-enforcement-message-view-model'],
+
+        // Survey dialog on home page, located at bottom right.
+        ['tp-yt-paper-dialog', ':scope > ytd-checkbox-survey-renderer'],
+
+        // Survey to rate suggested content, located at bottom right.
+        ['tp-yt-paper-dialog', ':scope > ytd-single-option-survey-renderer']
+    ]
+    for (const adSelector of adSelectors) {
+        const adEls = queryHasSelectorAll(adSelector[0], adSelector[1])
+        for (const adEl of adEls) {
+            adEl.remove()
+        }
+    }
 }
 
 /**

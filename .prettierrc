@@ -6,5 +6,6 @@
 	"trailingComma": "none",
 	"useTabs": true,
 	"plugins": ["prettier-plugin-jsdoc"],
-	"jsdocCommentLineStrategy": "multiline"
+	"jsdocCommentLineStrategy": "multiline",
+	"jsdocPrintWidth": 90
 }
