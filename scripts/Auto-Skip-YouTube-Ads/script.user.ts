@@ -11,7 +11,7 @@
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @namespace          https://github.com/tientq64/userscripts
-// @version            5.3.0
+// @version            5.3.1
 // @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
 // @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
 // @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
@@ -39,10 +39,10 @@
 // ==/UserScript==
 
 /**
- * Skip ads. Remove ad blocker warning.
+ * Skip ads. Remove ad elements.
  */
 function skipAd(): void {
-	hideAdElements()
+	removeAdElements()
 
 	video = null
 	fineScrubber = document.querySelector<HTMLDivElement>('.ytp-fine-scrubbing')
@@ -279,8 +279,8 @@ function addCss(): void {
 		'ytmusic-statement-banner-renderer'
 	].join(',')
 	const css: string = `
-		#ytd-player { visibility: visible !important }
-		${hideCssSelector} { display: none !important }
+		#ytd-player { visibility: visible !important; }
+		${hideCssSelector} { display: none !important; }
 	`
 	const style: HTMLStyleElement = document.createElement('style')
 	style.textContent = css
@@ -291,7 +291,7 @@ function addCss(): void {
  * Remove ad elements using javascript because these selectors require the use of the CSS
  * `:has` selector which is not supported in older browser versions.
  */
-function hideAdElements(): void {
+function removeAdElements(): void {
 	const adSelectors: [string, string][] = [
 		// Ad banner in the upper right corner, above the video playlist.
 		['#panels', 'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]'],
