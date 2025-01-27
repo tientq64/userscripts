@@ -19,6 +19,10 @@
 // ==/UserScript==
 
 ;(async function () {
+	const simpleUrl: string = (location.hostname + location.pathname)
+		.replace(/^www\./, '')
+		.replace(/\/$/, '')
+
 	let accountEmails: string[] = []
 	let accountEmailsInput = await GM_getValue<string>('accountEmails', '')
 
@@ -82,6 +86,29 @@
 			GM_setValue('accountEmails', accountEmailsInput)
 		}
 		accountEmails = accountEmailsInput.split(/, */)
+	}
+
+	async function renderAccountEmails(): Promise<void> {
+		await wait(2000)
+		const siblingEl = document.querySelector<HTMLAnchorElement>('a[href="/search"]')!
+		const emailName = queryContentIncludes('.chakra-text', '@gmail.com', true)
+			?.textContent?.replace('@gmail.com', '')
+			.toLowerCase()
+		for (const accountEmail of accountEmails.slice().reverse()) {
+			const el = document.createElement('button')
+			el.style.paddingLeft = '40px'
+			el.style.textAlign = 'left'
+			el.textContent = accountEmail
+			if (accountEmail === emailName) {
+				el.style.color = 'limegreen'
+				el.style.paddingLeft = '26px'
+				el.textContent = `> ${accountEmail}`
+			}
+			el.addEventListener('click', (): void => {
+				switchAccount(accountEmail)
+			})
+			siblingEl.after(el)
+		}
 	}
 
 	function css(strs: TemplateStringsArray, ...vals: unknown[]): string {
@@ -152,42 +179,31 @@
 		}
 	})
 
-	if (location.href === 'https://suno.com/') {
+	if (simpleUrl === 'suno.com') {
 		location.pathname = '/me'
 	}
 	//
-	else if (location.href === 'https://suno.com/me') {
-		await GM_deleteValue('accountEmail')
+	else if (simpleUrl === 'suno.com/me') {
 		await wait(2000)
 		clickIfContentIncludes('button', 'Liked')
 		;(document.activeElement as HTMLElement).blur()
-		const siblingEl = document.querySelector<HTMLAnchorElement>('a[href="/search"]')!
-		const emailName = queryContentIncludes('.chakra-text', '@gmail.com', true)
-			?.textContent?.replace('@gmail.com', '')
-			.toLowerCase()
-		for (const accountEmail of accountEmails.slice().reverse()) {
-			const el = document.createElement('button')
-			el.style.paddingLeft = '40px'
-			el.style.textAlign = 'left'
-			el.textContent = accountEmail
-			if (accountEmail === emailName) {
-				el.style.color = 'limegreen'
-				el.style.paddingLeft = '26px'
-				el.textContent = `> ${accountEmail}`
-			}
-			el.addEventListener('click', (): void => {
-				switchAccount(accountEmail)
-			})
-			siblingEl.after(el)
-		}
+		renderAccountEmails()
 	}
 	//
-	else if (location.href.startsWith('https://accounts.suno.com/sign-in')) {
+	else if (simpleUrl === 'suno.com/create') {
+		renderAccountEmails()
+	}
+	//
+	else if (simpleUrl === 'suno.com/search') {
+		renderAccountEmails()
+	}
+	//
+	else if (simpleUrl.startsWith('accounts.suno.com/sign-in')) {
 		await wait(500)
 		click('.cl-socialButtonsIconButton__google')
 	}
 	//
-	else if (location.href.startsWith('https://accounts.google.com/o/oauth2/')) {
+	else if (simpleUrl.startsWith('accounts.google.com/o/oauth2/')) {
 		const accountEmail = await GM_getValue('accountEmail')
 		if (typeof accountEmail === 'string') {
 			await GM_deleteValue('accountEmail')
@@ -197,7 +213,7 @@
 		}
 	}
 	//
-	else if (location.href.startsWith('https://www.google.com/search?')) {
+	else if (simpleUrl.startsWith('google.com/search')) {
 		const els = document.querySelectorAll<HTMLDivElement>(
 			'[data-lyricid] > div > :nth-child(2) > div'
 		)
