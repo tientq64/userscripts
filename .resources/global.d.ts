@@ -49,6 +49,9 @@ declare const _: Lodash
 interface UnsafeWindow extends Window {}
 declare const unsafeWindow: UnsafeWindow
 
-interface HTMLYtdPlayerElement extends HTMLElement {
+interface YtdPlayerElement extends HTMLElement {
 	loadVideoWithPlayerVars(options: { videoId: string; start?: number }): void
 }
+
+declare type TrustedTypePolicyFactory = import('trusted-types/lib').TrustedTypePolicyFactory
+declare const trustedTypes: TrustedTypePolicyFactory

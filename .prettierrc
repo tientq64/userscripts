@@ -1,4 +1,5 @@
 {
+	"endOfLine": "lf",
 	"printWidth": 100,
 	"semi": false,
 	"singleQuote": true,
@@ -7,5 +8,6 @@
 	"useTabs": true,
 	"plugins": ["prettier-plugin-jsdoc"],
 	"jsdocCommentLineStrategy": "multiline",
-	"jsdocPrintWidth": 90
+	"jsdocPrintWidth": 90,
+	"jsdocDescriptionWithDot": true
 }
