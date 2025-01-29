@@ -13,29 +13,64 @@
 // @homepage     https://github.com/tientq64/userscripts/tree/main/scripts/Tetr-io-Improvements
 // ==/UserScript==
 
-const adElsSelectors = ['#ceriad-auth-return-lb', '#ceriad-menus-persistent-mpu', 'iframe']
-const adElsSelector = adElsSelectors.join(',')
+var TetrIOImprovements
+;(function (TetrIOImprovements) {
+    const adElsSelectors = ['#ceriad-auth-return-lb', '#ceriad-menus-persistent-mpu', 'iframe']
+    const adElsSelector = adElsSelectors.join(',')
 
-function removeAds() {
-    const adEls = document.querySelectorAll(adElsSelector)
-    for (const adEl of adEls) {
-        adEl.remove()
-    }
-}
-
-function handleWindowKeyDown(event) {
-    if (event.code === 'Escape') {
-        if (document.activeElement instanceof HTMLElement) {
-            document.activeElement.blur()
+    function removeAds() {
+        const adEls = document.querySelectorAll(adElsSelector)
+        for (const adEl of adEls) {
+            adEl.remove()
         }
     }
-}
 
-window.setInterval(removeAds, 5000)
-window.addEventListener('keydown', handleWindowKeyDown)
+    function handleWindowKeyDown(event) {
+        switch (event.code) {
+            case 'Escape':
+                if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur()
+                }
+                break
 
-GM_addStyle(`
+            case 'Home':
+                {
+                    const joinBtn = document.querySelector('#return_button')
+                    if (joinBtn?.checkVisibility()) {
+                        joinBtn.click()
+                    }
+                    const playMultiBtn = document.querySelector('#play_multi')
+                    if (playMultiBtn?.checkVisibility()) {
+                        playMultiBtn.click()
+                    }
+                    const multiLeagueBtn = document.querySelector('#multi_league')
+                    if (multiLeagueBtn?.checkVisibility()) {
+                        multiLeagueBtn.click()
+                    }
+                    const enterMatchMakingBtn = document.querySelector('#enter_matchmaking')
+                    if (enterMatchMakingBtn?.checkVisibility()) {
+                        enterMatchMakingBtn.click()
+                    }
+                }
+                break
+
+            case 'End':
+                {
+                    const backToLeagueBtn = document.querySelector('#backtoleague')
+                    if (backToLeagueBtn?.checkVisibility()) {
+                        backToLeagueBtn.click()
+                    }
+                }
+                break
+        }
+    }
+
+    window.setInterval(removeAds, 5000)
+    window.addEventListener('keydown', handleWindowKeyDown)
+
+    GM_addStyle(`
     * {
         transition: none !important;
     }
 `)
+})(TetrIOImprovements || (TetrIOImprovements = {}))
