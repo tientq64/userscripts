@@ -1,12 +1,19 @@
 ## 📰 Introduction
 
-Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
+Automatically skip YouTube ads instantly. Undetected by YouTube ad blocker warnings.
 
-几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
+立即自动跳过 YouTube 广告。不会被 YouTube 广告拦截器警告检测到。
 
-Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
+Tự động bỏ qua quảng cáo YouTube ngay lập tức. Không bị phát hiện bởi cảnh báo trình chặn quảng cáo của YouTube.
 
 ## 📑 Changelog
+
+### 6.0.0 - 2025-01-29
+
+_Happy Lunar New Year!_
+
+-   Completely rewritten way to skip ads, more efficient, not detected by YouTube ad blocker warning.
+-   New way to skip ads is temporarily not working on YouTube Music.
 
 ### 5.3.0 - 2025-01-23
 
