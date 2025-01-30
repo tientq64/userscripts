@@ -47,22 +47,33 @@
 function skipAd() {
     const isYouTubeShort = checkIsYouTubeShort()
     if (isYouTubeShort) return
+
     const hasAd = checkHasAd()
     if (!hasAd) return
-    const player = getPlayer()
+
+    const player = getYouTubePlayer()
     if (player === null) return
+
     const videoData = player.getVideoData()
     const videoId = videoData.video_id
     const startTime = Math.floor(player.getCurrentTime())
     player.loadVideoById(videoId, startTime)
+
     console.log('Ad skipped!', videoId, startTime, videoData.title)
 }
 
+/**
+ * Check if there are any ads interrupting the video.
+ */
 function checkHasAd() {
+    // This element appears when a video ad appears.
     const adShowing = document.querySelector('.ad-showing')
     if (adShowing !== null) return true
+
+    // Timed pie countdown ad.
     const pieCountdown = document.querySelector('.ytp-ad-timed-pie-countdown-container')
     if (pieCountdown !== null) return true
+
     return false
 }
 
@@ -70,11 +81,21 @@ function checkIsYouTubeShort() {
     return location.pathname.startsWith('/shorts/')
 }
 
-function getPlayer() {
-    const playerSelector = isYouTubeMobile ? '#movie_player' : '#ytd-player'
-    const playerEl = document.querySelector(playerSelector)
-    if (playerEl === null) return null
-    const player = playerEl.getPlayer()
+/**
+ * Finds and returns the current YouTube video player.
+ *
+ * @returns The current YouTube video player, or `null` if not found.
+ */
+function getYouTubePlayer() {
+    let player
+    if (isYouTubeMobile) {
+        const playerEl = document.querySelector('#movie_player')
+        player = playerEl
+    } else {
+        const playerEl = document.querySelector('#ytd-player')
+        if (playerEl === null) return null
+        player = playerEl.getPlayer()
+    }
     return player
 }
 

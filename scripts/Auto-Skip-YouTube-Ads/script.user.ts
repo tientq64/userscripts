@@ -47,6 +47,9 @@ interface YtdPlayerElement extends HTMLElement {
 	getPlayer: () => YouTubePlayer
 }
 
+/**
+ * YouTube video player.
+ */
 interface YouTubePlayer {
 	getVideoData: () => YouTubeVideoData
 	getCurrentTime: () => number
@@ -61,22 +64,33 @@ interface YouTubeVideoData {
 function skipAd(): void {
 	const isYouTubeShort: boolean = checkIsYouTubeShort()
 	if (isYouTubeShort) return
+
 	const hasAd: boolean = checkHasAd()
 	if (!hasAd) return
-	const player: YouTubePlayer | null = getPlayer()
+
+	const player: YouTubePlayer | null = getYouTubePlayer()
 	if (player === null) return
+
 	const videoData: YouTubeVideoData = player.getVideoData()
 	const videoId: string = videoData.video_id
 	const startTime: number = Math.floor(player.getCurrentTime())
 	player.loadVideoById(videoId, startTime)
+
 	console.log('Ad skipped!', videoId, startTime, videoData.title)
 }
 
+/**
+ * Check if there are any ads interrupting the video.
+ */
 function checkHasAd(): boolean {
+	// This element appears when a video ad appears.
 	const adShowing = document.querySelector('.ad-showing')
 	if (adShowing !== null) return true
+
+	// Timed pie countdown ad.
 	const pieCountdown = document.querySelector('.ytp-ad-timed-pie-countdown-container')
 	if (pieCountdown !== null) return true
+
 	return false
 }
 
@@ -84,11 +98,21 @@ function checkIsYouTubeShort(): boolean {
 	return location.pathname.startsWith('/shorts/')
 }
 
-function getPlayer(): YouTubePlayer | null {
-	const playerSelector: string = isYouTubeMobile ? '#movie_player' : '#ytd-player'
-	const playerEl = document.querySelector<YtdPlayerElement>(playerSelector)
-	if (playerEl === null) return null
-	const player = playerEl.getPlayer()
+/**
+ * Finds and returns the current YouTube video player.
+ *
+ * @returns The current YouTube video player, or `null` if not found.
+ */
+function getYouTubePlayer(): YouTubePlayer | null {
+	let player: YouTubePlayer | null
+	if (isYouTubeMobile) {
+		const playerEl: unknown = document.querySelector('#movie_player')
+		player = playerEl as YouTubePlayer
+	} else {
+		const playerEl = document.querySelector<YtdPlayerElement>('#ytd-player')
+		if (playerEl === null) return null
+		player = playerEl.getPlayer()
+	}
 	return player
 }
 
