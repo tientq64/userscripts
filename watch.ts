@@ -17,7 +17,7 @@ async function handleWatch(path: string, stat: Stats): Promise<void> {
 	const dirPath: string = dirname(path).replace(/\\/g, '/')
 	const code: string = readFileSync(path, 'utf-8')
 
-	const matches = code.match(/\/\/ ==UserScript==\n.+?\n\/\/ ==\/UserScript==/s)
+	const matches = code.match(/\/\/ ==UserScript==\n.+?\n\/\/ ==\/UserScript==/su)
 	if (matches === null) return
 
 	const meta: string = matches[0]

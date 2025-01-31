@@ -14,7 +14,7 @@
 // @name:zh-CN         自动跳过 YouTube 广告
 // @name:zh-TW         自動跳過 YouTube 廣告
 // @namespace          https://github.com/tientq64/userscripts
-// @version            6.0.0
+// @version            6.0.1
 // @description        Automatically skip YouTube ads instantly. Undetected by YouTube ad blocker warnings.
 // @description:ar     تخطي إعلانات YouTube تلقائيًا على الفور. دون أن يتم اكتشاف ذلك من خلال تحذيرات أداة حظر الإعلانات في YouTube.
 // @description:es     Omite automáticamente los anuncios de YouTube al instante. Sin que te detecten las advertencias del bloqueador de anuncios de YouTube.
@@ -157,9 +157,9 @@ function removeAdElements(): void {
 		['#panels', 'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]'],
 
 		// Sponsored ad video items on home page.
-		['ytd-rich-item-renderer', '.ytd-ad-slot-renderer'],
+		// ['ytd-rich-item-renderer', '.ytd-ad-slot-renderer'],
 
-		['ytd-rich-section-renderer', '.ytd-statement-banner-renderer'],
+		// ['ytd-rich-section-renderer', '.ytd-statement-banner-renderer'],
 
 		// Ad videos on YouTube Short.
 		['ytd-reel-video-renderer', '.ytd-ad-slot-renderer'],
@@ -174,9 +174,9 @@ function removeAdElements(): void {
 		['tp-yt-paper-dialog', ':scope > ytd-single-option-survey-renderer']
 	]
 	for (const adSelector of adSelectors) {
-		const adEl = document.querySelector(adSelector[0])
+		const adEl = document.querySelector<HTMLElement>(adSelector[0])
 		if (adEl === null) continue
-		const neededEl = document.querySelector(adSelector[1])
+		const neededEl = adEl.querySelector<HTMLElement>(adSelector[1])
 		if (neededEl === null) continue
 		adEl.remove()
 	}
@@ -188,4 +188,5 @@ window.setInterval(skipAd, 500)
 window.setInterval(removeAdElements, 1000)
 
 addCss()
+removeAdElements()
 skipAd()
