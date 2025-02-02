@@ -14,7 +14,7 @@
 // @name:zh-CN         自动跳过 YouTube 广告
 // @name:zh-TW         自動跳過 YouTube 廣告
 // @namespace          https://github.com/tientq64/userscripts
-// @version            6.0.1
+// @version            6.0.2
 // @description        Automatically skip YouTube ads instantly. Undetected by YouTube ad blocker warnings.
 // @description:ar     تخطي إعلانات YouTube تلقائيًا على الفور. دون أن يتم اكتشاف ذلك من خلال تحذيرات أداة حظر الإعلانات في YouTube.
 // @description:es     Omite automáticamente los anuncios de YouTube al instante. Sin que te detecten las advertencias del bloqueador de anuncios de YouTube.
@@ -45,8 +45,8 @@
 // ==/UserScript==
 
 function skipAd() {
-    const isYouTubeShort = checkIsYouTubeShort()
-    if (isYouTubeShort) return
+    const isYouTubeShorts = checkIsYouTubeShorts()
+    if (isYouTubeShorts) return
 
     const hasAd = checkHasAd()
     if (!hasAd) return
@@ -77,7 +77,7 @@ function checkHasAd() {
     return false
 }
 
-function checkIsYouTubeShort() {
+function checkIsYouTubeShorts() {
     return location.pathname.startsWith('/shorts/')
 }
 
@@ -107,8 +107,10 @@ function addCss() {
         // Masthead ad on home page.
         '#masthead-ad',
 
-        'ytd-ad-slot-renderer',
-        '.ytp-suggested-action',
+        // Sponsored ad video items on home page.
+        // 'ytd-ad-slot-renderer',
+
+        // '.ytp-suggested-action',
         '.yt-mealbar-promo-renderer',
 
         // Featured product ad banner at the bottom left of the video.
@@ -145,16 +147,16 @@ function removeAdElements() {
         // ['ytd-rich-section-renderer', '.ytd-statement-banner-renderer'],
 
         // Ad videos on YouTube Short.
-        ['ytd-reel-video-renderer', '.ytd-ad-slot-renderer'],
+        ['ytd-reel-video-renderer', '.ytd-ad-slot-renderer']
 
         // Ad blocker warning dialog.
-        ['tp-yt-paper-dialog', '#feedback.ytd-enforcement-message-view-model'],
+        // ['tp-yt-paper-dialog', '#feedback.ytd-enforcement-message-view-model'],
 
         // Survey dialog on home page, located at bottom right.
-        ['tp-yt-paper-dialog', ':scope > ytd-checkbox-survey-renderer'],
+        // ['tp-yt-paper-dialog', ':scope > ytd-checkbox-survey-renderer'],
 
         // Survey to rate suggested content, located at bottom right.
-        ['tp-yt-paper-dialog', ':scope > ytd-single-option-survey-renderer']
+        // ['tp-yt-paper-dialog', ':scope > ytd-single-option-survey-renderer']
     ]
     for (const adSelector of adSelectors) {
         const adEl = document.querySelector(adSelector[0])

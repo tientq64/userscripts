@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube ngay lập tức. Không bị phát h
 
 ## 📑 Changelog
 
+### 6.0.2 - 2025-02-02
+
+-   Disable some unnecessary CSS.
+
 ### 6.0.0 - 2025-01-29
 
 _Happy Lunar New Year!_
