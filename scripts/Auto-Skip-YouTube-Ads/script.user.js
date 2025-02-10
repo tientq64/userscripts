@@ -14,7 +14,7 @@
 // @name:zh-CN         自动跳过 YouTube 广告
 // @name:zh-TW         自動跳過 YouTube 廣告
 // @namespace          https://github.com/tientq64/userscripts
-// @version            6.0.2
+// @version            6.0.3
 // @description        Automatically skip YouTube ads instantly. Undetected by YouTube ad blocker warnings.
 // @description:ar     تخطي إعلانات YouTube تلقائيًا على الفور. دون أن يتم اكتشاف ذلك من خلال تحذيرات أداة حظر الإعلانات في YouTube.
 // @description:es     Omite automáticamente los anuncios de YouTube al instante. Sin que te detecten las advertencias del bloqueador de anuncios de YouTube.
@@ -48,11 +48,13 @@ function skipAd() {
     const isYouTubeShorts = checkIsYouTubeShorts()
     if (isYouTubeShorts) return
 
-    const hasAd = checkHasAd()
-    if (!hasAd) return
+    const ad = getInterruptiveAd()
+    if (ad === null) return
 
     const player = getYouTubePlayer()
     if (player === null) return
+
+    ad.classList.remove('ad-showing')
 
     const videoData = player.getVideoData()
     const videoId = videoData.video_id
@@ -62,19 +64,16 @@ function skipAd() {
     console.log('Ad skipped!', videoId, startTime, videoData.title)
 }
 
-/**
- * Check if there are any ads interrupting the video.
- */
-function checkHasAd() {
+function getInterruptiveAd() {
     // This element appears when a video ad appears.
     const adShowing = document.querySelector('.ad-showing')
-    if (adShowing !== null) return true
+    if (adShowing !== null) return adShowing
 
     // Timed pie countdown ad.
     const pieCountdown = document.querySelector('.ytp-ad-timed-pie-countdown-container')
-    if (pieCountdown !== null) return true
+    if (pieCountdown !== null) return pieCountdown
 
-    return false
+    return null
 }
 
 function checkIsYouTubeShorts() {
