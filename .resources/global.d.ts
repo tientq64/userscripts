@@ -51,6 +51,22 @@ declare const unsafeWindow: UnsafeWindow
 
 interface YtdPlayerElement extends HTMLElement {
 	loadVideoWithPlayerVars(options: { videoId: string; start?: number }): void
+	getPlayer: () => YouTubePlayer
+}
+
+interface YouTubeMoviePlayerElement extends HTMLElement, YouTubePlayer {
+	loadVideoByPlayerVars(options: { videoId: string; start?: number }): void
+}
+
+interface YouTubePlayer {
+	getVideoData: () => YouTubeVideoData
+	getCurrentTime: () => number
+	loadVideoById: (videoId: string, startTime?: number) => void
+}
+
+interface YouTubeVideoData {
+	title: string
+	video_id: string
 }
 
 declare type TrustedTypePolicyFactory = import('trusted-types/lib').TrustedTypePolicyFactory

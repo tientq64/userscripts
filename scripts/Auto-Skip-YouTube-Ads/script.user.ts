@@ -14,7 +14,7 @@
 // @name:zh-CN         自动跳过 YouTube 广告
 // @name:zh-TW         自動跳過 YouTube 廣告
 // @namespace          https://github.com/tientq64/userscripts
-// @version            6.0.3
+// @version            6.0.4
 // @description        Automatically skip YouTube ads instantly. Undetected by YouTube ad blocker warnings.
 // @description:ar     تخطي إعلانات YouTube تلقائيًا على الفور. دون أن يتم اكتشاف ذلك من خلال تحذيرات أداة حظر الإعلانات في YouTube.
 // @description:es     Omite automáticamente los anuncios de YouTube al instante. Sin que te detecten las advertencias del bloqueador de anuncios de YouTube.
@@ -43,24 +43,6 @@
 // @noframes
 // ==/UserScript==
 
-interface YtdPlayerElement extends HTMLElement {
-	getPlayer: () => YouTubePlayer
-}
-
-/**
- * YouTube video player.
- */
-interface YouTubePlayer {
-	getVideoData: () => YouTubeVideoData
-	getCurrentTime: () => number
-	loadVideoById: (videoId: string, startTime?: number) => void
-}
-
-interface YouTubeVideoData {
-	title: string
-	video_id: string
-}
-
 function skipAd(): void {
 	const isYouTubeShorts: boolean = checkIsYouTubeShorts()
 	if (isYouTubeShorts) return
@@ -68,17 +50,30 @@ function skipAd(): void {
 	const ad: HTMLElement | null = getInterruptiveAd()
 	if (ad === null) return
 
-	const player: YouTubePlayer | null = getYouTubePlayer()
-	if (player === null) return
+	let playerEl: YtdPlayerElement | YouTubeMoviePlayerElement | null
+	let player: YouTubePlayer | YouTubeMoviePlayerElement | null
+	if (isYouTubeMobile) {
+		playerEl = document.querySelector<YouTubeMoviePlayerElement>('#movie_player')
+		player = playerEl
+	} else {
+		playerEl = document.querySelector<YtdPlayerElement>('#ytd-player')
+		player = playerEl && playerEl.getPlayer()
+	}
+	if (playerEl === null || player === null) return
 
-	ad.classList.remove('ad-showing')
+	// ad.classList.remove('ad-showing')
 
 	const videoData: YouTubeVideoData = player.getVideoData()
 	const videoId: string = videoData.video_id
-	const startTime: number = Math.floor(player.getCurrentTime())
-	player.loadVideoById(videoId, startTime)
+	const start: number = Math.floor(player.getCurrentTime())
 
-	console.log('Ad skipped!', videoId, startTime, videoData.title)
+	if ('loadVideoWithPlayerVars' in playerEl) {
+		playerEl.loadVideoWithPlayerVars({ videoId, start })
+	} else {
+		playerEl.loadVideoByPlayerVars({ videoId, start })
+	}
+
+	console.log('Ad skipped!', videoId, start, videoData.title)
 }
 
 function getInterruptiveAd(): HTMLElement | null {
@@ -97,24 +92,6 @@ function getInterruptiveAd(): HTMLElement | null {
 
 function checkIsYouTubeShorts(): boolean {
 	return location.pathname.startsWith('/shorts/')
-}
-
-/**
- * Finds and returns the current YouTube video player.
- *
- * @returns The current YouTube video player, or `null` if not found.
- */
-function getYouTubePlayer(): YouTubePlayer | null {
-	let player: YouTubePlayer | null
-	if (isYouTubeMobile) {
-		const playerEl: unknown = document.querySelector('#movie_player')
-		player = playerEl as YouTubePlayer
-	} else {
-		const playerEl = document.querySelector<YtdPlayerElement>('#ytd-player')
-		if (playerEl === null) return null
-		player = playerEl.getPlayer()
-	}
-	return player
 }
 
 function addCss(): void {
