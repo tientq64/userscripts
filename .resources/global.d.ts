@@ -69,5 +69,6 @@ interface YouTubeVideoData {
 	video_id: string
 }
 
-declare type TrustedTypePolicyFactory = import('trusted-types/lib').TrustedTypePolicyFactory
-declare const trustedTypes: TrustedTypePolicyFactory
+interface YouTubeMoviePlayerElement extends HTMLElement {
+	loadVideoByPlayerVars(options: { videoId: string; start?: number }): void
+}

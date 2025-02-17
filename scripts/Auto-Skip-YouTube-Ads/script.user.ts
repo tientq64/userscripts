@@ -1,38 +1,35 @@
 // ==UserScript==
 // @name               Auto Skip YouTube Ads
-// @name:ar            تخطي إعلانات YouTube تلقائيًا
+// @name:ar            التخطي التلقائي لإعلانات YouTube
 // @name:es            Saltar Automáticamente Anuncios De YouTube
-// @name:fr            Ignorer Automatiquement Les Publicités YouTube
 // @name:hi            YouTube विज्ञापन स्वचालित रूप से छोड़ें
 // @name:id            Lewati Otomatis Iklan YouTube
 // @name:ja            YouTube 広告を自動スキップ
 // @name:ko            YouTube 광고 자동 건너뛰기
-// @name:nl            YouTube-Advertenties Automatisch Overslaan
 // @name:pt-BR         Pular Automaticamente Anúncios Do YouTube
 // @name:ru            Автоматический Пропуск Рекламы На YouTube
 // @name:vi            Tự Động Bỏ Qua Quảng Cáo YouTube
 // @name:zh-CN         自动跳过 YouTube 广告
 // @name:zh-TW         自動跳過 YouTube 廣告
 // @namespace          https://github.com/tientq64/userscripts
-// @version            6.0.4
-// @description        Automatically skip YouTube ads instantly. Undetected by YouTube ad blocker warnings.
-// @description:ar     تخطي إعلانات YouTube تلقائيًا على الفور. دون أن يتم اكتشاف ذلك من خلال تحذيرات أداة حظر الإعلانات في YouTube.
-// @description:es     Omite automáticamente los anuncios de YouTube al instante. Sin que te detecten las advertencias del bloqueador de anuncios de YouTube.
-// @description:fr     Ignorez automatiquement et instantanément les publicités YouTube. Non détecté par les avertissements du bloqueur de publicités YouTube.
-// @description:hi     YouTube विज्ञापनों को स्वचालित रूप से तुरंत छोड़ दें। YouTube विज्ञापन अवरोधक चेतावनियों द्वारा पता नहीं लगाया गया।
-// @description:id     Lewati iklan YouTube secara otomatis secara instan. Tidak terdeteksi oleh peringatan pemblokir iklan YouTube.
-// @description:ja     YouTube 広告を即座に自動的にスキップします。YouTube 広告ブロッカーの警告には検出されません。
-// @description:ko     YouTube 광고를 즉시 자동으로 건너뜁니다. YouTube 광고 차단 경고에 감지되지 않습니다.
-// @description:nl     Sla YouTube-advertenties direct automatisch over. Ongemerkt door YouTube-adblockerwaarschuwingen.
-// @description:pt-BR  Pule anúncios do YouTube instantaneamente. Não detectado pelos avisos do bloqueador de anúncios do YouTube.
-// @description:ru     Автоматически пропускать рекламу YouTube мгновенно. Не обнаруживается предупреждениями блокировщиков рекламы YouTube.
-// @description:vi     Tự động bỏ qua quảng cáo YouTube ngay lập tức. Không bị phát hiện bởi cảnh báo trình chặn quảng cáo của YouTube.
-// @description:zh-CN  立即自动跳过 YouTube 广告。不会被 YouTube 广告拦截器警告检测到。
-// @description:zh-TW  立即自動跳過 YouTube 廣告。 YouTube 廣告攔截器警告未被偵測到。
+// @version            7.0.0
+// @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
+// @description:ar     تخطي إعلانات YouTube تلقائيًا في الحال. إزالة النافذة المنبثقة لتحذير مانع الإعلانات.
+// @description:es     Omite automáticamente los anuncios de YouTube casi al instante. Elimina la ventana emergente de advertencia del bloqueador de anuncios.
+// @description:hi     YouTube विज्ञापनों को लगभग तुरंत ही स्वचालित रूप से छोड़ दें। विज्ञापन अवरोधक चेतावनी पॉप-अप हटाएँ।
+// @description:id     Lewati iklan YouTube secara otomatis hampir seketika. Hapus pop-up peringatan pemblokir iklan.
+// @description:ja     YouTube 広告をほぼ瞬時に自動的にスキップします。広告ブロッカーの警告ポップアップを削除します。
+// @description:ko     YouTube 광고를 거의 즉시 자동으로 건너뜁니다. 광고 차단 경고 팝업을 제거합니다.
+// @description:pt-BR  Pule automaticamente os anúncios do YouTube quase instantaneamente. Remova o pop-up de aviso do bloqueador de anúncios.
+// @description:ru     Автоматически пропускайте рекламу YouTube почти мгновенно. Уберите всплывающее предупреждение о блокировщике рекламы.
+// @description:vi     Tự động bỏ qua quảng cáo YouTube gần như ngay lập tức. Loại bỏ cửa sổ bật lên cảnh báo trình chặn quảng cáo.
+// @description:zh-CN  几乎立即自动跳过 YouTube 广告。删除广告拦截器警告弹出窗口。
+// @description:zh-TW  幾乎立即自動跳過 YouTube 廣告。刪除廣告攔截器警告彈出視窗。
 // @author             tientq64
 // @icon               https://cdn-icons-png.flaticon.com/64/2504/2504965.png
 // @match              https://www.youtube.com/*
 // @match              https://m.youtube.com/*
+// @match              https://music.youtube.com/*
 // @grant              none
 // @license            MIT
 // @compatible         firefox
@@ -43,92 +40,263 @@
 // @noframes
 // ==/UserScript==
 
+/**
+ * Skip ads. Remove ad elements.
+ */
 function skipAd(): void {
-	const isYouTubeShorts: boolean = checkIsYouTubeShorts()
-	if (isYouTubeShorts) return
+	removeAdElements()
 
-	const ad: HTMLElement | null = getInterruptiveAd()
-	if (ad === null) return
+	video = null
+	fineScrubber = document.querySelector<HTMLDivElement>('.ytp-fine-scrubbing')
 
-	let playerEl: YtdPlayerElement | YouTubeMoviePlayerElement | null
-	let player: YouTubePlayer | YouTubeMoviePlayerElement | null
-	if (isYouTubeMobile) {
-		playerEl = document.querySelector<YouTubeMoviePlayerElement>('#movie_player')
-		player = playerEl
-	} else {
-		playerEl = document.querySelector<YtdPlayerElement>('#ytd-player')
-		player = playerEl && playerEl.getPlayer()
-	}
-	if (playerEl === null || player === null) return
+	// Check if the current URL is a YouTube Shorts URL and exit the function if true.
+	if (window.location.pathname.startsWith('/shorts/')) return
 
-	// ad.classList.remove('ad-showing')
+	const moviePlayer = document.querySelector<HTMLDivElement>('#movie_player')
 
-	const videoData: YouTubeVideoData = player.getVideoData()
-	const videoId: string = videoData.video_id
-	const start: number = Math.floor(player.getCurrentTime())
-
-	if ('loadVideoWithPlayerVars' in playerEl) {
-		playerEl.loadVideoWithPlayerVars({ videoId, start })
-	} else {
-		playerEl.loadVideoByPlayerVars({ videoId, start })
+	if (moviePlayer) {
+		hasAd = moviePlayer.classList.contains('ad-showing')
+		video = moviePlayer.querySelector<HTMLVideoElement>('video.html5-main-video')
 	}
 
-	console.log('Ad skipped!', videoId, start, videoData.title)
-}
+	if (hasAd) {
+		const skipButton = document.querySelector<HTMLElement>(`
+			.ytp-skip-ad-button,
+			.ytp-ad-skip-button,
+			.ytp-ad-skip-button-modern,
+			.ytp-ad-survey-answer-button
+		`)
+		// Click the skip ad button if available.
+		if (skipButton) {
+			skipButton.click()
+			skipButton.remove()
+		}
+		// Otherwise, fast forward to the end of the ad video.
+		// Use `9999` instead of `video.duration` to avoid errors when `duration` is not a number.
+		else if (video && video.src) {
+			video.currentTime = 9999
+		}
+	}
 
-function getInterruptiveAd(): HTMLElement | null {
-	// This element appears when a video ad appears.
-	const adShowing = document.querySelector<HTMLElement>('.ad-showing')
-	if (adShowing !== null) return adShowing
+	if (video) {
+		video.addEventListener('pause', handleVideoPause)
+		video.addEventListener('pointerup', allowPauseVideo)
+		video.addEventListener('timeupdate', handleVideoTimeUpdate)
+	}
 
 	// Timed pie countdown ad.
 	const pieCountdown = document.querySelector<HTMLElement>(
 		'.ytp-ad-timed-pie-countdown-container'
 	)
-	if (pieCountdown !== null) return pieCountdown
+	if (pieCountdown) {
+		pieCountdown.remove()
+		replaceCurrentVideo()
+	}
 
-	return null
+	// Handle when ad blocker warning appears inside video player.
+	const adBlockerWarningInner = document.querySelector<HTMLElement>(
+		'.yt-playability-error-supported-renderers'
+	)
+	if (adBlockerWarningInner) {
+		adBlockerWarningInner.remove()
+		document.addEventListener('yt-navigate-finish', handleYouTubeNavigateFinish)
+		replaceCurrentVideo()
+	}
+
+	// Video play/pause button.
+	const playButton = document.querySelector<HTMLButtonElement>(
+		'button.ytp-play-button, button.player-control-play-pause-icon'
+	)
+	if (playButton) {
+		playButton.addEventListener('click', allowPauseVideo)
+	}
 }
 
-function checkIsYouTubeShorts(): boolean {
-	return location.pathname.startsWith('/shorts/')
+function queryHasSelector<T extends Element = HTMLElement>(
+	selector: string,
+	hasSelector: string,
+	element: Document | Element = document
+): T | null {
+	const el = element.querySelector<T>(selector)
+	if (el === null) return null
+	const hasEl = el.querySelector(hasSelector)
+	if (hasEl === null) return null
+	return el
 }
 
+function queryHasSelectorAll<T extends Element = HTMLElement>(
+	selector: string,
+	hasSelector: string,
+	element: Document | Element = document
+): T[] {
+	const els = element.querySelectorAll<T>(selector)
+	const result: T[] = []
+	for (const el of els) {
+		const hasEl = el.querySelector(hasSelector)
+		if (hasEl === null) continue
+		result.push(el)
+	}
+	return result
+}
+
+function getCurrentVideoId(): string | null {
+	const params = new URLSearchParams(location.search)
+	const videoId: string | null = params.get('v')
+	return videoId
+}
+
+/**
+ * Check if the user is focused on the input.
+ */
+function checkEnteringInput(): boolean {
+	if (document.activeElement === null) {
+		return false
+	}
+	return document.activeElement.matches('input, textarea, select')
+}
+
+/**
+ * Temporarily allows the video to be paused, for a short period of time.
+ */
+function allowPauseVideo(): void {
+	pausedByUser = true
+	window.clearTimeout(allowPauseVideoTimeoutId)
+	allowPauseVideoTimeoutId = window.setTimeout(disallowPauseVideo, 500)
+}
+
+/**
+ * Pausing the video is not allowed. The purpose is to prevent video from being paused,
+ * against the behavior of pausing video when YouTube ad blocking warning dialog appears.
+ * Unless certain conditions, such as pausing by user, etc.
+ */
+function disallowPauseVideo(): void {
+	pausedByUser = false
+	window.clearTimeout(allowPauseVideoTimeoutId)
+}
+
+function handleWindowBlur(): void {
+	isTabBlurred = true
+}
+
+function handleWindowFocus(): void {
+	isTabBlurred = false
+}
+
+/**
+ * Handle when video is paused. If certain conditions are not met, it will continue
+ * playing. Returning early in this function means the video should be paused as it should
+ * be.
+ */
+function handleVideoPause(): void {
+	if (isYouTubeMusic) return
+
+	// If it was stopped by the user, it's ok, let the video pause as it should, and exit the function.
+	if (pausedByUser) {
+		disallowPauseVideo()
+		return
+	}
+
+	// The video will pause normally if the tab is not focused. This is to allow for pausing the video via the media controller (of the browser or operating system), etc.
+	// Note: While this also gives YouTube the opportunity to pause videos to annoy users, it's an acceptable trade-off.
+	if (document.hidden) return
+	if (isTabBlurred) return
+
+	if (fineScrubber && fineScrubber.style.display !== 'none') return
+	if (video === null) return
+	if (video.duration - video.currentTime < 0.1) return
+
+	// This is YouTube's disruptive behavior towards users, so the video should continue to play as normal.
+	video.play()
+}
+
+function handleVideoTimeUpdate(): void {
+	if (hasAd || video === null) return
+	currentVideoTime = video.currentTime
+}
+
+/**
+ * Handle both keyboard press or release events.
+ */
+function handleWindowKeyDownAndKeyUp(event: KeyboardEvent): void {
+	if (isYouTubeMusic) return
+	if (checkEnteringInput()) return
+	const code: string = event.code
+	if (event.type === 'keydown') {
+		if (code === 'KeyK' || code === 'MediaPlayPause') {
+			allowPauseVideo()
+		}
+	} else {
+		if (code === 'Space') {
+			allowPauseVideo()
+		}
+	}
+}
+
+function handleYouTubeNavigateFinish(): void {
+	currentVideoTime = 0
+	replaceCurrentVideo()
+}
+
+async function replaceCurrentVideo(): Promise<void> {
+	const start: number = Math.floor(currentVideoTime)
+	for (let i = 0; i < 16; i++) {
+		await waitFor(500)
+		const videoId: string | null = getCurrentVideoId()
+		if (!videoId || !video || video.src) continue
+		if (isYouTubeMobile) {
+			const player = document.querySelector<YouTubeMoviePlayerElement>('#movie_player')
+			if (!player) continue
+			player.loadVideoByPlayerVars({ videoId, start })
+		} else {
+			const player = document.querySelector<YtdPlayerElement>('#ytd-player')
+			if (!player) continue
+			player.loadVideoWithPlayerVars({ videoId, start })
+		}
+	}
+}
+
+function waitFor(millis: number): Promise<void> {
+	return new Promise((resolve) => {
+		window.setTimeout(resolve, millis)
+	})
+}
+
+/**
+ * Add CSS hides some ad elements on the page.
+ */
 function addCss(): void {
-	const adsSelectors: string[] = [
+	const hideCssSelector: string = [
 		// Ad banner in the upper right corner, above the video playlist.
 		'#player-ads',
 
 		// Masthead ad on home page.
 		'#masthead-ad',
 
-		// Sponsored ad video items on home page.
-		// 'ytd-ad-slot-renderer',
+		'ytd-ad-slot-renderer',
 
-		// '.ytp-suggested-action',
+		// Ad blocker warning inside the player.
+		'yt-playability-error-supported-renderers#error-screen',
+
+		'.ytp-suggested-action',
 		'.yt-mealbar-promo-renderer',
-
-		// Featured product ad banner at the bottom left of the video.
-		'.ytp-featured-product',
-
-		// Products shelf ad banner below the video description.
-		'ytd-merch-shelf-renderer',
 
 		// YouTube Music Premium trial promotion dialog, bottom left corner.
 		'ytmusic-mealbar-promo-renderer',
 
 		// YouTube Music Premium trial promotion banner on home page.
 		'ytmusic-statement-banner-renderer'
-	]
-	const adsSelector: string = adsSelectors.join(',')
-	const css: string = `${adsSelector} { display: none !important; }`
-	const style = document.createElement('style')
+	].join(',')
+	const css: string = `
+		#ytd-player { visibility: visible !important; }
+		${hideCssSelector} { display: none !important; }
+	`
+	const style: HTMLStyleElement = document.createElement('style')
 	style.textContent = css
 	document.head.appendChild(style)
 }
 
 /**
- * Remove ad elements using JavaScript because these selectors require the use of the CSS
+ * Remove ad elements using javascript because these selectors require the use of the CSS
  * `:has` selector which is not supported in older browser versions.
  */
 function removeAdElements(): void {
@@ -136,16 +304,19 @@ function removeAdElements(): void {
 		// Ad banner in the upper right corner, above the video playlist.
 		['#panels', 'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]'],
 
+		// Temporarily comment out this selector to fix issue [#265124](https://greasyfork.org/en/scripts/498197-auto-skip-youtube-ads/discussions/265124).
+		// ['#panels', 'ytd-ads-engagement-panel-content-renderer'],
+
 		// Sponsored ad video items on home page.
 		// ['ytd-rich-item-renderer', '.ytd-ad-slot-renderer'],
 
 		// ['ytd-rich-section-renderer', '.ytd-statement-banner-renderer'],
 
 		// Ad videos on YouTube Short.
-		['ytd-reel-video-renderer', '.ytd-ad-slot-renderer']
+		['ytd-reel-video-renderer', '.ytd-ad-slot-renderer'],
 
 		// Ad blocker warning dialog.
-		// ['tp-yt-paper-dialog', '#feedback.ytd-enforcement-message-view-model'],
+		['tp-yt-paper-dialog', '#feedback.ytd-enforcement-message-view-model']
 
 		// Survey dialog on home page, located at bottom right.
 		// ['tp-yt-paper-dialog', ':scope > ytd-checkbox-survey-renderer'],
@@ -154,19 +325,63 @@ function removeAdElements(): void {
 		// ['tp-yt-paper-dialog', ':scope > ytd-single-option-survey-renderer']
 	]
 	for (const adSelector of adSelectors) {
-		const adEl = document.querySelector<HTMLElement>(adSelector[0])
-		if (adEl === null) continue
-		const neededEl = adEl.querySelector<HTMLElement>(adSelector[1])
-		if (neededEl === null) continue
-		adEl.remove()
+		const adEls = queryHasSelectorAll(adSelector[0], adSelector[1])
+		for (const adEl of adEls) {
+			adEl.remove()
+		}
 	}
 }
 
+/**
+ * Is it YouTube mobile version.
+ */
 const isYouTubeMobile: boolean = location.hostname === 'm.youtube.com'
 
-window.setInterval(skipAd, 500)
-window.setInterval(removeAdElements, 1000)
+/**
+ * Is the current page YouTube Music.
+ */
+const isYouTubeMusic: boolean = location.hostname === 'music.youtube.com'
+
+/**
+ * Current video element.
+ */
+let video: HTMLVideoElement | null = null
+
+let fineScrubber: HTMLDivElement | null = null
+let hasAd: boolean = false
+let currentVideoTime: number = 0
+
+/**
+ * Is the video paused by the user, not paused by YouTube's ad blocker warning dialog.
+ */
+let pausedByUser: boolean = false
+
+/**
+ * Is the current tab blurred.
+ */
+let isTabBlurred: boolean = false
+
+let allowPauseVideoTimeoutId: number = 0
+
+// Observe DOM changes to detect ads.
+if (window.MutationObserver) {
+	const observer: MutationObserver = new MutationObserver(skipAd)
+	observer.observe(document.body, {
+		attributes: true,
+		attributeFilter: ['class', 'src'],
+		childList: true,
+		subtree: true
+	})
+}
+// If DOM observation is not supported. Detect ads every 500ms (2 times per second).
+else {
+	window.setInterval(skipAd, 500)
+}
+
+window.addEventListener('blur', handleWindowBlur)
+window.addEventListener('focus', handleWindowFocus)
+window.addEventListener('keydown', handleWindowKeyDownAndKeyUp)
+window.addEventListener('keyup', handleWindowKeyDownAndKeyUp)
 
 addCss()
-removeAdElements()
 skipAd()

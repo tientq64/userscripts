@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube ngay lập tức. Không bị phát h
 
 ## 📑 Changelog
 
+### 7.0.0 - 2025-02-15
+
+-   Version 6 had many bug reports, reverting to the previous version 5 ([#6], [#279168]).
+
 ### 6.0.2 - 2025-02-02
 
 -   Disable some unnecessary CSS.
@@ -174,13 +178,15 @@ _Merry Christmas!_
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
+[#6]: https://github.com/tientq64/userscripts/issues/6
 [#2]: https://github.com/tientq64/userscripts/issues/2
+[#1]: https://github.com/tientq64/userscripts/pull/1
+[#279168]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/279168
 [#267857]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/267857
-[#258626]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/258626
-[#259545]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/259545
 [#261679]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/261679
+[#259545]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/259545
+[#258626]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/258626
 [#257424]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/257424
 [#256841]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/256841
 [#254113]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/254113
-[#1]: https://github.com/tientq64/userscripts/pull/1
 [Screenshot-001]: https://cdn.jsdelivr.net/gh/tientq64/userscripts/scripts/Auto-Skip-YouTube-Ads/assets/screenshot-001.png
