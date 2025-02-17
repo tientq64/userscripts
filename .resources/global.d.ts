@@ -56,6 +56,3 @@ interface YtdPlayerElement extends HTMLElement {
 interface YouTubeMoviePlayerElement extends HTMLElement {
 	loadVideoByPlayerVars(options: { videoId: string; start?: number }): void
 }
-
-declare type TrustedTypePolicyFactory = import('trusted-types/lib').TrustedTypePolicyFactory
-declare const trustedTypes: TrustedTypePolicyFactory
