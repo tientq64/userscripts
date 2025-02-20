@@ -12,7 +12,7 @@
 // @name:zh-CN         自动跳过 YouTube 广告
 // @name:zh-TW         自動跳過 YouTube 廣告
 // @namespace          https://github.com/tientq64/userscripts
-// @version            7.0.0
+// @version            7.0.1
 // @description        Automatically skip YouTube ads almost instantly. Remove the ad blocker warning pop-up.
 // @description:ar     تخطي إعلانات YouTube تلقائيًا في الحال. إزالة النافذة المنبثقة لتحذير مانع الإعلانات.
 // @description:es     Omite automáticamente los anuncios de YouTube casi al instante. Elimina la ventana emergente de advertencia del bloqueador de anuncios.
@@ -272,12 +272,12 @@ function addCss(): void {
 		// Masthead ad on home page.
 		'#masthead-ad',
 
-		'ytd-ad-slot-renderer',
+		// 'ytd-ad-slot-renderer',
 
 		// Ad blocker warning inside the player.
 		'yt-playability-error-supported-renderers#error-screen',
 
-		'.ytp-suggested-action',
+		// '.ytp-suggested-action',
 		'.yt-mealbar-promo-renderer',
 
 		// YouTube Music Premium trial promotion dialog, bottom left corner.
