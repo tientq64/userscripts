@@ -9,28 +9,31 @@ function joinPath(...paths: string[]): string {
 	return join(...paths).replace(/\\/g, '/')
 }
 
-async function handleWatch(path: string, stat: Stats): Promise<void> {
+const endMetaTagRegex: RegExp = /^\/\/ ==\/UserScript==$/m
+const tailwindcssMetaRegex: RegExp = /^\/\/ @resource {2,}TAILWINDCSS$/m
+const watcherBlobs: string[] = ['scripts/*/script.user.{ts,tsx}', 'scripts/*/tracking.ts']
+
+async function handleWatch(filePath: string, stat: Stats): Promise<void> {
 	if (!stat.isFile()) return
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const tsconfig: any = JSON.parse(readFileSync('tsconfig.json', 'utf-8'))
-	const dirPath: string = dirname(path).replace(/\\/g, '/')
-	const code: string = readFileSync(path, 'utf-8')
-
-	const matches = code.match(/\/\/ ==UserScript==\n.+?\n\/\/ ==\/UserScript==/su)
-	if (matches === null) return
-
-	const meta: string = matches[0]
-	const ts: string = code.replace(meta, '')
-
+	const dirPath: string = dirname(filePath).replace(/\\/g, '/')
 	const prodPath: string = joinPath(dirPath, 'script.user.js')
 	const devPath: string = joinPath(dirPath, 'dev.user.js')
 
-	const metaPadLength: number = meta.match(/^\/\/ @([a-z:]+ {2,})/m)?.[1].length || 13
+	const tsconfig: any = JSON.parse(readFileSync('tsconfig.json', 'utf-8'))
+	const userscriptCode: string = readFileSync(filePath, 'utf-8')
+
+	const matches = userscriptCode.match(/\/\/ ==UserScript==\n.+?\n\/\/ ==\/UserScript==/su)
+	if (matches === null) return
+
+	const meta: string = matches[0]
+	const ts: string = userscriptCode.replace(meta, '')
+
+	const alignmentSpaces: number = meta.match(/^\/\/ @([a-z:]+ {2,})/m)?.[1].length || 13
 
 	const bothMeta: string = meta.replace(
 		endMetaTagRegex,
-		`// @${'homepage'.padEnd(metaPadLength)}https://github.com/tientq64/userscripts/tree/main/${encodeURI(dirPath)}\n$&`
+		`// @${'homepage'.padEnd(alignmentSpaces)}https://github.com/tientq64/userscripts/tree/main/${encodeURI(dirPath)}\n$&`
 	)
 
 	const prettierConfig = await resolveConfig('.prettierrc')
@@ -49,25 +52,21 @@ async function handleWatch(path: string, stat: Stats): Promise<void> {
 		useTabs: false,
 		parser: 'typescript'
 	})
-	const prodCode: string = `${prodMeta}\n\n${prodJs}`
-	writeFileSync(prodPath, prodCode)
+	const prodUserscriptCode: string = `${prodMeta}\n\n${prodJs}`
+	writeFileSync(prodPath, prodUserscriptCode)
 
 	const devMeta: string = bothMeta
-		.replace(/^\/\/ @name(:[a-zA-Z-]+)? .+(?<! \(DEV\))$/gm, '$& (DEV)')
+		.replace(/^\/\/ @name(:[a-zA-Z-]+)? .+(?<! \(DEV\))$/gm, '$& [DEV]')
 		.replace(
 			tailwindcssMetaRegex,
 			`$& file:///${joinPath(__dirname, '.resources/tailwind.min.css')}`
 		)
 		.replace(
 			endMetaTagRegex,
-			`// @${'require'.padEnd(metaPadLength)}file:///${joinPath(__dirname, encodeURI(prodPath))}\n$&`
+			`// @${'require'.padEnd(alignmentSpaces)}file:///${joinPath(__dirname, encodeURI(prodPath))}\n$&`
 		)
 	writeFileSync(devPath, devMeta)
 }
-
-const endMetaTagRegex: RegExp = /^\/\/ ==\/UserScript==$/m
-const tailwindcssMetaRegex: RegExp = /^\/\/ @resource {5}TAILWINDCSS$/m
-const watcherBlobs: string[] = ['scripts/*/script.user.{ts,tsx}', 'scripts/*/tracking.ts']
 
 ;(async () => {
 	const paths: string[] = sync(watcherBlobs)
