@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tetr.io Improvements
 // @namespace    https://github.com/tientq64/userscripts
-// @version      0.1.0
+// @version      1.0.0
 // @description  Provides improvements for Tetr.io game.
 // @author       tientq64
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tetr.io
@@ -69,8 +69,8 @@ var TetrIOImprovements
     window.addEventListener('keydown', handleWindowKeyDown)
 
     GM_addStyle(`
-    * {
-        transition: none !important;
-    }
-`)
+        * {
+            transition: none !important;
+        }
+    `)
 })(TetrIOImprovements || (TetrIOImprovements = {}))

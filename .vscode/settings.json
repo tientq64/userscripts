@@ -19,6 +19,7 @@
 	},
 	"files.readonlyInclude": {
 		"scripts/*/{dev,script}.user.js": true,
-		".resources/tailwind.min.css": true
+		".resources/tailwind.min.css": true,
+		"pnpm-lock.yaml": true
 	}
 }
