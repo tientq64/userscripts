@@ -11,7 +11,7 @@ Tự động bỏ qua quảng cáo YouTube ngay lập tức. Không bị phát h
 ### 7.1.0 - 2025-02-23
 
 -   Experiment.
--   Fixed the issue where the chapters was not displayed on the right side of the video.
+-   Fixed the issue where the chapters was not displayed on the right side of the video ([#10], [#279783]).
 
 ### 7.0.0 - 2025-02-15
 
@@ -183,9 +183,11 @@ _Merry Christmas!_
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
+[#10]: https://github.com/tientq64/userscripts/issues/10
 [#6]: https://github.com/tientq64/userscripts/issues/6
 [#2]: https://github.com/tientq64/userscripts/issues/2
 [#1]: https://github.com/tientq64/userscripts/pull/1
+[#279783]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/279783
 [#279168]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/279168
 [#267857]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/267857
 [#261679]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/261679
