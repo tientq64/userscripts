@@ -8,6 +8,11 @@ Tự động bỏ qua quảng cáo YouTube ngay lập tức. Không bị phát h
 
 ## 📑 Changelog
 
+### 7.1.0 - 2025-02-23
+
+-   Experiment.
+-   Fixed the issue where the chapters was not displayed on the right side of the video.
+
 ### 7.0.0 - 2025-02-15
 
 -   Version 6 had many bug reports, reverting to the previous version 5 ([#6], [#279168]).

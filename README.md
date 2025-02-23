@@ -120,7 +120,7 @@ Start:
 pnpm run watch
 ```
 
-The `script.user.js` file is compiled from the `script.user.ts` file, so do not modify it.
+The `script.user.js` file is compiled from the `script.user.ts` or `script.user.tsx` file, so do not modify it.
 
 While developing, instead of having to reinstall the `script.user.js` file every time it changes, installing the `dev.user.js` file solves that problem. But note, if you change in the metadata block, you have to reinstall the `dev.user.js` file.
 
