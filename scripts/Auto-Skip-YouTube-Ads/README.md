@@ -8,6 +8,10 @@ Tự động bỏ qua quảng cáo YouTube ngay lập tức. Không bị phát h
 
 ## 📑 Changelog
 
+### 7.2.0 - 2025-03-09
+
+-   YouTube Music support is back ([#291321], [#12]).
+
 ### 7.1.0 - 2025-02-23
 
 -   Experiment.
@@ -183,10 +187,12 @@ _Merry Christmas!_
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
+[#12]: https://github.com/tientq64/userscripts/issues/12
 [#10]: https://github.com/tientq64/userscripts/issues/10
 [#6]: https://github.com/tientq64/userscripts/issues/6
 [#2]: https://github.com/tientq64/userscripts/issues/2
 [#1]: https://github.com/tientq64/userscripts/pull/1
+[#291321]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/291321
 [#279783]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/279783
 [#279168]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/279168
 [#267857]: https://greasyfork.org/scripts/498197-auto-skip-youtube-ads/discussions/267857
