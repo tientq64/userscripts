@@ -14,7 +14,7 @@
 // @name:zh-CN         自动跳过 YouTube 广告
 // @name:zh-TW         自動跳過 YouTube 廣告
 // @namespace          https://github.com/tientq64/userscripts
-// @version            7.2.0
+// @version            7.2.1
 // @description        Automatically skip YouTube ads instantly. Undetected by YouTube ad blocker warnings.
 // @description:ar     تخطي إعلانات YouTube تلقائيًا على الفور. دون أن يتم اكتشاف ذلك من خلال تحذيرات أداة حظر الإعلانات في YouTube.
 // @description:es     Omite automáticamente los anuncios de YouTube al instante. Sin que te detecten las advertencias del bloqueador de anuncios de YouTube.
@@ -81,8 +81,10 @@ function skipAd(): void {
 
 	// ad.classList.remove('ad-showing')
 
+	let adVideo: HTMLVideoElement | null = null
+
 	if (pieCountdown === null && surveyQuestions === null) {
-		const adVideo = document.querySelector<HTMLVideoElement>(
+		adVideo = document.querySelector<HTMLVideoElement>(
 			'#ytd-player video.html5-main-video, #song-video video.html5-main-video'
 		)
 
@@ -98,35 +100,44 @@ function skipAd(): void {
 
 		if (adVideo === null || !adVideo.src || adVideo.paused || isNaN(adVideo.duration)) return
 
-		adVideo.muted = true
-		adVideo.pause()
-
 		console.log({
-			message: 'Paused ad video',
+			message: 'Ad video has finished loading',
 			timeStamp: getCurrentTimeString()
 		})
 	}
 
-	const videoData: YouTubeVideoData = player.getVideoData()
-	const videoId: string = videoData.video_id
-	const start: number = Math.floor(player.getCurrentTime())
+	if (isYouTubeMusic && adVideo !== null) {
+		adVideo.currentTime = adVideo.duration
 
-	if ('loadVideoWithPlayerVars' in playerEl) {
-		playerEl.loadVideoWithPlayerVars({ videoId, start })
+		console.table({
+			message: 'Ad skipped',
+			timeStamp: getCurrentTimeString(),
+			adShowing: adShowing !== null,
+			pieCountdown: pieCountdown !== null,
+			surveyQuestions: surveyQuestions !== null
+		})
 	} else {
-		playerEl.loadVideoByPlayerVars({ videoId, start })
-	}
+		const videoData: YouTubeVideoData = player.getVideoData()
+		const videoId: string = videoData.video_id
+		const start: number = Math.floor(player.getCurrentTime())
 
-	console.table({
-		message: 'Ad skipped!',
-		videoId,
-		start,
-		title: videoData.title,
-		timeStamp: getCurrentTimeString(),
-		adShowing: adShowing !== null,
-		pieCountdown: pieCountdown !== null,
-		surveyQuestions: surveyQuestions !== null
-	})
+		if ('loadVideoWithPlayerVars' in playerEl) {
+			playerEl.loadVideoWithPlayerVars({ videoId, start })
+		} else {
+			playerEl.loadVideoByPlayerVars({ videoId, start })
+		}
+
+		console.table({
+			message: 'Ad skipped',
+			videoId,
+			start,
+			title: videoData.title,
+			timeStamp: getCurrentTimeString(),
+			adShowing: adShowing !== null,
+			pieCountdown: pieCountdown !== null,
+			surveyQuestions: surveyQuestions !== null
+		})
+	}
 }
 
 function checkIsYouTubeShorts(): boolean {
@@ -205,12 +216,18 @@ function removeAdElements(): void {
 
 const isYouTubeMobile: boolean = location.hostname === 'm.youtube.com'
 const isYouTubeMusic: boolean = location.hostname === 'music.youtube.com'
+const isYouTubeDesktop: boolean = !isYouTubeMobile && !isYouTubeMusic
+const isYouTubeVideo: boolean = isYouTubeMobile || isYouTubeDesktop
+
+addCss()
+
+if (isYouTubeVideo) {
+	window.setInterval(removeAdElements, 1000)
+	removeAdElements()
+}
 
 window.setInterval(skipAd, 500)
-
-if (!isYouTubeMusic) {
-	window.setInterval(removeAdElements, 1000)
-}
+skipAd()
 
 // const observer = new MutationObserver(skipAd)
 // observer.observe(document.body, {
@@ -219,7 +236,3 @@ if (!isYouTubeMusic) {
 // 	childList: true,
 // 	subtree: true
 // })
-
-addCss()
-removeAdElements()
-skipAd()
