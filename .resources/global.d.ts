@@ -71,7 +71,3 @@ interface YouTubeVideoData {
 	video_id: string
 	isLive: boolean
 }
-
-interface YouTubeMoviePlayerElement extends HTMLElement {
-	loadVideoByPlayerVars(options: { videoId: string; start?: number }): void
-}
