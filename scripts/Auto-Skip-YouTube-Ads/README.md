@@ -8,6 +8,11 @@ Tự động bỏ qua quảng cáo YouTube ngay lập tức. Không bị phát h
 
 ## 📑 Changelog
 
+### 7.3.0 - 2025-06-20
+
+-   Mute video player while skipping ads ([#15]).
+-   Automatically re-enable subtitles after skipping ads.
+
 ### 7.2.0 - 2025-03-09
 
 -   YouTube Music support is back ([#291321], [#12]).
@@ -187,6 +192,7 @@ _Merry Christmas!_
 
 <a href="https://www.flaticon.com/free-icons/youtube" title="youtube icons">Youtube icons created by Ruslan Babkin - Flaticon</a>.
 
+[#15]: https://github.com/tientq64/userscripts/issues/15
 [#12]: https://github.com/tientq64/userscripts/issues/12
 [#10]: https://github.com/tientq64/userscripts/issues/10
 [#6]: https://github.com/tientq64/userscripts/issues/6

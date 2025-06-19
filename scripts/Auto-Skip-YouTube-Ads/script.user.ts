@@ -14,7 +14,7 @@
 // @name:zh-CN         自动跳过 YouTube 广告
 // @name:zh-TW         自動跳過 YouTube 廣告
 // @namespace          https://github.com/tientq64/userscripts
-// @version            7.2.2
+// @version            7.3.0
 // @description        Automatically skip YouTube ads instantly. Undetected by YouTube ad blocker warnings.
 // @description:ar     تخطي إعلانات YouTube تلقائيًا على الفور. دون أن يتم اكتشاف ذلك من خلال تحذيرات أداة حظر الإعلانات في YouTube.
 // @description:es     Omite automáticamente los anuncios de YouTube al instante. Sin que te detecten las advertencias del bloqueador de anuncios de YouTube.
@@ -61,10 +61,12 @@ function skipAd(): void {
 
 	if (adShowing === null && pieCountdown === null && surveyQuestions === null) return
 
+	const moviePlayerEl = document.querySelector<YouTubeMoviePlayerElement>('#movie_player')
 	let playerEl: YtdPlayerElement | YouTubeMoviePlayerElement | null
 	let player: YouTubePlayer | YouTubeMoviePlayerElement | null
+
 	if (isYouTubeMobile || isYouTubeMusic) {
-		playerEl = document.querySelector<YouTubeMoviePlayerElement>('#movie_player')
+		playerEl = moviePlayerEl
 		player = playerEl
 	} else {
 		playerEl = document.querySelector<YtdPlayerElement>('#ytd-player')
@@ -98,7 +100,12 @@ function skipAd(): void {
 			timeStamp: getCurrentTimeString()
 		})
 
-		if (adVideo === null || !adVideo.src || adVideo.paused || isNaN(adVideo.duration)) return
+		if (adVideo !== null) {
+			adVideo.muted = true
+		}
+		if (adVideo === null || !adVideo.src || adVideo.paused || isNaN(adVideo.duration)) {
+			return
+		}
 
 		console.log({
 			message: 'Ad video has finished loading',
@@ -120,6 +127,10 @@ function skipAd(): void {
 		const videoData: YouTubeVideoData = player.getVideoData()
 		const videoId: string = videoData.video_id
 		const start: number = Math.floor(player.getCurrentTime())
+
+		if (moviePlayerEl !== null && moviePlayerEl.isSubtitlesOn()) {
+			window.setTimeout(moviePlayerEl.toggleSubtitlesOn, 1000)
+		}
 
 		if ('loadVideoWithPlayerVars' in playerEl) {
 			playerEl.loadVideoWithPlayerVars({ videoId, start })

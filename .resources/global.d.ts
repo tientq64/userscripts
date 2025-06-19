@@ -39,6 +39,7 @@ type GMOpenInTabOptions = {
 declare function GM_openInTab(url: string, options?: GMOpenInTabOptions): void
 
 declare type ReactElement = import('react').ReactElement
+declare type ReactNode = import('react').ReactNode
 declare type ChangeEvent<T> = import('react').ChangeEvent<T>
 
 declare type Immer = import('immer').Immer
@@ -57,6 +58,9 @@ interface YtdPlayerElement extends HTMLElement {
 
 interface YouTubeMoviePlayerElement extends HTMLElement, YouTubePlayer {
 	loadVideoByPlayerVars(options: { videoId: string; start?: number }): void
+	toggleSubtitles(): void
+	toggleSubtitlesOn(): void
+	isSubtitlesOn(): boolean
 }
 
 interface YouTubePlayer {
